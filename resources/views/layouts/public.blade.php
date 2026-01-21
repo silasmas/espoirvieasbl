@@ -248,20 +248,22 @@
                             <a href="mailto:info@example.com"><i class="flaticon-mail"></i> info@example.com</a>
                             <a href="tel:123-456-7890"><i class="flaticon-telephone-call"></i> 123-456-7890</a>
                         </div>
-                        <form action="#" class="ul-nwsltr-form">
+                        <form action="{{ route('newsletter.subscribe') }}" method="POST" class="ul-nwsltr-form">
+                            @csrf
                             <div class="top">
                                 <input type="email" name="email" id="nwsltr-email"
-                                    placeholder="Votre adresse email" class="ul-nwsltr-input">
+                                    placeholder="Votre adresse email" class="ul-nwsltr-input" required>
                                 <button type="submit"><i class="flaticon-next"></i></button>
                             </div>
 
                             <div class="agreement">
                                 <label for="nwsltr-agreement" class="ul-checkbox-wrapper">
-                                    <input type="checkbox" name="agreement" id="nwsltr-agreement" hidden>
-                                    <span class="ul-checkbox"><i class="flaticon-tick"></i></span>
+                                    <input type="checkbox" name="agreement" id="nwsltr-agreement" value="1" required>
+                                    {{-- <span class="ul-checkbox"><i class="flaticon-tick"></i></span> --}}
                                     <span class="ul-checkbox-txt">J'accepte la <a href="#">Politique de confidentialité</a></span>
                                 </label>
                             </div>
+                            <span class="error-message" id="error-nwsltr-email" style="display: none;"></span>
                         </form>
                     </div>
                 </div>
@@ -275,8 +277,9 @@
                     <p class="copyright-txt">&copy;
                         <span id="footer-copyright-year"></span> Espoir Vie ASBL. Tous droits réservés.
                     </p>
-                    <div class="ul-footer-bottom-nav"><a href="#">Conditions d'utilisation</a> <a
-                            href="#">Politique de confidentialité</a></div>
+                    <div class="ul-footer-bottom-nav">
+                        <a href="#">Conditions d'utilisation</a>
+                        <a href="#">Politique de confidentialité</a></div>
                 </div>
             </div>
         </div>
@@ -305,6 +308,51 @@
     <script src="{{ asset('assets/js/accordion.js') }}"></script>
     <script src="{{ asset('assets/js/progressbar.js') }}"></script>
     <script src="{{ asset('assets/js/donate-form.js') }}"></script>
+    <script src="{{ asset('assets/js/async-forms.js') }}"></script>
+
+    <style>
+        /* Styles pour les notifications asynchrones */
+        .async-notification,
+        .newsletter-notification {
+            padding: 12px 18px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            animation: slideDown 0.3s ease-out;
+            display: none;
+        }
+
+        .async-notification.success,
+        .newsletter-notification.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .async-notification.error,
+        .newsletter-notification.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .ul-nwsltr-form button[type="submit"].loading {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
     </div>
 </body>
 

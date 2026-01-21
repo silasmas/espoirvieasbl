@@ -11,6 +11,9 @@ Route::get('/evenements', [HomeController::class, 'events'])->name('events');
 Route::get('/evenements/{activity}', [HomeController::class, 'showEvent'])->name('events.show');
 Route::get('/faire-un-don', [HomeController::class, 'donate'])->name('donate');
 Route::get('/nous-contacter', [HomeController::class, 'contact'])->name('contact');
+Route::post('/nous-contacter', [HomeController::class, 'storeContactMessage'])->name('contact.store');
+Route::post('/newsletter/subscribe', [HomeController::class, 'subscribeNewsletter'])->name('newsletter.subscribe');
+Route::get('/newsletter/unsubscribe/{token}', [HomeController::class, 'unsubscribeNewsletter'])->name('newsletter.unsubscribe');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
