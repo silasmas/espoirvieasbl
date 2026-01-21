@@ -1,7 +1,7 @@
 @extends('emails.layout')
 
 @section('content')
-    <h2 style="color: #2563EB; margin-bottom: 20px;">Bienvenue dans notre newsletter !</h2>
+    <h2 style="color: #0172b8; margin-bottom: 20px;">Bienvenue dans notre newsletter !</h2>
     
     <p>Bonjour,</p>
     

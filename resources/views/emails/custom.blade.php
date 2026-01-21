@@ -2,7 +2,7 @@
 
 @section('content')
     @if(isset($title))
-    <h2 style="color: #2563EB; margin-bottom: 20px;">{{ $title }}</h2>
+    <h2 style="color: #0172b8; margin-bottom: 20px;">{{ $title }}</h2>
     @endif
     
     @if(isset($greeting))

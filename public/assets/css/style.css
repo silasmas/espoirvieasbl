@@ -5,7 +5,7 @@ Author: tempticspro
 Version: 1.0
 
 CSS INDEX
-=================== 
+===================
 01. CUSTOM PROPERTIES
 02. GLOBAL
 03. Components
@@ -49,7 +49,7 @@ CSS INDEX
 :root {
   --black: #000;
   --white: #fff;
-  --ul-primary: #2563EB;
+  --ul-primary: #0172b8;
   --ul-secondary: #60A5FA;
   --ul-c3: #DBEAFE;
   --ul-c4: #EFF6FF;
@@ -439,7 +439,7 @@ button {
 }
 
 .ul-breadcrumb {
-  background: url(../img/breadcrumb-bg.jpg) no-repeat center center;
+  background: url(../img/1920x500.jpg.jpeg) no-repeat center center;
   background-size: cover;
   padding: clamp(50px, 9.98vw, 190px) 0 clamp(40px, 9.46vw, 180px);
   text-align: center;
@@ -2245,7 +2245,7 @@ button {
   justify-content: center;
   flex-direction: column;
   background: no-repeat center center/cover;
-  background-image: url(../img/stat-bg.png);
+  background-image: url(../img/2-.jpg.jpeg);
   transition: 0.4s ease;
   position: relative;
   z-index: 1;

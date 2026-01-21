@@ -1,7 +1,7 @@
 @extends('emails.layout')
 
 @section('content')
-    <h2 style="color: #2563EB; margin-bottom: 20px;">Votre message a bien été reçu</h2>
+    <h2 style="color: #0172b8; margin-bottom: 20px;">Votre message a bien été reçu</h2>
     
     <p>Bonjour {{ $contactMessage->name }},</p>
     
@@ -17,7 +17,7 @@
         <p style="margin: 0; white-space: pre-wrap;">{{ $contactMessage->message }}</p>
     </div>
     
-    <p>En attendant notre réponse, n'hésitez pas à consulter nos <a href="{{ route('events') }}" style="color: #2563EB; text-decoration: underline;">événements à venir</a> ou nos <a href="{{ route('about') }}" style="color: #2563EB; text-decoration: underline;">activités en cours</a>.</p>
+    <p>En attendant notre réponse, n'hésitez pas à consulter nos <a href="{{ route('events') }}" style="color: #0172b8; text-decoration: underline;">événements à venir</a> ou nos <a href="{{ route('about') }}" style="color: #0172b8; text-decoration: underline;">activités en cours</a>.</p>
     
     <div style="text-align: center; margin: 30px 0;">
         <a href="{{ $contactUrl ?? route('contact') }}" class="button">Visiter notre site</a>

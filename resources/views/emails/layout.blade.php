@@ -23,7 +23,7 @@
         .email-header {
             text-align: center;
             padding-bottom: 20px;
-            border-bottom: 2px solid #2563EB;
+            border-bottom: 2px solid #0172b8;
             margin-bottom: 30px;
         }
         .email-logo {
@@ -32,7 +32,7 @@
             margin-bottom: 15px;
         }
         .email-title {
-            color: #2563EB;
+            color: #0172b8;
             font-size: 24px;
             margin-top: 20px;
             font-weight: bold;
@@ -51,7 +51,7 @@
         .button {
             display: inline-block;
             padding: 12px 30px;
-            background-color: #2563EB;
+            background-color: #0172b8;
             color: #ffffff !important;
             text-decoration: none;
             border-radius: 5px;
@@ -64,7 +64,7 @@
         .highlight {
             background-color: #EFF6FF;
             padding: 15px;
-            border-left: 4px solid #2563EB;
+            border-left: 4px solid #0172b8;
             margin: 20px 0;
         }
         @media only screen and (max-width: 600px) {
@@ -92,7 +92,7 @@
             <p><strong>Espoir Vie ASBL</strong></p>
             <p>Créons ensemble un avenir meilleur pour tous</p>
             <p>
-                <a href="{{ config('app.url') }}" style="color: #2563EB;">{{ config('app.url') }}</a>
+                <a href="{{ config('app.url') }}" style="color: #0172b8;">{{ config('app.url') }}</a>
             </p>
             <p style="margin-top: 15px; font-size: 11px;">
                 © {{ date('Y') }} Espoir Vie ASBL. Tous droits réservés.

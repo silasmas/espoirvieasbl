@@ -19,9 +19,9 @@
 
                                 <div class="ul-banner-stat">
                                     <div class="imgs">
-                                        <img src="{{ asset('assets/img/user-1.png') }}" alt="Personne">
-                                        <img src="{{ asset('assets/img/user-3.png') }}" alt="Personne">
-                                        <img src="{{ asset('assets/img/user-2.png') }}" alt="Personne">
+                                        <img src="{{ asset('assets/img/1.jpg.jpeg') }}" alt="Personne">
+                                        <img src="{{ asset('assets/img/2.jpg.jpeg') }}" alt="Personne">
+                                        <img src="{{ asset('assets/img/3.jpg.jpeg') }}" alt="Personne">
                                         <span class="number">2.M</span>
                                     </div>
                                     <span class="txt">Donateurs actifs</span>
@@ -37,7 +37,7 @@
                 <div class="col align-self-start">
                     <div class="ul-banner-img">
                         <div class="img-wrapper">
-                            <img src="{{ asset('assets/img/960x1000.jpg.jpeg') }}" alt="Image de la bannière">
+                            <img src="{{ asset('assets/img/960x1000-.jpg.jpeg') }}" alt="Image de la bannière">
                             <!-- <div class="ul-banner-video-btn">
                                 <a href=""></a>
                             </div> -->
@@ -61,7 +61,11 @@
                 <div class="col">
                     <div class="ul-about-imgs">
                         <div class="img-wrapper">
-                            <img src="{{ asset('assets/img/about-img.png') }}" alt="Image à propos">
+                            @if(isset($about) && $about->image)
+                                <img src="{{ asset('storage/' . $about->image) }}" alt="Image à propos">
+                            @else
+                                <img src="{{ asset('assets/img/690x612.jpg.jpeg') }}" alt="Image à propos par défaut">
+                            @endif
                         </div>
                         <div class="ul-about-imgs-vectors">
                             <img src="{{ asset('assets/img/about-img-vector-1.svg') }}" alt="Illustration" class="vector-1">
@@ -73,22 +77,41 @@
                 <!-- txt -->
                 <div class="col">
                     <div class="ul-about-txt">
-                        <span class="ul-section-sub-title ul-section-sub-title--2">À propos de nous</span>
-                        <h2 class="ul-section-title">S'entraider peut rendre le monde meilleur</h2>
-                        <p class="ul-section-descr">Espoir Vie ASBL est une organisation dédiée à améliorer les conditions de vie des personnes dans le besoin. Nous croyons que chaque individu mérite une chance de vivre dans la dignité avec espoir en l'avenir. Rejoignez-nous pour créer un impact durable.</p>
+                        <span class="ul-section-sub-title ul-section-sub-title--2">
+                            {{ isset($about) && $about->subtitle ? $about->subtitle : 'À propos de nous' }}
+                        </span>
+                        <h2 class="ul-section-title">
+                            {{ isset($about) && $about->title ? $about->title : "S'entraider peut rendre le monde meilleur" }}
+                        </h2>
+                        <p class="ul-section-descr">
+                            {{ isset($about) && $about->description ? $about->description : "Espoir Vie ASBL est une organisation dédiée à améliorer les conditions de vie des personnes dans le besoin. Nous croyons que chaque individu mérite une chance de vivre dans la dignité avec espoir en l'avenir. Rejoignez-nous pour créer un impact durable." }}
+                        </p>
 
                         <div class="ul-about-block">
                             <div class="block-left">
                                 <div class="block-heading">
                                     <div class="icon"><i class="flaticon-love"></i></div>
-                                    <h3 class="block-title">Rejoignez notre équipe</h3>
+                                    <h3 class="block-title">
+                                        {{ isset($about) && $about->block_title ? $about->block_title : "Rejoignez notre équipe" }}
+                                    </h3>
                                 </div>
-
                                 <ul class="block-list">
-                                    <li>De nombreuses façons d'aider et de faire la différence</li>
+                                    @if(isset($about) && $about->block_list)
+                                        @foreach($about->block_list as $item)
+                                            <li>{{ $item }}</li>
+                                        @endforeach
+                                    @else
+                                        <li>De nombreuses façons d'aider et de faire la différence</li>
+                                    @endif
                                 </ul>
                             </div>
-                            <div class="block-right"><img src="{{ asset('assets/img/about-block-img.jpg') }}" alt="Illustration à propos"></div>
+                            <div class="block-right">
+                                @if(isset($about) && $about->block_image)
+                                    <img src="{{ asset('storage/' . $about->block_image) }}" alt="Illustration à propos">
+                                @else
+                                    <img src="{{ asset('assets/img/330x73-equipe.jpg.jpeg') }}" alt="Illustration à propos par défaut">
+                                @endif
+                            </div>
                         </div>
 
                         <div class="ul-about-bottom">
@@ -97,8 +120,12 @@
                             <div class="ul-about-call">
                                 <div class="icon"><i class="flaticon-telephone-call"></i></div>
                                 <div class="txt">
-                                    <span class="call-title">Appelez-nous à tout moment</span>
-                                    <a href="tel:+612345678990">+61 2345 678 990</a>
+                                    <span class="call-title">
+                                        {{ isset($about) && $about->call_title ? $about->call_title : 'Appelez-nous à tout moment' }}
+                                    </span>
+                                    <a href="tel:{{ isset($about) && $about->call_phone ? $about->call_phone : '+612345678990' }}">
+                                        {{ isset($about) && $about->call_phone ? $about->call_phone : '+61 2345 678 990' }}
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -147,215 +174,58 @@
         <div class="ul-container wow animate__fadeInUp">
             <div class="ul-donations-slider swiper overflow-visible">
                 <div class="swiper-wrapper">
-                    <!-- single item -->
-                    <div class="swiper-slide">
-                        <div class="ul-donation">
-                            <div class="ul-donation-img">
-                                <img src="{{ asset('assets/img/donation-1.jpg') }}" alt="Image du don">
-                                <span class="tag">Alimentation</span>
-                            </div>
-                            <div class="ul-donation-txt">
-                                <div class="ul-donation-progress">
-                                    <div class="donation-progress-container ul-progress-container">
-                                        <div class="donation-progressbar ul-progressbar" data-ul-progress-value="55">
-                                            <div class="donation-progress-label ul-progress-label"></div>
-                                        </div>
+                    @if($donationActivities && $donationActivities->count() > 0)
+                        @foreach($donationActivities as $activity)
+                            <div class="swiper-slide">
+                                <div class="ul-donation">
+                                    <div class="ul-donation-img">
+                                        @if($activity->image)
+                                            <img src="{{ activity_image_url($activity->image) }}" alt="{{ $activity->title }}" style="width: 282px; height: 188px; object-fit: cover;">
+                                        @else
+                                            <img src="{{ asset('assets/img/donation-1.jpg') }}" alt="{{ $activity->title }}" style="width: 282px; height: 188px; object-fit: cover;">
+                                        @endif
+                                        @if($activity->category)
+                                            <span class="tag">{{ $activity->category }}</span>
+                                        @endif
                                     </div>
-                                    <div class="ul-donation-progress-labels">
-                                        <span class="ul-donation-progress-label">Collecté : 25 000 €</span>
-                                        <span class="ul-donation-progress-label">Objectif : 30 000 €</span>
-                                    </div>
-                                </div>
-                                <a href="{{ route('donate') }}" class="ul-donation-title">Sauver des vies d'enfants en Afrique du Sud</a>
-                                <p class="ul-donation-descr">Nous travaillons ensemble pour faire une différence durable en aidant les personnes dans le besoin. Avec gentillesse et travail acharné.</p>
-                                <a href="{{ route('donate') }}" class="ul-donation-btn">Faire un don maintenant <i class="flaticon-up-right-arrow"></i></a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- single item -->
-                    <div class="swiper-slide">
-                        <div class="ul-donation">
-                            <div class="ul-donation-img">
-                                <img src="{{ asset('assets/img/donation-2.jpg') }}" alt="Image du don">
-                                <span class="tag">Alimentation</span>
-                            </div>
-                            <div class="ul-donation-txt">
-                                <div class="ul-donation-progress">
-                                    <div class="donation-progress-container ul-progress-container">
-                                        <div class="donation-progressbar ul-progressbar" data-ul-progress-value="95">
-                                            <div class="donation-progress-label ul-progress-label"></div>
-                                        </div>
-                                    </div>
-                                    <div class="ul-donation-progress-labels">
-                                        <span class="ul-donation-progress-label">Collecté : 25 000 €</span>
-                                        <span class="ul-donation-progress-label">Objectif : 30 000 €</span>
+                                    <div class="ul-donation-txt">
+                                        @if($activity->budget > 0)
+                                            @php
+                                                $progressPercentage = min(100, (($activity->amount_raised ?? 0) / $activity->budget) * 100);
+                                            @endphp
+                                            <div class="ul-donation-progress">
+                                                <div class="donation-progress-container ul-progress-container">
+                                                    <div class="donation-progressbar ul-progressbar" data-ul-progress-value="{{ round($progressPercentage) }}">
+                                                        <div class="donation-progress-label ul-progress-label"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="ul-donation-progress-labels">
+                                                    <span class="ul-donation-progress-label">Collecté : {{ number_format($activity->amount_raised ?? 0, 0, ',', ' ') }} €</span>
+                                                    <span class="ul-donation-progress-label">Objectif : {{ number_format($activity->budget, 0, ',', ' ') }} €</span>
+                                                </div>
+                                            </div>
+                                        @endif
+                                        <a href="{{ route('donate.detail', $activity) }}" class="ul-donation-title">{{ $activity->title }}</a>
+                                        <p class="ul-donation-descr">{{ Str::limit($activity->short_description ?? $activity->description ?? 'Aidez-nous à réaliser ce projet', 100) }}</p>
+                                        <a href="{{ route('donate.detail', $activity) }}" class="ul-donation-btn">Faire un don <i class="flaticon-up-right-arrow"></i></a>
                                     </div>
                                 </div>
-                                <a href="{{ route('donate') }}" class="ul-donation-title">Sauver des vies d'enfants en Afrique du Sud</a>
-                                <p class="ul-donation-descr">Nous travaillons ensemble pour faire une différence durable en aidant les personnes dans le besoin. Avec gentillesse et travail acharné.</p>
-                                <a href="{{ route('donate') }}" class="ul-donation-btn">Faire un don maintenant <i class="flaticon-up-right-arrow"></i></a>
                             </div>
-                        </div>
-                    </div>
-
-                    <!-- single item -->
-                    <div class="swiper-slide">
-                        <div class="ul-donation">
-                            <div class="ul-donation-img">
-                                <img src="{{ asset('assets/img/donation-3.jpg') }}" alt="Image du don">
-                                <span class="tag">Alimentation</span>
-                            </div>
-                            <div class="ul-donation-txt">
-                                <div class="ul-donation-progress">
-                                    <div class="donation-progress-container ul-progress-container">
-                                        <div class="donation-progressbar ul-progressbar" data-ul-progress-value="50">
-                                            <div class="donation-progress-label ul-progress-label"></div>
-                                        </div>
-                                    </div>
-                                    <div class="ul-donation-progress-labels">
-                                        <span class="ul-donation-progress-label">Collecté : 25 000 €</span>
-                                        <span class="ul-donation-progress-label">Objectif : 30 000 €</span>
-                                    </div>
+                        @endforeach
+                    @else
+                        <div class="swiper-slide">
+                            <div class="ul-donation">
+                                <div class="ul-donation-img">
+                                    <img src="{{ asset('assets/img/donation-1.jpg') }}" alt="Image du don" style="width: 282px; height: 188px; object-fit: cover;">
+                                    <span class="tag">Aucun projet</span>
                                 </div>
-                                <a href="{{ route('donate') }}" class="ul-donation-title">Sauver des vies d'enfants en Afrique du Sud</a>
-                                <p class="ul-donation-descr">Nous travaillons ensemble pour faire une différence durable en aidant les personnes dans le besoin. Avec gentillesse et travail acharné.</p>
-                                <a href="{{ route('donate') }}" class="ul-donation-btn">Faire un don maintenant <i class="flaticon-up-right-arrow"></i></a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- single item -->
-                    <div class="swiper-slide">
-                        <div class="ul-donation">
-                            <div class="ul-donation-img">
-                                <img src="{{ asset('assets/img/donation-4.jpg') }}" alt="Image du don">
-                                <span class="tag">Alimentation</span>
-                            </div>
-                            <div class="ul-donation-txt">
-                                <div class="ul-donation-progress">
-                                    <div class="donation-progress-container ul-progress-container">
-                                        <div class="donation-progressbar ul-progressbar" data-ul-progress-value="64">
-                                            <div class="donation-progress-label ul-progress-label"></div>
-                                        </div>
-                                    </div>
-                                    <div class="ul-donation-progress-labels">
-                                        <span class="ul-donation-progress-label">Collecté : 25 000 €</span>
-                                        <span class="ul-donation-progress-label">Objectif : 30 000 €</span>
-                                    </div>
+                                <div class="ul-donation-txt">
+                                    <p class="ul-donation-descr">Aucun projet de dons disponible pour le moment. Revenez bientôt !</p>
                                 </div>
-                                <a href="{{ route('donate') }}" class="ul-donation-title">Sauver des vies d'enfants en Afrique du Sud</a>
-                                <p class="ul-donation-descr">Nous travaillons ensemble pour faire une différence durable en aidant les personnes dans le besoin. Avec gentillesse et travail acharné.</p>
-                                <a href="{{ route('donate') }}" class="ul-donation-btn">Faire un don maintenant <i class="flaticon-up-right-arrow"></i></a>
                             </div>
                         </div>
-                    </div>
-
-                    <!-- single item -->
-                    <div class="swiper-slide">
-                        <div class="ul-donation">
-                            <div class="ul-donation-img">
-                                <img src="{{ asset('assets/img/donation-1.jpg') }}" alt="Image du don">
-                                <span class="tag">Alimentation</span>
-                            </div>
-                            <div class="ul-donation-txt">
-                                <div class="ul-donation-progress">
-                                    <div class="donation-progress-container ul-progress-container">
-                                        <div class="donation-progressbar ul-progressbar" data-ul-progress-value="80">
-                                            <div class="donation-progress-label ul-progress-label"></div>
-                                        </div>
-                                    </div>
-                                    <div class="ul-donation-progress-labels">
-                                        <span class="ul-donation-progress-label">Collecté : 25 000 €</span>
-                                        <span class="ul-donation-progress-label">Objectif : 30 000 €</span>
-                                    </div>
-                                </div>
-                                <a href="{{ route('donate') }}" class="ul-donation-title">Sauver des vies d'enfants en Afrique du Sud</a>
-                                <p class="ul-donation-descr">Nous travaillons ensemble pour faire une différence durable en aidant les personnes dans le besoin. Avec gentillesse et travail acharné.</p>
-                                <a href="{{ route('donate') }}" class="ul-donation-btn">Faire un don maintenant <i class="flaticon-up-right-arrow"></i></a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- single item -->
-                    <div class="swiper-slide">
-                        <div class="ul-donation">
-                            <div class="ul-donation-img">
-                                <img src="{{ asset('assets/img/donation-2.jpg') }}" alt="Image du don">
-                                <span class="tag">Alimentation</span>
-                            </div>
-                            <div class="ul-donation-txt">
-                                <div class="ul-donation-progress">
-                                    <div class="donation-progress-container ul-progress-container">
-                                        <div class="donation-progressbar ul-progressbar" data-ul-progress-value="95">
-                                            <div class="donation-progress-label ul-progress-label"></div>
-                                        </div>
-                                    </div>
-                                    <div class="ul-donation-progress-labels">
-                                        <span class="ul-donation-progress-label">Collecté : 25 000 €</span>
-                                        <span class="ul-donation-progress-label">Objectif : 30 000 €</span>
-                                    </div>
-                                </div>
-                                <a href="{{ route('donate') }}" class="ul-donation-title">Sauver des vies d'enfants en Afrique du Sud</a>
-                                <p class="ul-donation-descr">Nous travaillons ensemble pour faire une différence durable en aidant les personnes dans le besoin. Avec gentillesse et travail acharné.</p>
-                                <a href="{{ route('donate') }}" class="ul-donation-btn">Faire un don maintenant <i class="flaticon-up-right-arrow"></i></a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- single item -->
-                    <div class="swiper-slide">
-                        <div class="ul-donation">
-                            <div class="ul-donation-img">
-                                <img src="{{ asset('assets/img/donation-3.jpg') }}" alt="Image du don">
-                                <span class="tag">Alimentation</span>
-                            </div>
-                            <div class="ul-donation-txt">
-                                <div class="ul-donation-progress">
-                                    <div class="donation-progress-container ul-progress-container">
-                                        <div class="donation-progressbar ul-progressbar" data-ul-progress-value="50">
-                                            <div class="donation-progress-label ul-progress-label"></div>
-                                        </div>
-                                    </div>
-                                    <div class="ul-donation-progress-labels">
-                                        <span class="ul-donation-progress-label">Collecté : 25 000 €</span>
-                                        <span class="ul-donation-progress-label">Objectif : 30 000 €</span>
-                                    </div>
-                                </div>
-                                <a href="{{ route('donate') }}" class="ul-donation-title">Sauver des vies d'enfants en Afrique du Sud</a>
-                                <p class="ul-donation-descr">Nous travaillons ensemble pour faire une différence durable en aidant les personnes dans le besoin. Avec gentillesse et travail acharné.</p>
-                                <a href="{{ route('donate') }}" class="ul-donation-btn">Faire un don maintenant <i class="flaticon-up-right-arrow"></i></a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- single item -->
-                    <div class="swiper-slide">
-                        <div class="ul-donation">
-                            <div class="ul-donation-img">
-                                <img src="{{ asset('assets/img/donation-4.jpg') }}" alt="Image du don">
-                                <span class="tag">Alimentation</span>
-                            </div>
-                            <div class="ul-donation-txt">
-                                <div class="ul-donation-progress">
-                                    <div class="donation-progress-container ul-progress-container">
-                                        <div class="donation-progressbar ul-progressbar" data-ul-progress-value="64">
-                                            <div class="donation-progress-label ul-progress-label"></div>
-                                        </div>
-                                    </div>
-                                    <div class="ul-donation-progress-labels">
-                                        <span class="ul-donation-progress-label">Collecté : 25 000 €</span>
-                                        <span class="ul-donation-progress-label">Objectif : 30 000 €</span>
-                                    </div>
-                                </div>
-                                <a href="{{ route('donate') }}" class="ul-donation-title">Sauver des vies d'enfants en Afrique du Sud</a>
-                                <p class="ul-donation-descr">Nous travaillons ensemble pour faire une différence durable en aidant les personnes dans le besoin. Avec gentillesse et travail acharné.</p>
-                                <a href="{{ route('donate') }}" class="ul-donation-btn">Faire un don maintenant <i class="flaticon-up-right-arrow"></i></a>
-                            </div>
-                        </div>
-                    </div>
+                    @endif
                 </div>
-
                 <div class="ul-dontations-slider-pagination d-none"></div>
             </div>
         </div>
@@ -592,7 +462,7 @@
                 <div class="row row-cols-md-2 row-cols-1 gy-4 align-items-center">
                     <div class="col">
                         <div class="ul-why-join-img">
-                            <img src="{{ asset('assets/img/why-join.jpg') }}" alt="Image pourquoi nous rejoindre">
+                            <img src="{{ asset('assets/img/660X632.jpg.jpeg') }}" alt="Image pourquoi nous rejoindre">
                         </div>
                     </div>
 

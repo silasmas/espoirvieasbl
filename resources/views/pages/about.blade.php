@@ -3,170 +3,401 @@
 @section('title', 'À propos - Espoir Vie ASBL')
 
 @section('content')
-    <!-- Hero Section -->
-    <div class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white">
-        <div class="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
-            <div class="text-center">
-                <h1 class="text-4xl md:text-6xl font-bold mb-6">
-                    À propos de nous
-                </h1>
-                <p class="text-xl md:text-2xl text-indigo-100">
-                    Découvrez notre mission, notre vision et nos valeurs
-                </p>
+    <x-breadcrumb
+        title="À propos de nous"
+        :items="[
+            ['route' => 'home', 'label' => 'Accueil'],
+            ['label' => 'À propos']
+        ]"
+    />
+
+
+    <!-- ABOUT SECTION START -->
+    <section class="ul-about ul-section-spacing wow animate__fadeInUp">
+        <div class="ul-container">
+            <div class="row row-cols-md-2 row-cols-1 align-items-center gy-4 ul-about-row">
+                <div class="col">
+                    <div class="ul-about-imgs">
+                        <div class="img-wrapper">
+                            <img src="{{ asset('assets/img/about-img.png') }}" alt="Image à propos">
+                        </div>
+                        <div class="ul-about-imgs-vectors">
+                            <img src="{{ asset('assets/img/about-img-vector-1.svg') }}" alt="Illustration" class="vector-1">
+                            <img src="{{ asset('assets/img/about-img-vector-2.svg') }}" alt="Illustration" class="vector-2">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- txt -->
+                <div class="col">
+                    <div class="ul-about-txt">
+                        <span class="ul-section-sub-title ul-section-sub-title--2">À propos de nous</span>
+                        <h2 class="ul-section-title">S'entraider peut rendre le monde meilleur</h2>
+                        <p class="ul-section-descr">Espoir Vie ASBL est une organisation dédiée à améliorer les conditions de vie des personnes dans le besoin. Nous croyons que chaque individu mérite une chance de vivre dans la dignité avec espoir en l'avenir. Rejoignez-nous pour créer un impact durable dans nos communautés.</p>
+
+                        <div class="ul-about-block">
+                            <div class="block-left">
+                                <div class="block-heading">
+                                    <div class="icon"><i class="flaticon-love"></i></div>
+                                    <h3 class="block-title">Rejoignez notre équipe</h3>
+                                </div>
+
+                                <ul class="block-list">
+                                    <li>De nombreuses façons d'aider et de faire la différence</li>
+                                    <li>Participez à nos projets et événements</li>
+                                    <li>Créez un impact positif dans votre communauté</li>
+                                </ul>
+                            </div>
+                            <div class="block-right"><img src="{{ asset('assets/img/about-block-img.jpg') }}" alt="Illustration à propos"></div>
+                        </div>
+
+                        <div class="ul-about-bottom">
+                            <a href="{{ route('donate') }}" class="ul-btn"><i class="flaticon-fast-forward-double-right-arrows-symbol"></i> Faire un don</a>
+
+                            <div class="ul-about-call">
+                                <div class="icon"><i class="flaticon-telephone-call"></i></div>
+                                <div class="txt">
+                                    <span class="call-title">Appelez-nous à tout moment</span>
+                                    <a href="tel:+442045770077">+44 204 577 0077</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- Mission Section -->
-    <div class="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-                <h2 class="text-3xl font-bold text-gray-900 mb-6">Notre Mission</h2>
-                <p class="text-lg text-gray-700 mb-4">
-                    Espoir Vie ASBL est une organisation à but non lucratif dédiée à l'amélioration des conditions de vie 
-                    des personnes dans le besoin. Nous croyons fermement que chaque individu mérite une chance de vivre 
-                    dans la dignité et avec espoir en l'avenir.
-                </p>
-                <p class="text-lg text-gray-700 mb-4">
-                    Notre mission est de créer un impact positif durable dans les communautés que nous servons en 
-                    mettant en place des programmes et des activités qui répondent aux besoins essentiels tout en 
-                    favorisant l'autonomie et le développement.
-                </p>
-            </div>
-            <div class="bg-indigo-50 rounded-lg p-8">
-                <h3 class="text-2xl font-semibold text-gray-900 mb-4">Nos Valeurs</h3>
-                <ul class="space-y-4">
-                    <li class="flex items-start">
-                        <svg class="h-6 w-6 text-indigo-600 mr-3 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        <div>
-                            <h4 class="font-semibold text-gray-900">Transparence</h4>
-                            <p class="text-gray-600">Nous nous engageons à être transparents dans toutes nos actions et notre gestion.</p>
-                        </div>
-                    </li>
-                    <li class="flex items-start">
-                        <svg class="h-6 w-6 text-indigo-600 mr-3 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                        </svg>
-                        <div>
-                            <h4 class="font-semibold text-gray-900">Solidarité</h4>
-                            <p class="text-gray-600">Nous croyons en la force de la communauté et de l'entraide.</p>
-                        </div>
-                    </li>
-                    <li class="flex items-start">
-                        <svg class="h-6 w-6 text-indigo-600 mr-3 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                        </svg>
-                        <div>
-                            <h4 class="font-semibold text-gray-900">Impact</h4>
-                            <p class="text-gray-600">Chaque action que nous entreprenons vise à créer un impact mesurable et durable.</p>
-                        </div>
-                    </li>
-                    <li class="flex items-start">
-                        <svg class="h-6 w-6 text-indigo-600 mr-3 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                        </svg>
-                        <div>
-                            <h4 class="font-semibold text-gray-900">Innovation</h4>
-                            <p class="text-gray-600">Nous cherchons constamment des solutions innovantes pour répondre aux défis.</p>
-                        </div>
-                    </li>
-                </ul>
-            </div>
+        <!-- vector -->
+        <div class="ul-about-vectors">
+            <img src="{{ asset('assets/img/about-vector-1.png') }}" alt="Vecteur" class="vector-1">
         </div>
-    </div>
+    </section>
+    <!-- ABOUT SECTION END -->
 
-    <!-- Vision Section -->
-    <div class="bg-gray-100">
-        <div class="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold text-gray-900 mb-4">Notre Vision</h2>
-                <p class="text-xl text-gray-700 max-w-3xl mx-auto">
-                    Nous aspirons à un monde où chaque personne a accès aux ressources essentielles, 
-                    à l'éducation et aux opportunités nécessaires pour réaliser son plein potentiel.
-                </p>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
-                <div class="bg-white rounded-lg p-6 shadow-md text-center">
-                    <div class="bg-indigo-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                        <svg class="h-8 w-8 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                        </svg>
+
+    <!-- STATS SECTION START -->
+    <div class="ul-stats ul-section-spacing">
+        <div class="ul-container">
+            <div class="ul-stats-wrapper wow animate__fadeInUp">
+                <div class="row row-cols-md-4 row-cols-sm-3 row-cols-2 row-cols-xxs-1 ul-bs-row justify-content-center">
+                    <div class="col">
+                        <div class="ul-stats-item">
+                            <i class="flaticon-costumer"></i>
+                            <span class="number">260+</span>
+                            <span class="txt">Enfants aidés</span>
+                        </div>
                     </div>
-                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Communauté</h3>
-                    <p class="text-gray-600">Construire des communautés fortes et unies qui se soutiennent mutuellement.</p>
-                </div>
-                <div class="bg-white rounded-lg p-6 shadow-md text-center">
-                    <div class="bg-purple-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                        <svg class="h-8 w-8 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                        </svg>
+
+                    <div class="col">
+                        <div class="ul-stats-item">
+                            <i class="flaticon-team"></i>
+                            <span class="number">110+</span>
+                            <span class="txt">Nos bénévoles</span>
+                        </div>
                     </div>
-                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Éducation</h3>
-                    <p class="text-gray-600">Promouvoir l'éducation comme clé du développement et de l'autonomie.</p>
-                </div>
-                <div class="bg-white rounded-lg p-6 shadow-md text-center">
-                    <div class="bg-green-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                        <svg class="h-8 w-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
-                        </svg>
+
+                    <div class="col">
+                        <div class="ul-stats-item">
+                            <i class="flaticon-package"></i>
+                            <span class="number">190+</span>
+                            <span class="txt">Projets et activités</span>
+                        </div>
                     </div>
-                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Durabilité</h3>
-                    <p class="text-gray-600">Créer des solutions durables qui perdurent dans le temps.</p>
+
+                    <div class="col">
+                        <div class="ul-stats-item">
+                            <i class="flaticon-relationship"></i>
+                            <span class="number">560+</span>
+                            <span class="txt">Donateurs dans le monde</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+    <!-- STATS SECTION END -->
 
-    <!-- What We Do Section -->
-    <div class="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-12">
-            <h2 class="text-3xl font-bold text-gray-900 mb-4">Ce que nous faisons</h2>
-            <p class="text-xl text-gray-700 max-w-3xl mx-auto">
-                Nos activités couvrent plusieurs domaines essentiels pour améliorer la qualité de vie des personnes que nous aidons.
-            </p>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition">
-                <div class="text-indigo-600 text-3xl mb-4">🎯</div>
-                <h3 class="text-xl font-semibold text-gray-900 mb-2">Projets</h3>
-                <p class="text-gray-600">Nous développons et gérons des projets à long terme qui ont un impact significatif.</p>
-            </div>
-            <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition">
-                <div class="text-purple-600 text-3xl mb-4">📅</div>
-                <h3 class="text-xl font-semibold text-gray-900 mb-2">Événements</h3>
-                <p class="text-gray-600">Nous organisons régulièrement des événements pour sensibiliser et mobiliser.</p>
-            </div>
-            <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition">
-                <div class="text-green-600 text-3xl mb-4">📢</div>
-                <h3 class="text-xl font-semibold text-gray-900 mb-2">Campagnes</h3>
-                <p class="text-gray-600">Nos campagnes visent à collecter des fonds et à sensibiliser le public.</p>
-            </div>
-            <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition">
-                <div class="text-blue-600 text-3xl mb-4">📚</div>
-                <h3 class="text-xl font-semibold text-gray-900 mb-2">Programmes</h3>
-                <p class="text-gray-600">Nous mettons en place des programmes structurés pour répondre aux besoins spécifiques.</p>
-            </div>
-        </div>
-    </div>
 
-    <!-- Call to Action -->
-    <div class="bg-indigo-600 text-white">
-        <div class="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8 text-center">
-            <h2 class="text-3xl font-bold mb-4">Rejoignez notre mission</h2>
-            <p class="text-xl text-indigo-100 mb-8 max-w-2xl mx-auto">
-                Ensemble, nous pouvons faire une différence réelle dans la vie de nombreuses personnes. 
-                Découvrez nos événements et nos activités pour voir comment vous pouvez nous aider.
-            </p>
-            <div class="flex justify-center gap-4">
-                <a href="{{ route('events') }}" class="bg-white text-indigo-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition">
-                    Voir nos événements
-                </a>
-                <a href="{{ route('home') }}" class="bg-transparent border-2 border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-indigo-600 transition">
-                    Retour à l'accueil
-                </a>
+    <!-- MISSION, VISION, HISTORY SECTION START -->
+    <section class="ul-about-tabs ul-events ul-section-spacing pt-0">
+        <div class="ul-container">
+            <!-- heading -->
+            <div class="ul-section-heading align-items-center wow animate__fadeInUp">
+                <div class="left">
+                    <span class="ul-section-sub-title">Notre histoire</span>
+                    <h2 class="ul-section-title text-white">Découvrez notre mission, notre vision et notre histoire</h2>
+                </div>
+                <a href="{{ route('donate') }}" class="ul-btn"><i class="flaticon-fast-forward-double-right-arrows-symbol"></i> Faire un don</a>
+            </div>
+
+            <!-- tab group -->
+            <div class="tab-group">
+                <!-- tabs -->
+                <div class="ul-about-tabs-wrapper">
+                    <div id="tab-mission" class="ul-tab ul-about-tab active">
+                        <div class="ul-about-tab-img">
+                            <img src="{{ asset('assets/img/mission-img.jpg') }}" alt="Notre mission">
+                        </div>
+
+                        <div class="ul-about-tab-txt">
+                            <h3 class="ul-about-tab-title">Notre Mission</h3>
+                            <p class="ul-about-tab-descr">Notre mission est de créer un impact positif et durable dans la vie des personnes en situation de précarité. Nous nous engageons à améliorer leurs conditions de vie en répondant à leurs besoins essentiels et en favorisant leur autonomie et leur développement personnel.</p>
+                            <ul class="ul-about-tab-list">
+                                <li>Fournir une aide humanitaire d'urgence aux personnes dans le besoin</li>
+                                <li>Développer des programmes éducatifs pour favoriser l'autonomie</li>
+                                <li>Organiser des événements pour sensibiliser et mobiliser la communauté</li>
+                                <li>Créer un réseau de solidarité et d'entraide durable</li>
+                            </ul>
+                            <p class="ul-about-tab-descr">Nous croyons en la force de l'action collective et en la capacité de chacun à faire la différence. Chaque projet, chaque don, chaque geste de solidarité contribue à construire un monde meilleur pour tous.</p>
+                        </div>
+                    </div>
+
+                    <!-- tab 02 / vision -->
+                    <div id="tab-vision" class="ul-tab ul-about-tab">
+                        <div class="ul-about-tab-img">
+                            <img src="{{ asset('assets/img/why-join.jpg') }}" alt="Notre vision">
+                        </div>
+
+                        <div class="ul-about-tab-txt">
+                            <h3 class="ul-about-tab-title">Notre Vision</h3>
+                            <p class="ul-about-tab-descr">Nous aspirons à un monde où chaque personne, quelle que soit sa situation, a accès aux ressources essentielles pour vivre dans la dignité et développer son plein potentiel. Notre vision est celle d'une société plus équitable où la solidarité et l'entraide sont des valeurs fondamentales.</p>
+                            <ul class="ul-about-tab-list">
+                                <li>Un monde où aucun enfant ne souffre de faim ou de privation</li>
+                                <li>Des communautés autonomes capables de prendre en charge leur développement</li>
+                                <li>Un accès équitable à l'éducation et aux soins de santé pour tous</li>
+                                <li>Des générations futures conscientes et engagées pour un monde meilleur</li>
+                                <li>Un réseau mondial de solidarité et de partage</li>
+                                <li>Une transparence totale dans la gestion des ressources et des actions</li>
+                                <li>Un impact mesurable et durable sur les communautés que nous servons</li>
+                                <li>Une reconnaissance de la dignité et des droits de chaque individu</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- tab 03 / history -->
+                    <div id="tab-history" class="ul-tab ul-about-tab">
+                        <div class="ul-about-tab-img">
+                            <img src="{{ asset('assets/img/contact-img.jpg') }}" alt="Notre histoire">
+                        </div>
+
+                        <div class="ul-about-tab-txt">
+                            <h3 class="ul-about-tab-title">Notre Histoire</h3>
+                            <p class="ul-about-tab-descr">Espoir Vie ASBL a été fondée avec la conviction profonde que chaque personne mérite une chance de vivre dans la dignité. Depuis nos débuts, nous avons œuvré sans relâche pour améliorer les conditions de vie des personnes en situation de précarité, en particulier les enfants et les familles.</p>
+
+                            <p class="ul-about-tab-descr">Notre parcours a été marqué par des projets significatifs qui ont transformé la vie de nombreuses personnes. Nous avons développé des programmes d'éducation, organisé des campagnes de sensibilisation, et créé des réseaux de solidarité qui continuent de grandir et d'évoluer.</p>
+
+                            <p class="ul-about-tab-descr">Aujourd'hui, fort de notre expérience et de la confiance de nos donateurs et bénévoles, nous continuons à étendre notre impact et à répondre aux nouveaux défis qui se présentent. Notre histoire est celle de milliers de vies transformées, de projets réalisés, et d'espoir redonné.</p>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="tab-navs ul-about-tabs-nav">
+                    <button class="tab-nav active" data-tab="tab-mission">Notre Mission</button>
+                    <button class="tab-nav" data-tab="tab-vision">Notre Vision</button>
+                    <button class="tab-nav" data-tab="tab-history">Notre Histoire</button>
+                </div>
+            </div>
+
+            <!-- vectors -->
+            <div class="ul-events-vectors">
+                <img src="{{ asset('assets/img/events-vector-2.svg') }}" alt="Image des événements" class="vector-2">
             </div>
         </div>
-    </div>
+    </section>
+    <!-- MISSION, VISION, HISTORY SECTION END -->
+
+
+    <!-- TEAM SECTION START -->
+    <section class="ul-team ul-section-spacing">
+        <div class="ul-container">
+            <!-- Heading -->
+            <div class="ul-section-heading justify-content-between">
+                <div class="left">
+                    <span class="ul-section-sub-title">Notre équipe</span>
+                    <h2 class="ul-section-title">Des professionnels dévoués à votre service</h2>
+                </div>
+                <div>
+                    <a href="{{ route('contact') }}" class="ul-btn"><i class="flaticon-fast-forward-double-right-arrows-symbol"></i> Nous rejoindre</a>
+                </div>
+            </div>
+
+            <div class="row row-cols-md-4 row-cols-sm-3 row-cols-2 row-cols-xxs-1 ul-team-row justify-content-center">
+                <!-- single member -->
+                <div class="col">
+                    <div class="ul-team-member">
+                        <div class="ul-team-member-img">
+                            <img src="{{ asset('assets/img/member-1.jpg') }}" alt="Photo du membre de l'équipe">
+                            <div class="ul-team-member-socials">
+                                <a href="#"><i class="flaticon-facebook"></i></a>
+                                <a href="#"><i class="flaticon-twitter"></i></a>
+                                <a href="#"><i class="flaticon-linkedin-big-logo"></i></a>
+                                <a href="#"><i class="flaticon-instagram"></i></a>
+                            </div>
+                        </div>
+                        <div class="ul-team-member-info">
+                            <h3 class="ul-team-member-name"><a href="{{ route('contact') }}">Membre de l'équipe</a></h3>
+                            <p class="ul-team-member-designation">Bénévole</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- single member -->
+                <div class="col">
+                    <div class="ul-team-member">
+                        <div class="ul-team-member-img">
+                            <img src="{{ asset('assets/img/member-2.jpg') }}" alt="Photo du membre de l'équipe">
+                            <div class="ul-team-member-socials">
+                                <a href="#"><i class="flaticon-facebook"></i></a>
+                                <a href="#"><i class="flaticon-twitter"></i></a>
+                                <a href="#"><i class="flaticon-linkedin-big-logo"></i></a>
+                                <a href="#"><i class="flaticon-instagram"></i></a>
+                            </div>
+                        </div>
+                        <div class="ul-team-member-info">
+                            <h3 class="ul-team-member-name"><a href="{{ route('contact') }}">Membre de l'équipe</a></h3>
+                            <p class="ul-team-member-designation">Bénévole</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- single member -->
+                <div class="col">
+                    <div class="ul-team-member">
+                        <div class="ul-team-member-img">
+                            <img src="{{ asset('assets/img/member-3.jpg') }}" alt="Photo du membre de l'équipe">
+                            <div class="ul-team-member-socials">
+                                <a href="#"><i class="flaticon-facebook"></i></a>
+                                <a href="#"><i class="flaticon-twitter"></i></a>
+                                <a href="#"><i class="flaticon-linkedin-big-logo"></i></a>
+                                <a href="#"><i class="flaticon-instagram"></i></a>
+                            </div>
+                        </div>
+                        <div class="ul-team-member-info">
+                            <h3 class="ul-team-member-name"><a href="{{ route('contact') }}">Membre de l'équipe</a></h3>
+                            <p class="ul-team-member-designation">Bénévole</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- single member -->
+                <div class="col">
+                    <div class="ul-team-member">
+                        <div class="ul-team-member-img">
+                            <img src="{{ asset('assets/img/member-4.jpg') }}" alt="Photo du membre de l'équipe">
+                            <div class="ul-team-member-socials">
+                                <a href="#"><i class="flaticon-facebook"></i></a>
+                                <a href="#"><i class="flaticon-twitter"></i></a>
+                                <a href="#"><i class="flaticon-linkedin-big-logo"></i></a>
+                                <a href="#"><i class="flaticon-instagram"></i></a>
+                            </div>
+                        </div>
+                        <div class="ul-team-member-info">
+                            <h3 class="ul-team-member-name"><a href="{{ route('contact') }}">Membre de l'équipe</a></h3>
+                            <p class="ul-team-member-designation">Bénévole</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- TEAM SECTION END -->
+
+
+    <!-- CTA(CALL TO ACTION) SECTION START -->
+    <section class="ul-cta">
+        <div class="ul-container">
+            <span class="ul-section-sub-title">Commencez à aider dès maintenant</span>
+            <h2 class="ul-cta-title">Les enfants ont besoin de votre aide, faites un don aujourd'hui</h2>
+            <a href="{{ route('donate') }}" class="ul-btn"><i class="flaticon-fast-forward-double-right-arrows-symbol"></i> Faire un don</a>
+        </div>
+        <img src="{{ asset('assets/img/cta-vector.svg') }}" alt="Vecteur" class="ul-cta-vector">
+    </section>
+    <!-- CTA(CALL TO ACTION) SECTION END -->
+
+
+    <!-- TESTIMONIAL SECTION START -->
+    <section class="ul-testimonial-2 ul-section-spacing">
+        <div class="ul-container wow animate__fadeInUp">
+            <div class="ul-section-heading">
+                <div>
+                    <span class="ul-section-sub-title">Commencez à aider les personnes dans le besoin</span>
+                    <h2 class="ul-section-title">Ce qu'ils disent d'Espoir Vie</h2>
+                </div>
+                <a href="{{ route('events') }}" class="ul-btn"><i class="flaticon-fast-forward-double-right-arrows-symbol"></i> Tous les témoignages</a>
+            </div>
+
+            <div class="row ul-testimonial-2-row gy-4">
+                <!-- card -->
+                <div class="col-md-4">
+                    <div class="ul-testimonial-2-overview">
+                        <span class="rating">4.9</span>
+                        <div class="ul-testimonial-2-overview-stars">
+                            <i class="flaticon-star"></i>
+                            <i class="flaticon-star"></i>
+                            <i class="flaticon-star"></i>
+                            <i class="flaticon-star"></i>
+                            <i class="flaticon-star-1"></i>
+                        </div>
+                        <span class="ul-testimonial-2-overview-title">Note de 5 étoiles</span>
+                        <p class="ul-testimonial-2-overview-descr">Espoir Vie ASBL a transformé des milliers de vies grâce à son dévouement et sa transparence. Votre engagement fait vraiment la différence dans notre communauté.</p>
+                        <div class="ul-testimonial-2-overview-reviewers">
+                            <img src="{{ asset('assets/img/reviewer-1.png') }}" alt="Témoin">
+                            <img src="{{ asset('assets/img/reviewer-2.png') }}" alt="Témoin">
+                            <img src="{{ asset('assets/img/reviewer-3.png') }}" alt="Témoin">
+                            <img src="{{ asset('assets/img/reviewer-4.png') }}" alt="Témoin">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- txt -->
+                <div class="col-md-8">
+                    <div class="ul-testimonial-2-slider swiper">
+                        <div class="swiper-wrapper">
+                            <!-- single slide -->
+                            <div class="swiper-slide">
+                                <div class="ul-review ul-review-2">
+                                    <span class="icon"><i class="flaticon-quote-1"></i></span>
+                                    <p class="ul-review-descr">Espoir Vie ASBL a fait une différence incroyable dans ma vie et celle de ma famille. Leur dévouement et leur compassion sont vraiment remarquables. Grâce à leur aide, nous avons pu retrouver espoir et dignité. Je suis reconnaissant pour tout ce qu'ils font chaque jour pour améliorer la vie des personnes dans le besoin.</p>
+                                    <div class="ul-review-bottom">
+                                        <div class="ul-review-reviewer">
+                                            <div class="reviewer-image"><img src="{{ asset('assets/img/reviewer-1.png') }}" alt="Photo du témoin"></div>
+                                            <div>
+                                                <h3 class="reviewer-name">Marie Dupont</h3>
+                                                <span class="reviewer-role">Bénévole</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- single slide -->
+                            <div class="swiper-slide">
+                                <div class="ul-review ul-review-2">
+                                    <span class="icon"><i class="flaticon-quote-1"></i></span>
+                                    <p class="ul-review-descr">Merci à Espoir Vie ASBL pour leur engagement exceptionnel. Votre travail fait vraiment une différence dans notre communauté. Je suis fier de soutenir votre cause et je recommande vivement à tous ceux qui veulent faire la différence de vous rejoindre dans cette belle mission.</p>
+                                    <div class="ul-review-bottom">
+                                        <div class="ul-review-reviewer">
+                                            <div class="reviewer-image"><img src="{{ asset('assets/img/reviewer-2.png') }}" alt="Photo du témoin"></div>
+                                            <div>
+                                                <h3 class="reviewer-name">Pierre Dubois</h3>
+                                                <span class="reviewer-role">Donateur</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ul-testimonial-2-slider-nav">
+                            <button class="prev"><i class="flaticon-back"></i></button>
+                            <button class="next"><i class="flaticon-next"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+    <!-- TESTIMONIAL SECTION END -->
 @endsection

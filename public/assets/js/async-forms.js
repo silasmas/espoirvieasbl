@@ -94,12 +94,25 @@
      * Initialise et gère la soumission du formulaire de contact
      */
     function initContactForm() {
-        const form = document.getElementById('contact-form');
+        // Chercher le formulaire de contact (peut être dans la page contact ou event-detail)
+        const form = document.getElementById('contact-form') || document.getElementById('event-contact-form');
         if (!form) return;
 
-        const submitBtn = document.getElementById('contact-submit-btn');
-        const btnText = document.getElementById('btn-text');
-        const notification = document.getElementById('contact-notification');
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const btnText = form.querySelector('#btn-text');
+        // Chercher la notification (peut avoir différents IDs selon la page)
+        const notification = document.getElementById('contact-notification') || 
+                           document.getElementById('event-contact-notification') ||
+                           form.querySelector('.async-notification') ||
+                           (() => {
+                               // Créer une notification si elle n'existe pas
+                               const notif = document.createElement('div');
+                               notif.id = 'event-contact-notification';
+                               notif.className = 'async-notification';
+                               notif.style.display = 'none';
+                               form.insertBefore(notif, form.firstChild);
+                               return notif;
+                           })();
 
         // Écouter la soumission du formulaire
         form.addEventListener('submit', function(e) {
@@ -136,11 +149,13 @@
                 } else {
                     // Erreur : afficher les messages d'erreur
                     if (data.errors) {
+                        // Gérer les erreurs pour les deux formulaires (contact.blade.php et event-detail.blade.php)
+                        const isEventForm = form.id === 'event-contact-form';
                         showErrors(data.errors, {
-                            'name': '#error-name',
-                            'email': '#error-email',
-                            'subject': '#error-subject',
-                            'message': '#error-message'
+                            'name': isEventForm ? '#error-event-name' : '#error-name',
+                            'email': isEventForm ? '#error-event-email' : '#error-email',
+                            'subject': isEventForm ? '#error-event-subject' : '#error-subject',
+                            'message': isEventForm ? '#error-event-message' : '#error-message'
                         });
                         showNotification(notification, data.message || 'Veuillez corriger les erreurs dans le formulaire.', 'error');
                     } else {
@@ -157,7 +172,8 @@
                 // Réactiver le bouton dans tous les cas
                 if (submitBtn) {
                     submitBtn.disabled = false;
-                    if (btnText) btnText.textContent = 'Envoyer le message';
+                    const btnTextElement = form.querySelector('#btn-text') || form.querySelector('#event-btn-text');
+                    if (btnTextElement) btnTextElement.textContent = 'Envoyer le message';
                 }
             });
         });

@@ -1,7 +1,7 @@
 @extends('emails.layout')
 
 @section('content')
-    <h2 style="color: #2563EB; margin-bottom: 20px;">Merci pour votre générosité !</h2>
+    <h2 style="color: #0172b8; margin-bottom: 20px;">Merci pour votre générosité !</h2>
     
     <p>Bonjour {{ $donation['donor_name'] ?? 'Cher donateur' }},</p>
     
@@ -35,7 +35,7 @@
         <a href="{{ route('home') }}" class="button">Découvrir nos actions</a>
     </div>
     
-    <p style="margin-top: 30px;">Si vous avez des questions concernant votre don, n'hésitez pas à <a href="{{ $contactUrl ?? route('contact') }}" style="color: #2563EB; text-decoration: underline;">nous contacter</a>.</p>
+    <p style="margin-top: 30px;">Si vous avez des questions concernant votre don, n'hésitez pas à <a href="{{ $contactUrl ?? route('contact') }}" style="color: #0172b8; text-decoration: underline;">nous contacter</a>.</p>
     
     <p style="margin-top: 30px;">Avec toute notre reconnaissance,<br>
     <strong>L'équipe Espoir Vie ASBL</strong></p>

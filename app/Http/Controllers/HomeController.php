@@ -39,7 +39,15 @@ class HomeController extends Controller
             ->limit(3)
             ->get();
 
-        return view('pages.home', compact('featuredActivities', 'recentActivities'));
+        // Récupérer les activités pour le slider de donations (projets avec budget)
+        $donationActivities = Activity::where('is_public', true)
+            ->where('status', '!=', 'cancelled')
+            ->whereNotNull('budget')
+            ->orderBy('created_at', 'desc')
+            ->limit(8)
+            ->get();
+
+        return view('pages.home', compact('featuredActivities', 'recentActivities', 'donationActivities'));
     }
 
     /**
@@ -55,12 +63,42 @@ class HomeController extends Controller
      */
     public function events()
     {
-        // Récupérer tous les événements publics
-        $events = Activity::where('is_public', true)
+        // Construire la requête de base
+        $query = Activity::where('is_public', true)
             ->where('type', 'event')
-            ->where('status', '!=', 'cancelled')
+            ->where('status', '!=', 'cancelled');
+
+        // Filtre par recherche (titre ou description)
+        if (request()->has('search') && !empty(request('search'))) {
+            $searchTerm = request('search');
+            $query->where(function($q) use ($searchTerm) {
+                $q->where('title', 'LIKE', "%{$searchTerm}%")
+                  ->orWhere('description', 'LIKE', "%{$searchTerm}%")
+                  ->orWhere('short_description', 'LIKE', "%{$searchTerm}%");
+            });
+        }
+
+        // Filtre par catégorie
+        if (request()->has('category') && !empty(request('category'))) {
+            $query->where('category', request('category'));
+        }
+
+        // Filtre par tag
+        if (request()->has('tag') && !empty(request('tag'))) {
+            $tag = request('tag');
+            $query->whereJsonContains('tags', $tag);
+        }
+
+        // On priorise les événements à venir, puis en cours, puis passés
+        $events = $query->orderByRaw("CASE
+                WHEN status = 'planned' AND start_date >= CURDATE() THEN 1
+                WHEN status = 'ongoing' THEN 2
+                WHEN status = 'completed' THEN 3
+                ELSE 4
+            END")
             ->orderBy('start_date', 'desc')
-            ->paginate(12);
+            ->paginate(12)
+            ->withQueryString(); // Préserve les paramètres de requête dans la pagination
 
         return view('pages.events', compact('events'));
     }
@@ -78,7 +116,36 @@ class HomeController extends Controller
         // Incrémenter le compteur de vues
         $activity->increment('views_count');
 
-        return view('pages.event-detail', compact('activity'));
+        // Récupérer les catégories des événements
+        $categories = Activity::where('is_public', true)
+            ->where('type', 'event')
+            ->whereNotNull('category')
+            ->selectRaw('category, COUNT(*) as count')
+            ->groupBy('category')
+            ->orderBy('count', 'desc')
+            ->limit(5)
+            ->get();
+
+        // Récupérer les événements récents (hors l'événement actuel)
+        $recentEvents = Activity::where('is_public', true)
+            ->where('type', 'event')
+            ->where('status', '!=', 'cancelled')
+            ->where('id', '!=', $activity->id)
+            ->orderBy('created_at', 'desc')
+            ->limit(3)
+            ->get();
+
+        // Récupérer tous les tags uniques des événements
+        $allTags = Activity::where('is_public', true)
+            ->where('type', 'event')
+            ->whereNotNull('tags')
+            ->get()
+            ->pluck('tags')
+            ->flatten()
+            ->unique()
+            ->take(8);
+
+        return view('pages.event-detail', compact('activity', 'categories', 'recentEvents', 'allTags'));
     }
 
     /**

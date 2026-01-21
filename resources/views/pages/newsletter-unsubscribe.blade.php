@@ -3,18 +3,13 @@
 @section('title', 'Désabonnement de la newsletter - Espoir Vie ASBL')
 
 @section('content')
-<!-- BREADCRUMBS SECTION START -->
-<section class="ul-breadcrumb ul-section-spacing">
-    <div class="ul-container">
-        <h2 class="ul-breadcrumb-title">Désabonnement de la newsletter</h2>
-        <ul class="ul-breadcrumb-nav">
-            <li><a href="{{ route('home') }}">Accueil</a></li>
-            <li><span class="separator"><i class="flaticon-right"></i></span></li>
-            <li>Désabonnement</li>
-        </ul>
-    </div>
-</section>
-<!-- BREADCRUMBS SECTION END -->
+    <x-breadcrumb 
+        title="Désabonnement de la newsletter"
+        :items="[
+            ['route' => 'home', 'label' => 'Accueil'],
+            ['label' => 'Désabonnement']
+        ]"
+    />
 
 <!-- UNSUBSCRIBE SECTION START -->
 <section class="ul-section-spacing">
@@ -27,7 +22,7 @@
                             <div style="width: 80px; height: 80px; background-color: #d4edda; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 20px;">
                                 <i class="flaticon-tick" style="font-size: 40px; color: #155724;"></i>
                             </div>
-                            <h2 style="color: #2563EB; margin-bottom: 15px;">Désabonnement confirmé</h2>
+                            <h2 style="color: #0172b8; margin-bottom: 15px;">Désabonnement confirmé</h2>
                         </div>
                         <div style="background-color: #EFF6FF; padding: 20px; border-radius: 8px; margin-bottom: 30px;">
                             <p style="margin: 0; font-size: 16px; color: #333;">{{ $message ?? 'Vous avez été désabonné avec succès.' }}</p>
@@ -40,7 +35,7 @@
                             <a href="{{ route('home') }}" class="ul-btn" style="margin-right: 10px;">
                                 <i class="flaticon-fast-forward-double-right-arrows-symbol"></i> Retour à l'accueil
                             </a>
-                            <a href="{{ route('contact') }}" class="ul-btn" style="background: transparent; color: #2563EB; border: 2px solid #2563EB;">
+                            <a href="{{ route('contact') }}" class="ul-btn" style="background: transparent; color: #0172b8; border: 2px solid #0172b8;">
                                 Nous contacter
                             </a>
                         </div>

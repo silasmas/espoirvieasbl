@@ -4,18 +4,13 @@
 
 @section('content')
 
- <!-- BREADCRUMBS SECTION START -->
- <section class="ul-breadcrumb ul-section-spacing">
-    <div class="ul-container">
-        <h2 class="ul-breadcrumb-title">Nous contacter</h2>
-        <ul class="ul-breadcrumb-nav">
-            <li><a href="{{ route('home') }}">Accueil</a></li>
-            <li><span class="separator"><i class="flaticon-right"></i></span></li>
-            <li>Nous contacter</li>
-        </ul>
-    </div>
-</section>
-<!-- BREADCRUMBS SECTION END -->
+    <x-breadcrumb
+        title="Nous contacter"
+        :items="[
+            ['route' => 'home', 'label' => 'Accueil'],
+            ['label' => 'Nous contacter']
+        ]"
+    />
 
 
 <!-- CONTACT INFOS SECTION START -->

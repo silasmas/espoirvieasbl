@@ -1,7 +1,7 @@
 @extends('emails.layout')
 
 @section('content')
-    <h2 style="color: #2563EB; margin-bottom: 20px;">Merci pour votre intérêt !</h2>
+    <h2 style="color: #0172b8; margin-bottom: 20px;">Merci pour votre intérêt !</h2>
     
     <p>Bonjour {{ $partner['name'] ?? 'Cher partenaire' }},</p>
     
@@ -31,7 +31,7 @@
         <a href="{{ route('about') }}" class="button">En savoir plus sur nous</a>
     </div>
     
-    <p style="margin-top: 30px;">Pour toute question supplémentaire, n'hésitez pas à <a href="{{ $contactUrl ?? route('contact') }}" style="color: #2563EB; text-decoration: underline;">nous contacter</a>.</p>
+    <p style="margin-top: 30px;">Pour toute question supplémentaire, n'hésitez pas à <a href="{{ $contactUrl ?? route('contact') }}" style="color: #0172b8; text-decoration: underline;">nous contacter</a>.</p>
     
     <p style="margin-top: 30px;">Dans l'attente d'une collaboration fructueuse,<br>
     <strong>L'équipe Espoir Vie ASBL</strong></p>

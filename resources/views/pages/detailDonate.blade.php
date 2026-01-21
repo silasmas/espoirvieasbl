@@ -8,20 +8,14 @@
 
 @section('content')
 
-        <!-- BREADCRUMBS SECTION START -->
-        <section class="ul-breadcrumb ul-section-spacing">
-            <div class="ul-container">
-                <h2 class="ul-breadcrumb-title">Détail du projet</h2>
-                <ul class="ul-breadcrumb-nav">
-                    <li><a href="{{ route('home') }}">Accueil</a></li>
-                    <li><span class="separator"><i class="flaticon-right"></i></span></li>
-                    <li><a href="{{ route('donate') }}">Faire un don</a></li>
-                    <li><span class="separator"><i class="flaticon-right"></i></span></li>
-                    <li>{{ Str::limit($activity->title, 30) }}</li>
-                </ul>
-            </div>
-        </section>
-        <!-- BREADCRUMBS SECTION END -->
+        <x-breadcrumb
+            title="Détail du projet"
+            :items="[
+                ['route' => 'home', 'label' => 'Accueil'],
+                ['route' => 'donate', 'label' => 'Faire un don'],
+                ['label' => Str::limit($activity->title, 30)]
+            ]"
+        />
 
 
         <div class="ul-container ul-section-spacing">
@@ -332,7 +326,7 @@
                                 @endif
 
                                 @if($activity->location || $activity->start_date)
-                                <div style="margin-top: 20px; padding: 15px; background-color: #EFF6FF; border-left: 4px solid #2563EB;">
+                                <div style="margin-top: 20px; padding: 15px; background-color: #EFF6FF; border-left: 4px solid #0172b8;">
                                     @if($activity->location)
                                     <p style="margin: 0;"><strong>📍 Lieu :</strong> {{ $activity->location }}</p>
                                     @endif

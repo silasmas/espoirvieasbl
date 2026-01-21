@@ -8,18 +8,13 @@
 
 @section('content')
 
-   <!-- BREADCRUMBS SECTION START -->
-   <section class="ul-breadcrumb ul-section-spacing">
-    <div class="ul-container">
-        <h2 class="ul-breadcrumb-title">Nos projets</h2>
-        <ul class="ul-breadcrumb-nav">
-            <li><a href="{{ route('home') }}">Accueil</a></li>
-            <li><span class="separator"><i class="flaticon-right"></i></span></li>
-            <li>Faire un don</li>
-        </ul>
-    </div>
-</section>
-<!-- BREADCRUMBS SECTION END -->
+    <x-breadcrumb
+        title="Nos projets"
+        :items="[
+            ['route' => 'home', 'label' => 'Accueil'],
+            ['label' => 'Faire un don']
+        ]"
+    />
 
 
 <!-- DONTATIONS SECTION START -->
@@ -80,9 +75,7 @@
 
     <!-- pagination -->
     @if($activities->hasPages())
-    <div class="ul-pagination">
-        {{ $activities->links('pagination::simple-bootstrap-4') }}
-    </div>
+        {{ $activities->links('pagination.custom') }}
     @endif
 </section>
 <!-- DONTATIONS SECTION END -->
