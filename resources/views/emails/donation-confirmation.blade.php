@@ -13,6 +13,9 @@
         @if(isset($donation['reference']))
         <p style="margin: 10px 0 0 0;"><strong>Référence :</strong> {{ $donation['reference'] }}</p>
         @endif
+        @if(isset($donation['activity_title']))
+        <p style="margin: 10px 0 0 0;"><strong>Projet :</strong> {{ $donation['activity_title'] }}</p>
+        @endif
     </div>
     
     <p>Votre contribution nous permet de continuer à mener nos actions en faveur des personnes dans le besoin. Grâce à votre soutien, nous pouvons :</p>

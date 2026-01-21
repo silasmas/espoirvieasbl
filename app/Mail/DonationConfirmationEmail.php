@@ -15,6 +15,17 @@ class DonationConfirmationEmail extends Mailable
     public function __construct(
         public array $donationData
     ) {}
+    
+    /**
+     * Get the message envelope.
+     */
+    public function envelope(): Envelope
+    {
+        return new Envelope(
+            from: config('mail.from.address'),
+            subject: 'Confirmation de votre don - Espoir Vie ASBL',
+        );
+    }
 
     /**
      * Get the message envelope.
@@ -22,6 +33,7 @@ class DonationConfirmationEmail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
+            from: config('mail.from.address'),
             subject: 'Confirmation de votre don - Espoir Vie ASBL',
         );
     }

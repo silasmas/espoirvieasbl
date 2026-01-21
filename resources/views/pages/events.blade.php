@@ -34,7 +34,7 @@
                     <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition duration-300 flex flex-col">
                         <!-- Event Image -->
                         @if($event->image)
-                            <img src="{{ asset('storage/' . $event->image) }}" 
+                            <img src="{{ activity_image_url($event->image) }}" 
                                  alt="{{ $event->title }}" 
                                  class="w-full h-48 object-cover">
                         @else

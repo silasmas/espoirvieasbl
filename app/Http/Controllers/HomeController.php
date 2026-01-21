@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Activity;
 use App\Models\ContactMessage;
 use App\Models\NewsletterSubscription;
+use App\Models\Donor;
+use App\Models\Donation;
 use App\Mail\NewsletterSubscriptionEmail;
 use App\Mail\ContactMessageReceivedEmail;
+use App\Services\MailService;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Validator;
@@ -79,11 +82,143 @@ class HomeController extends Controller
     }
 
     /**
-     * Affiche la page Faire un don
+     * Affiche la page Faire un don (liste des projets)
      */
     public function donate()
     {
-        return view('pages.donate');
+        // Récupérer les activités qui acceptent des dons
+        $activities = Activity::where('is_public', true)
+            ->where('status', '!=', 'cancelled')
+            ->whereNotNull('budget')
+            ->orderBy('created_at', 'desc')
+            ->paginate(12);
+
+        return view('pages.donate', compact('activities'));
+    }
+
+    /**
+     * Affiche le détail d'un projet pour faire un don
+     */
+    public function showDonationDetail(Activity $activity)
+    {
+        // Vérifier que l'activité est publique
+        if (!$activity->is_public || $activity->status === 'cancelled') {
+            abort(404);
+        }
+
+        // Calculer le pourcentage collecté
+        $progressPercentage = 0;
+        if ($activity->budget > 0) {
+            $progressPercentage = min(100, ($activity->amount_raised / $activity->budget) * 100);
+        }
+
+        return view('pages.detailDonate', compact('activity', 'progressPercentage'));
+    }
+
+    /**
+     * Traite le don
+     */
+    public function processDonation(Request $request): JsonResponse
+    {
+        $validator = Validator::make($request->all(), [
+            'activity_id' => 'required|exists:activities,id',
+            'amount' => 'required|numeric|min:1',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'payment_method' => 'required|string|in:test,offline,card',
+        ], [
+            'activity_id.required' => 'Le projet est requis.',
+            'activity_id.exists' => 'Le projet sélectionné n\'existe pas.',
+            'amount.required' => 'Le montant est requis.',
+            'amount.numeric' => 'Le montant doit être un nombre.',
+            'amount.min' => 'Le montant minimum est de 1€.',
+            'first_name.required' => 'Le prénom est requis.',
+            'last_name.required' => 'Le nom est requis.',
+            'email.required' => 'L\'adresse email est requise.',
+            'email.email' => 'Veuillez fournir une adresse email valide.',
+            'payment_method.required' => 'La méthode de paiement est requise.',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Veuillez corriger les erreurs dans le formulaire.',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        try {
+            // Récupérer ou créer le donateur
+            $donor = \App\Models\Donor::firstOrCreate(
+                ['email' => strtolower(trim($request->email))],
+                [
+                    'first_name' => $request->first_name,
+                    'last_name' => $request->last_name,
+                    'status' => 'active',
+                ]
+            );
+
+            // Mettre à jour le nom si nécessaire
+            if (!$donor->wasRecentlyCreated) {
+                $donor->update([
+                    'first_name' => $request->first_name,
+                    'last_name' => $request->last_name,
+                ]);
+            }
+
+            // Récupérer l'activité
+            $activity = Activity::findOrFail($request->activity_id);
+
+            // Créer le don
+            $donation = \App\Models\Donation::create([
+                'donor_id' => $donor->id,
+                'activity_id' => $activity->id,
+                'amount' => $request->amount,
+                'currency' => 'EUR',
+                'type' => 'one_time',
+                'status' => $request->payment_method === 'test' ? 'completed' : 'pending',
+                'payment_method' => $request->payment_method,
+                'payment_reference' => 'DON-' . time() . '-' . strtoupper(substr(md5(uniqid()), 0, 8)),
+                'paid_at' => $request->payment_method === 'test' ? now() : null,
+                'source' => 'website',
+            ]);
+
+            // Mettre à jour le montant collecté de l'activité
+            if ($request->payment_method === 'test') {
+                $activity->increment('amount_raised', $request->amount);
+            }
+
+            // Envoyer l'email de confirmation
+            try {
+                $mailService = new MailService();
+                $mailService->sendDonationConfirmation([
+                    'donor_name' => $donor->first_name . ' ' . $donor->last_name,
+                    'amount' => $request->amount,
+                    'currency' => 'EUR',
+                    'reference' => $donation->payment_reference,
+                    'activity_title' => $activity->title,
+                    'payment_method' => $request->payment_method,
+                ], $donor->email);
+            } catch (\Exception $mailException) {
+                Log::error('Erreur lors de l\'envoi de l\'email de confirmation de don : ' . $mailException->getMessage());
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Votre don a été enregistré avec succès ! Un email de confirmation vous a été envoyé.',
+                'donation' => [
+                    'reference' => $donation->payment_reference,
+                    'amount' => $donation->amount,
+                ]
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Erreur lors du traitement du don : ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Une erreur est survenue lors du traitement de votre don. Veuillez réessayer plus tard.'
+            ], 500);
+        }
     }
 
     /**

@@ -10,6 +10,8 @@ Route::get('/a-propos', [HomeController::class, 'about'])->name('about');
 Route::get('/evenements', [HomeController::class, 'events'])->name('events');
 Route::get('/evenements/{activity}', [HomeController::class, 'showEvent'])->name('events.show');
 Route::get('/faire-un-don', [HomeController::class, 'donate'])->name('donate');
+Route::get('/faire-un-don/{activity}', [HomeController::class, 'showDonationDetail'])->name('donate.detail');
+Route::post('/faire-un-don', [HomeController::class, 'processDonation'])->name('donate.process');
 Route::get('/nous-contacter', [HomeController::class, 'contact'])->name('contact');
 Route::post('/nous-contacter', [HomeController::class, 'storeContactMessage'])->name('contact.store');
 Route::post('/newsletter/subscribe', [HomeController::class, 'subscribeNewsletter'])->name('newsletter.subscribe');

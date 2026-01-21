@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Donation extends Model
 {
@@ -14,6 +15,7 @@ class Donation extends Model
     protected $fillable = [
         'donor_id',
         'recurring_donation_id',
+        'activity_id',
         'amount',
         'currency',
         'type',
@@ -46,5 +48,10 @@ class Donation extends Model
     public function recurringDonation(): BelongsTo
     {
         return $this->belongsTo(RecurringDonation::class);
+    }
+
+    public function activity(): BelongsTo
+    {
+        return $this->belongsTo(Activity::class);
     }
 }
