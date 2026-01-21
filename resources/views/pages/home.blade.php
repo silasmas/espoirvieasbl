@@ -37,7 +37,7 @@
                 <div class="col align-self-start">
                     <div class="ul-banner-img">
                         <div class="img-wrapper">
-                            <img src="{{ asset('assets/img/banner-img.png') }}" alt="Image de la bannière">
+                            <img src="{{ asset('assets/img/960x1000.jpg.jpeg') }}" alt="Image de la bannière">
                             <!-- <div class="ul-banner-video-btn">
                                 <a href=""></a>
                             </div> -->
