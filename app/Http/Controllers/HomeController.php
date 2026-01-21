@@ -116,20 +116,30 @@ class HomeController extends Controller
     }
 
     /**
-     * Traite le don
+     * Traite un don spontané (sans projet spécifique)
      */
-    public function processDonation(Request $request): JsonResponse
+    public function processSpontaneousDonation(Request $request): JsonResponse
     {
-        $validator = Validator::make($request->all(), [
-            'activity_id' => 'required|exists:activities,id',
+        // Validation des règles de base
+        $rules = [
             'amount' => 'required|numeric|min:1',
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'payment_method' => 'required|string|in:test,offline,card',
-        ], [
-            'activity_id.required' => 'Le projet est requis.',
-            'activity_id.exists' => 'Le projet sélectionné n\'existe pas.',
+            'payment_method' => 'required|string|in:mobile_money,card',
+            'donation_type' => 'required|string|in:anonymous,non-anonymous',
+        ];
+
+        // Si le don n'est pas anonyme, les informations personnelles sont requises
+        if ($request->donation_type !== 'anonymous') {
+            $rules['first_name'] = 'required|string|max:255';
+            $rules['last_name'] = 'required|string|max:255';
+            $rules['email'] = 'required|email|max:255';
+        }
+
+        // Si la méthode de paiement est mobile_money, le fournisseur est requis
+        if ($request->payment_method === 'mobile_money') {
+            $rules['mobile_money_provider'] = 'required|string|in:orange_money,mtn_mobile_money,airtel_money,moov_money';
+        }
+
+        $validator = Validator::make($request->all(), $rules, [
             'amount.required' => 'Le montant est requis.',
             'amount.numeric' => 'Le montant doit être un nombre.',
             'amount.min' => 'Le montant minimum est de 1€.',
@@ -138,6 +148,8 @@ class HomeController extends Controller
             'email.required' => 'L\'adresse email est requise.',
             'email.email' => 'Veuillez fournir une adresse email valide.',
             'payment_method.required' => 'La méthode de paiement est requise.',
+            'donation_type.required' => 'Le type de don est requis.',
+            'mobile_money_provider.required' => 'Veuillez sélectionner un opérateur Mobile Money.',
         ]);
 
         if ($validator->fails()) {
@@ -149,22 +161,151 @@ class HomeController extends Controller
         }
 
         try {
-            // Récupérer ou créer le donateur
-            $donor = \App\Models\Donor::firstOrCreate(
-                ['email' => strtolower(trim($request->email))],
-                [
-                    'first_name' => $request->first_name,
-                    'last_name' => $request->last_name,
-                    'status' => 'active',
-                ]
-            );
+            $donor = null;
 
-            // Mettre à jour le nom si nécessaire
-            if (!$donor->wasRecentlyCreated) {
-                $donor->update([
-                    'first_name' => $request->first_name,
-                    'last_name' => $request->last_name,
-                ]);
+            // Si le don n'est pas anonyme, créer ou récupérer le donateur
+            if ($request->donation_type !== 'anonymous') {
+                $donor = \App\Models\Donor::firstOrCreate(
+                    ['email' => strtolower(trim($request->email))],
+                    [
+                        'first_name' => $request->first_name,
+                        'last_name' => $request->last_name,
+                        'status' => 'active',
+                    ]
+                );
+
+                // Mettre à jour le nom si nécessaire
+                if (!$donor->wasRecentlyCreated) {
+                    $donor->update([
+                        'first_name' => $request->first_name,
+                        'last_name' => $request->last_name,
+                    ]);
+                }
+            }
+
+            // Créer le don (sans activité spécifique)
+            $donation = \App\Models\Donation::create([
+                'donor_id' => $donor ? $donor->id : null,
+                'activity_id' => null, // Don spontané, pas lié à une activité
+                'amount' => $request->amount,
+                'currency' => 'EUR',
+                'type' => 'one_time',
+                'status' => 'pending', // Les dons spontanés sont toujours en attente
+                'payment_method' => $request->payment_method,
+                'payment_reference' => 'SPON-' . time() . '-' . strtoupper(substr(md5(uniqid()), 0, 8)),
+                'paid_at' => null,
+                'source' => 'website_spontaneous',
+                'metadata' => [
+                    'donation_type' => $request->donation_type,
+                    'mobile_money_provider' => $request->mobile_money_provider ?? null,
+                ],
+            ]);
+
+            // Envoyer un email de confirmation si le don n'est pas anonyme
+            if ($donor) {
+                try {
+                    $mailService = new MailService();
+                    $mailService->sendDonationConfirmation([
+                        'donor_name' => $donor->first_name . ' ' . $donor->last_name,
+                        'amount' => $request->amount,
+                        'currency' => 'EUR',
+                        'reference' => $donation->payment_reference,
+                        'activity_title' => 'Don spontané',
+                        'payment_method' => $request->payment_method,
+                    ], $donor->email);
+                } catch (\Exception $mailException) {
+                    Log::error('Erreur lors de l\'envoi de l\'email de confirmation de don spontané : ' . $mailException->getMessage());
+                }
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => $request->donation_type === 'anonymous'
+                    ? 'Votre don spontané anonyme a été enregistré avec succès ! Merci pour votre générosité.'
+                    : 'Votre don spontané a été enregistré avec succès ! Un email de confirmation vous a été envoyé.',
+                'donation' => [
+                    'reference' => $donation->payment_reference,
+                    'amount' => $donation->amount,
+                ]
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Erreur lors du traitement du don spontané : ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Une erreur est survenue lors du traitement de votre don. Veuillez réessayer plus tard.'
+            ], 500);
+        }
+    }
+
+    /**
+     * Traite le don
+     */
+    public function processDonation(Request $request): JsonResponse
+    {
+        // Validation des règles de base
+        $rules = [
+            'activity_id' => 'required|exists:activities,id',
+            'amount' => 'required|numeric|min:1',
+            'payment_method' => 'required|string|in:mobile_money,card',
+            'donation_type' => 'required|string|in:anonymous,non-anonymous',
+        ];
+
+        // Si le don n'est pas anonyme, les informations personnelles sont requises
+        if ($request->donation_type !== 'anonymous') {
+            $rules['first_name'] = 'required|string|max:255';
+            $rules['last_name'] = 'required|string|max:255';
+            $rules['email'] = 'required|email|max:255';
+        }
+
+        // Si la méthode de paiement est mobile_money, le fournisseur est requis
+        if ($request->payment_method === 'mobile_money') {
+            $rules['mobile_money_provider'] = 'required|string|in:orange_money,mtn_mobile_money,airtel_money,moov_money';
+        }
+
+        $validator = Validator::make($request->all(), $rules, [
+            'activity_id.required' => 'Le projet est requis.',
+            'activity_id.exists' => 'Le projet sélectionné n\'existe pas.',
+            'amount.required' => 'Le montant est requis.',
+            'amount.numeric' => 'Le montant doit être un nombre.',
+            'amount.min' => 'Le montant minimum est de 1€.',
+            'first_name.required' => 'Le prénom est requis.',
+            'last_name.required' => 'Le nom est requis.',
+            'email.required' => 'L\'adresse email est requise.',
+            'email.email' => 'Veuillez fournir une adresse email valide.',
+            'payment_method.required' => 'La méthode de paiement est requise.',
+            'donation_type.required' => 'Le type de don est requis.',
+            'mobile_money_provider.required' => 'Veuillez sélectionner un opérateur Mobile Money.',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Veuillez corriger les erreurs dans le formulaire.',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        try {
+            $donor = null;
+
+            // Si le don n'est pas anonyme, créer ou récupérer le donateur
+            if ($request->donation_type !== 'anonymous') {
+                $donor = \App\Models\Donor::firstOrCreate(
+                    ['email' => strtolower(trim($request->email))],
+                    [
+                        'first_name' => $request->first_name,
+                        'last_name' => $request->last_name,
+                        'status' => 'active',
+                    ]
+                );
+
+                // Mettre à jour le nom si nécessaire
+                if (!$donor->wasRecentlyCreated) {
+                    $donor->update([
+                        'first_name' => $request->first_name,
+                        'last_name' => $request->last_name,
+                    ]);
+                }
             }
 
             // Récupérer l'activité
@@ -172,41 +313,44 @@ class HomeController extends Controller
 
             // Créer le don
             $donation = \App\Models\Donation::create([
-                'donor_id' => $donor->id,
+                'donor_id' => $donor ? $donor->id : null,
                 'activity_id' => $activity->id,
                 'amount' => $request->amount,
                 'currency' => 'EUR',
                 'type' => 'one_time',
-                'status' => $request->payment_method === 'test' ? 'completed' : 'pending',
+                'status' => 'pending', // Les dons sont maintenant toujours en attente
                 'payment_method' => $request->payment_method,
                 'payment_reference' => 'DON-' . time() . '-' . strtoupper(substr(md5(uniqid()), 0, 8)),
-                'paid_at' => $request->payment_method === 'test' ? now() : null,
+                'paid_at' => null,
                 'source' => 'website',
+                'metadata' => [
+                    'donation_type' => $request->donation_type,
+                    'mobile_money_provider' => $request->mobile_money_provider ?? null,
+                ],
             ]);
 
-            // Mettre à jour le montant collecté de l'activité
-            if ($request->payment_method === 'test') {
-                $activity->increment('amount_raised', $request->amount);
-            }
-
-            // Envoyer l'email de confirmation
-            try {
-                $mailService = new MailService();
-                $mailService->sendDonationConfirmation([
-                    'donor_name' => $donor->first_name . ' ' . $donor->last_name,
-                    'amount' => $request->amount,
-                    'currency' => 'EUR',
-                    'reference' => $donation->payment_reference,
-                    'activity_title' => $activity->title,
-                    'payment_method' => $request->payment_method,
-                ], $donor->email);
-            } catch (\Exception $mailException) {
-                Log::error('Erreur lors de l\'envoi de l\'email de confirmation de don : ' . $mailException->getMessage());
+            // Envoyer l'email de confirmation si le don n'est pas anonyme
+            if ($donor) {
+                try {
+                    $mailService = new MailService();
+                    $mailService->sendDonationConfirmation([
+                        'donor_name' => $donor->first_name . ' ' . $donor->last_name,
+                        'amount' => $request->amount,
+                        'currency' => 'EUR',
+                        'reference' => $donation->payment_reference,
+                        'activity_title' => $activity->title,
+                        'payment_method' => $request->payment_method,
+                    ], $donor->email);
+                } catch (\Exception $mailException) {
+                    Log::error('Erreur lors de l\'envoi de l\'email de confirmation de don : ' . $mailException->getMessage());
+                }
             }
 
             return response()->json([
                 'success' => true,
-                'message' => 'Votre don a été enregistré avec succès ! Un email de confirmation vous a été envoyé.',
+                'message' => $request->donation_type === 'anonymous'
+                    ? 'Votre don anonyme a été enregistré avec succès ! Merci pour votre générosité.'
+                    : 'Votre don a été enregistré avec succès ! Un email de confirmation vous a été envoyé.',
                 'donation' => [
                     'reference' => $donation->payment_reference,
                     'amount' => $donation->amount,

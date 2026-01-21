@@ -12,6 +12,7 @@ Route::get('/evenements/{activity}', [HomeController::class, 'showEvent'])->name
 Route::get('/faire-un-don', [HomeController::class, 'donate'])->name('donate');
 Route::get('/faire-un-don/{activity}', [HomeController::class, 'showDonationDetail'])->name('donate.detail');
 Route::post('/faire-un-don', [HomeController::class, 'processDonation'])->name('donate.process');
+Route::post('/faire-un-don-spontane', [HomeController::class, 'processSpontaneousDonation'])->name('donate.processSpontaneous');
 Route::get('/nous-contacter', [HomeController::class, 'contact'])->name('contact');
 Route::post('/nous-contacter', [HomeController::class, 'storeContactMessage'])->name('contact.store');
 Route::post('/newsletter/subscribe', [HomeController::class, 'subscribeNewsletter'])->name('newsletter.subscribe');

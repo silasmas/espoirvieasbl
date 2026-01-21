@@ -1,0 +1,292 @@
+/**
+ * =====================================================================================
+ * FICHIER CSS PERSONNALISÉ
+ * =====================================================================================
+ * Styles personnalisés pour l'application Espoir Vie ASBL
+ * Ce fichier centralise tous les styles custom pour éviter les styles inline
+ * =====================================================================================
+ */
+
+/* ====================================================================================
+   BOUTON DE DON SPONTANÉ
+   ==================================================================================== */
+.spontaneous-donation-btn {
+    padding: 5px 20px;
+    transition: all 0.3s ease;
+}
+
+.spontaneous-donation-btn span {
+    color: #fff;
+}
+
+.spontaneous-donation-btn span i {
+    margin-right: 8px;
+}
+
+/* Rétablir l'effet de survol du .ul-btn par défaut */
+.spontaneous-donation-btn:hover,
+.spontaneous-donation-btn:focus {
+    color: var(--ul-primary);
+    background-color: transparent;
+    border-color: var(--ul-primary);
+}
+
+.spontaneous-donation-btn:hover span,
+.spontaneous-donation-btn:focus span {
+    color: var(--ul-primary);
+}
+
+.spontaneous-donation-btn:hover i,
+.spontaneous-donation-btn:focus i {
+    color: var(--white);
+    background-color: var(--ul-primary);
+}
+
+/* ====================================================================================
+   MODAL DE DON SPONTANÉ
+   ==================================================================================== */
+.ul-modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0);
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+}
+
+.ul-modal[style*="display: flex"] {
+    display: flex !important;
+}
+
+/* Animation d'ouverture du modal */
+.ul-modal.show {
+    background: rgba(0, 0, 0, 0.5) !important;
+    backdrop-filter: blur(4px);
+}
+
+.ul-modal-content {
+    background: #fff;
+    max-width: 600px;
+    width: 95%;
+    max-height: 90vh;
+    padding: 24px 30px 24px 24px;
+    border-radius: 16px;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    transform: scale(0.8) translateY(-50px);
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    overflow-y: auto;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+}
+
+.ul-modal.show .ul-modal-content {
+    transform: scale(1) translateY(0) !important;
+    opacity: 1 !important;
+}
+
+/* Scrollbar personnalisée pour le modal */
+.ul-modal-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.ul-modal-content::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.ul-modal-content::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+.ul-modal-content::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Bouton de fermeture du modal */
+#spontaneous-donation-modal-close {
+    position: sticky;
+    top: 12px;
+    right: 12px;
+    float: right;
+    background: #f5f5f5;
+    border: none;
+    font-size: 28px;
+    line-height: 1;
+    color: #666;
+    cursor: pointer;
+    z-index: 10;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    margin-top: -8px;
+    margin-right: -8px;
+    margin-bottom: 8px;
+}
+
+#spontaneous-donation-modal-close:hover {
+    background: #e0e0e0 !important;
+    color: #333 !important;
+    transform: rotate(90deg);
+}
+
+/* Contenu du modal */
+.modal-header-content {
+    clear: both;
+    padding-top: 8px;
+}
+
+.modal-header-content h2 {
+    font-weight: bold;
+    font-size: 28px;
+    margin-bottom: 8px;
+    color: #1a1a1a;
+}
+
+.modal-header-content p {
+    color: #555;
+    margin-bottom: 0;
+    line-height: 1.6;
+}
+
+/* Styles pour le formulaire dans le modal */
+.ul-modal #spontaneous-donation-form .ul-donate-form-label {
+    cursor: pointer;
+}
+
+.ul-modal .error-message {
+    color: #dc3545;
+    font-size: 13px;
+}
+
+.ul-modal input.error {
+    border-color: #dc3545;
+}
+
+/* Espacement du formulaire de don */
+.modal-donation-form-wrapper {
+    margin-top: 20px;
+}
+
+.modal-donation-type {
+    margin: 20px 0;
+}
+
+.modal-mobile-money-options {
+    margin-top: 15px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    display: block;
+}
+
+.modal-mobile-money-options h4 {
+    font-size: 14px;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.modal-anonymous-submit-section {
+    display: none;
+    margin-top: 20px;
+}
+
+.modal-donation-notice {
+    margin-top: 18px;
+}
+
+/* ====================================================================================
+   NOTIFICATIONS ASYNCHRONES
+   ==================================================================================== */
+.async-notification,
+.contact-notification,
+.newsletter-notification {
+    padding: 12px 18px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    font-weight: 500;
+    animation: slideDown 0.3s ease-out;
+    display: none;
+}
+
+.async-notification.success,
+.contact-notification.success,
+.newsletter-notification.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.async-notification.error,
+.contact-notification.error,
+.newsletter-notification.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ====================================================================================
+   MESSAGES D'ERREUR
+   ==================================================================================== */
+.error-message {
+    display: block;
+    color: #dc3545;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.form-group input.error,
+.form-group textarea.error {
+    border-color: #dc3545;
+}
+
+/* ====================================================================================
+   BOUTONS DÉSACTIVÉS
+   ==================================================================================== */
+#contact-submit-btn:disabled,
+#donation-submit-btn:disabled,
+#donation-submit-btn-anonymous:disabled,
+#spontaneous-donation-submit-btn:disabled,
+#spontaneous-donation-submit-btn-anonymous:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* ====================================================================================
+   SECTION DE SOUMISSION ANONYME
+   ==================================================================================== */
+#anonymous-submit-section,
+#spontaneous-anonymous-submit-section {
+    display: none;
+    margin-top: 20px;
+}
+
+/* ====================================================================================
+   FORMULAIRE NEWSLETTER
+   ==================================================================================== */
+.ul-nwsltr-form button[type="submit"].loading {
+    opacity: 0.6;
+    cursor: not-allowed;
+}

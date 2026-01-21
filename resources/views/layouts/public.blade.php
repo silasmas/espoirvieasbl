@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title', config('app.name', 'Espoir Vie ASBL'))</title>
+        <title>@yield('title', config('app.name', 'Espoir Vie ASBL'))</title>
 
-    <!-- Fonts -->
+        <!-- Fonts -->
     <!--
             Pour commenter rapidement ce que vous avez sélectionné dans la plupart des éditeurs de code (comme VS Code, Sublime Text, etc) :
             - Windows/Linux : Ctrl + /
@@ -26,14 +26,15 @@
 
     <!-- custom CSS -->
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
-    <!-- Scripts -->
+    <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}">
+        <!-- Scripts -->
     {{-- <x-vite-assets /> --}}
-</head>
+    </head>
 
 <body>
     <div class="preloader" id="preloader">
         <div class="loader"></div>
-    </div>
+                            </div>
 
     <!-- SIDEBAR SECTION START -->
     <div class="ul-sidebar">
@@ -104,21 +105,318 @@
                 <!-- actions -->
                 <div class="ul-header-actions">
                     <button class="ul-header-search-opener"><i class="flaticon-search"></i></button>
-                    <a href="{{ route('donate') }}" class="ul-btn d-sm-inline-flex d-none"><i
-                            class="flaticon-fast-forward-double-right-arrows-symbol"></i> Faire un don</a>
-                    <button class="ul-header-sidebar-opener d-lg-none d-inline-flex"><i
-                            class="flaticon-menu"></i></button>
+                    <!-- Bouton "Rejoignez-nous" qui ouvre le popup de don, en gardant le style et en français -->
+                    <a href="javascript:void(0);" id="spontaneous-donation-btn" class="ul-btn d-sm-inline-flex d-none spontaneous-donation-btn">
+                        <i class="flaticon-fast-forward-double-right-arrows-symbol"></i> faire un don
+                    </a>
+                    <button class="ul-header-sidebar-opener d-lg-none d-inline-flex"><i class="flaticon-menu"></i></button>
                 </div>
-            </div>
-        </div>
+
+                <!-- Modal Pop Up pour le don spontané -->
+                <div id="spontaneous-donation-modal" class="ul-modal">
+                    <div class="ul-modal-content">
+                        <button type="button" id="spontaneous-donation-modal-close">&times;</button>
+                        <div class="modal-header-content">
+                            <h2>Faire un don spontané</h2>
+                            <p>Merci pour votre générosité ! Utilisez ce formulaire pour faire un don spontané, anonyme ou non.</p>
+                        </div>
+
+                        <!-- Formulaire de don spontané -->
+                        <form id="spontaneous-donation-form" action="{{ route('donate.processSpontaneous') }}" method="POST" class="ul-donation-details-form" autocomplete="off">
+                            @csrf
+
+                            <!-- Montant à donner -->
+                            <div class="ul-donation-details-donate-form-wrapper modal-donation-form-wrapper">
+                                <div class="selected-amount"><span class="currency">€</span> <span class="number" id="spontaneous-selected-amount-display">10.00</span></div>
+                                <div class="ul-donate-form">
+                                    <div>
+                                        <input type="radio" name="donate-amount" id="spontaneous-donate-amount-1" value="10" checked hidden>
+                                        <label for="spontaneous-donate-amount-1" class="ul-donate-form-label">10 €</label>
+                                    </div>
+                                    <div>
+                                        <input type="radio" name="donate-amount" id="spontaneous-donate-amount-2" value="20" hidden>
+                                        <label for="spontaneous-donate-amount-2" class="ul-donate-form-label">20 €</label>
+                                    </div>
+                                    <div>
+                                        <input type="radio" name="donate-amount" id="spontaneous-donate-amount-3" value="30" hidden>
+                                        <label for="spontaneous-donate-amount-3" class="ul-donate-form-label">30 €</label>
+                                    </div>
+                                    <div>
+                                        <input type="radio" name="donate-amount" id="spontaneous-donate-amount-4" value="40" hidden>
+                                        <label for="spontaneous-donate-amount-4" class="ul-donate-form-label">40 €</label>
+                                    </div>
+                                    <div>
+                                        <input type="radio" name="donate-amount" id="spontaneous-donate-amount-5" value="50" hidden>
+                                        <label for="spontaneous-donate-amount-5" class="ul-donate-form-label">50 €</label>
+                                    </div>
+                                    <div class="custom-amount-wrapper">
+                                        <input type="radio" name="donate-amount" id="spontaneous-custom-amount" value="custom">
+                                        <label for="spontaneous-donate-amount-custom" class="ul-donate-form-label">
+                                            <input type="number" name="custom-amount" id="spontaneous-donate-amount-custom" placeholder="Montant personnalisé" class="ul-donate-form-custom-input" min="1" step="0.01">
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Type de don -->
+                            <div class="ul-donation-details-donation-type modal-donation-type">
+                                <h3 class="ul-donation-details-personal-info-title">Type de don</h3>
+                                <div class="ul-donation-details-payment-methods-form">
+                                    <div class="ul-radio">
+                                        <label for="spontaneous-donation-type-1">
+                                            <input type="radio" name="donation_type" id="spontaneous-donation-type-1" value="non-anonymous" checked>
+                                            <span class="checkmark"></span>
+                                            <span>Don non anonyme</span>
+                                        </label>
+                                    </div>
+                                    <div class="ul-radio">
+                                        <label for="spontaneous-donation-type-2">
+                                            <input type="radio" name="donation_type" id="spontaneous-donation-type-2" value="anonymous">
+                                            <span class="checkmark"></span>
+                                            <span>Don anonyme</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Méthode de paiement -->
+                            <div class="ul-donation-details-payment-methods">
+                                <h3 class="ul-donation-details-payment-methods-title">Sélectionner la méthode de paiement</h3>
+                                <div class="ul-donation-details-payment-methods-form">
+                                    <div class="ul-radio">
+                                        <label for="spontaneous-method-1">
+                                            <input type="radio" name="payment_method" id="spontaneous-method-1" value="mobile_money" checked>
+                                            <span class="checkmark"></span>
+                                            <span>Mobile Money</span>
+                                        </label>
+                                    </div>
+                                    <div class="ul-radio">
+                                        <label for="spontaneous-method-2">
+                                            <input type="radio" name="payment_method" id="spontaneous-method-2" value="card">
+                                            <span class="checkmark"></span>
+                                            <span>Carte bancaire</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <!-- Liste des moyens Mobile Money (visible uniquement quand Mobile Money est sélectionné) -->
+                                <div id="spontaneous-mobile-money-options" class="modal-mobile-money-options">
+                                    <h4>Choisissez votre opérateur Mobile Money</h4>
+                                    <div class="ul-donation-details-payment-methods-form">
+                                        <div class="ul-radio">
+                                            <label for="spontaneous-mobile-1">
+                                                <input type="radio" name="mobile_money_provider" id="spontaneous-mobile-1" value="orange_money" checked>
+                                                <span class="checkmark"></span>
+                                                <span>Orange Money</span>
+                                            </label>
+                                        </div>
+                                        <div class="ul-radio">
+                                            <label for="spontaneous-mobile-2">
+                                                <input type="radio" name="mobile_money_provider" id="spontaneous-mobile-2" value="mtn_mobile_money">
+                                                <span class="checkmark"></span>
+                                                <span>MTN Mobile Money</span>
+                                            </label>
+                                        </div>
+                                        <div class="ul-radio">
+                                            <label for="spontaneous-mobile-3">
+                                                <input type="radio" name="mobile_money_provider" id="spontaneous-mobile-3" value="airtel_money">
+                                                <span class="checkmark"></span>
+                                                <span>Airtel Money</span>
+                                            </label>
+                                        </div>
+                                        <div class="ul-radio">
+                                            <label for="spontaneous-mobile-4">
+                                                <input type="radio" name="mobile_money_provider" id="spontaneous-mobile-4" value="moov_money">
+                                                <span class="checkmark"></span>
+                                                <span>Moov Money</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
+
+                            <!-- Informations personnelles (cache si don anonyme sélectionné) -->
+                            <div id="spontaneous-personal-info-section" class="ul-donation-details-personal-info">
+                                <h3 class="ul-donation-details-personal-info-title">Informations personnelles</h3>
+                                <p class="ul-donation-details-personal-info-sub-title">Votre adresse email ne sera pas publiée. Les champs marqués * sont obligatoires.</p>
+                                <div class="ul-donation-details-personal-info-form">
+                                    <div class="row row-cols-2 row-cols-xxs-1 ul-bs-row">
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <input type="text" name="first_name" id="spontaneous_first_name" placeholder="Prénom *">
+                                                <span class="error-message" id="spontaneous-error-first_name"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <input type="text" name="last_name" id="spontaneous_last_name" placeholder="Nom *">
+                                                <span class="error-message" id="spontaneous-error-last_name"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <input type="email" name="email" id="spontaneous_donation_email" placeholder="Adresse email *">
+                                                <span class="error-message" id="spontaneous-error-email"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ul-donation-details-form-bottom">
+                                    <button type="submit" id="spontaneous-donation-submit-btn" class="ul-btn">
+                                        <i class="flaticon-fast-forward-double-right-arrows-symbol"></i>
+                                        <span>Faire un don maintenant</span>
+                                    </button>
+                                    <span class="donation-total">Total du don : <span class="number" id="spontaneous-donation-total-amount">10</span> €</span>
+                                </div>
+                        </div>
+
+                            <!-- Bouton pour dons anonymes (affiché uniquement si anonyme) -->
+                            <div id="spontaneous-anonymous-submit-section" class="ul-donation-details-form-bottom modal-anonymous-submit-section">
+                                <button type="submit" id="spontaneous-donation-submit-btn-anonymous" class="ul-btn">
+                                    <i class="flaticon-fast-forward-double-right-arrows-symbol"></i>
+                                    <span>Faire un don maintenant</span>
+                            </button>
+                                <span class="donation-total">Total du don : <span class="number" id="spontaneous-donation-total-amount-anonymous">10</span> €</span>
+                            </div>
+                        </form>
+                        <div class="ul-donation-details-notice modal-donation-notice">
+                            <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M14.0003 20.6667C14.3781 20.6667 14.695 20.5387 14.951 20.2827C15.207 20.0267 15.3345 19.7103 15.3337 19.3334C15.3328 18.9565 15.2048 18.6401 14.9497 18.3841C14.6945 18.1281 14.3781 18.0001 14.0003 18.0001C13.6225 18.0001 13.3061 18.1281 13.051 18.3841C12.7959 18.6401 12.6679 18.9565 12.667 19.3334C12.6661 19.7103 12.7941 20.0272 13.051 20.2841C13.3079 20.541 13.6243 20.6685 14.0003 20.6667ZM14.0003 15.3334C14.3781 15.3334 14.695 15.2054 14.951 14.9494C15.207 14.6934 15.3345 14.377 15.3337 14.0001V8.66675C15.3337 8.28897 15.2057 7.97253 14.9497 7.71741C14.6937 7.4623 14.3772 7.3343 14.0003 7.33341C13.6234 7.33253 13.307 7.46053 13.051 7.71741C12.795 7.9743 12.667 8.29075 12.667 8.66675V14.0001C12.667 14.3779 12.795 14.6947 13.051 14.9507C13.307 15.2067 13.6234 15.3343 14.0003 15.3334ZM14.0003 27.3334C12.1559 27.3334 10.4226 26.9832 8.80033 26.2827C7.17811 25.5823 5.76699 24.6325 4.56699 23.4334C3.36699 22.2343 2.41722 20.8232 1.71766 19.2001C1.01811 17.577 0.667883 15.8436 0.666994 14.0001C0.666105 12.1565 1.01633 10.4232 1.71766 8.80008C2.41899 7.17697 3.36877 5.76586 4.56699 4.56675C5.76522 3.36764 7.17633 2.41786 8.80033 1.71741C10.4243 1.01697 12.1577 0.666748 14.0003 0.666748C15.843 0.666748 17.5763 1.01697 19.2003 1.71741C20.8243 2.41786 22.2354 3.36764 23.4337 4.56675C24.6319 5.76586 25.5821 7.17697 26.2843 8.80008C26.9865 10.4232 27.3363 12.1565 27.3337 14.0001C27.331 15.8436 26.9808 17.577 26.283 19.2001C25.5852 20.8232 24.6354 22.2343 23.4337 23.4334C22.2319 24.6325 20.8208 25.5827 19.2003 26.2841C17.5799 26.9854 15.8465 27.3352 14.0003 27.3334Z" fill="var(--ul-primary)" /></svg>
+                            <p>
+                                <strong>Note</strong>&nbsp;: Mode test activé. En mode test, aucun don réel n'est traité.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <script>
+                // Affichage du modal de don spontané avec animations
+                document.addEventListener('DOMContentLoaded', function () {
+                    var donateBtn = document.getElementById('spontaneous-donation-btn');
+                    var modal = document.getElementById('spontaneous-donation-modal');
+                    var closeModalBtn = document.getElementById('spontaneous-donation-modal-close');
+
+                    // Fonction pour ouvrir le modal avec animation
+                    function openModal() {
+                        modal.style.display = 'flex';
+                        document.body.style.overflow = 'hidden';
+                        // Forcer le reflow pour déclencher l'animation
+                        void modal.offsetWidth;
+                        // Ajouter la classe pour l'animation
+                        setTimeout(function() {
+                            modal.classList.add('show');
+                        }, 10);
+                    }
+
+                    // Fonction pour fermer le modal avec animation
+                    function closeModal() {
+                        modal.classList.remove('show');
+                        // Attendre la fin de l'animation avant de cacher
+                        setTimeout(function() {
+                            modal.style.display = 'none';
+                            document.body.style.overflow = '';
+                        }, 300);
+                    }
+
+                    if(donateBtn && modal && closeModalBtn){
+                        // Ouvrir le modal au clic sur le bouton
+                        donateBtn.addEventListener('click', function(e){
+                            e.preventDefault();
+                            openModal();
+                        });
+
+                        // Fermer le modal au clic sur le bouton de fermeture
+                        closeModalBtn.addEventListener('click', function(e){
+                            e.preventDefault();
+                            closeModal();
+                        });
+
+                        // Fermer le modal en cliquant sur le fond (hors du contenu)
+                        modal.addEventListener('mousedown', function(e){
+                            if(e.target === modal){
+                                closeModal();
+                            }
+                        });
+
+                        // Fermer le modal avec la touche Escape
+                        document.addEventListener('keydown', function(e){
+                            if(e.key === 'Escape' && modal.classList.contains('show')){
+                                closeModal();
+                            }
+                        });
+                    }
+
+                    // Logique d'affichage des champs anonymes/non-anonymes
+                    let typeNonAnon = document.getElementById('spontaneous-donation-type-1');
+                    let typeAnon = document.getElementById('spontaneous-donation-type-2');
+                    let personalSection = document.getElementById('spontaneous-personal-info-section');
+                    let anonSection = document.getElementById('spontaneous-anonymous-submit-section');
+                    function toggleAnonSection(){
+                        if(typeAnon.checked){
+                            personalSection.style.display = 'none';
+                            anonSection.style.display = '';
+                        }else{
+                            personalSection.style.display = '';
+                            anonSection.style.display = 'none';
+                        }
+                    }
+                    if(typeNonAnon && typeAnon){
+                        typeNonAnon.addEventListener('change', toggleAnonSection);
+                        typeAnon.addEventListener('change', toggleAnonSection);
+                        toggleAnonSection();
+                    }
+
+                    // Update montant affiché
+                    function updateMontant(_ev){
+                        let current = document.querySelector('input[name="donate-amount"]:checked');
+                        let val = 10;
+                        if(current){
+                            if(current.value === 'custom'){
+                                let cval = parseFloat(document.getElementById('spontaneous-donate-amount-custom').value.replace(',','.'));
+                                val = isNaN(cval)||!cval?10:parseFloat(cval);
+                            } else {
+                                val = parseFloat(current.value);
+                            }
+                        }
+                        document.getElementById('spontaneous-selected-amount-display').innerText = val.toFixed(2);
+                        document.getElementById('spontaneous-donation-total-amount').innerText = val;
+                        document.getElementById('spontaneous-donation-total-amount-anonymous').innerText = val;
+                    }
+                    let radios = document.querySelectorAll('.ul-modal input[name="donate-amount"]');
+                    radios.forEach(function(r){
+                        r.addEventListener('change', updateMontant);
+                    });
+                    let customInput = document.getElementById('spontaneous-donate-amount-custom');
+                    if(customInput){
+                        customInput.addEventListener('input', function(){
+                            let customRadio = document.getElementById('spontaneous-custom-amount');
+                            if(customRadio) customRadio.checked = true;
+                            updateMontant();
+                        });
+                    }
+
+                    // Affichage/retrait des opérateurs Mobile Money
+                    let methodMM = document.getElementById('spontaneous-method-1');
+                    let methodCard = document.getElementById('spontaneous-method-2');
+                    let mmOptions = document.getElementById('spontaneous-mobile-money-options');
+                    function updateMMOptions(){
+                        if(methodMM && mmOptions) mmOptions.style.display = methodMM.checked?'block':'none';
+                    }
+                    if(methodMM && methodCard){
+                        methodMM.addEventListener('change', updateMMOptions);
+                        methodCard.addEventListener('change', updateMMOptions);
+                        updateMMOptions();
+                    }
+                });
+                </script>
+                    </div>
+                </div>
     </header>
     <!-- HEADER SECTION END -->
 
 
-    <!-- Main Content -->
+            <!-- Main Content -->
     <main class="overflow-hidden">
-        @yield('content')
-    </main>
+                @yield('content')
+            </main>
 
     <!-- FOOTER SECTION START -->
     <footer class="ul-footer">
@@ -265,10 +563,10 @@
                             </div>
                             <span class="error-message" id="error-nwsltr-email" style="display: none;"></span>
                         </form>
+                        </div>
+                        </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </div>
 
         <!-- footer bottom -->
         <div class="ul-footer-bottom">
@@ -281,14 +579,14 @@
                         <a href="#">Conditions d'utilisation</a>
                         <a href="#">Politique de confidentialité</a></div>
                 </div>
-            </div>
-        </div>
+                    </div>
+                </div>
 
         <!-- vector -->
         <div class="ul-footer-vectors">
             <img src="{{ asset('assets/img/footer-vector-img.png') }}" alt="Image du footer" class="ul-footer-vector-1">
         </div>
-    </footer>
+            </footer>
     <!-- FOOTER SECTION END -->
     <!-- libraries JS -->
     <script src="{{ asset('assets/vendor/bootstrap/bootstrap.bundle.min.js') }}"></script>
@@ -310,50 +608,7 @@
     <script src="{{ asset('assets/js/donate-form.js') }}"></script>
     <script src="{{ asset('assets/js/async-forms.js') }}"></script>
 
-    <style>
-        /* Styles pour les notifications asynchrones */
-        .async-notification,
-        .newsletter-notification {
-            padding: 12px 18px;
-            margin-bottom: 15px;
-            border-radius: 6px;
-            font-size: 14px;
-            font-weight: 500;
-            animation: slideDown 0.3s ease-out;
-            display: none;
-        }
-
-        .async-notification.success,
-        .newsletter-notification.success {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-
-        .async-notification.error,
-        .newsletter-notification.error {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-
-        .ul-nwsltr-form button[type="submit"].loading {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-    </style>
-    </div>
-</body>
+        </div>
+    </body>
 
 </html>

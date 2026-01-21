@@ -294,7 +294,7 @@
                             </div>
 
                             <!-- Bouton de soumission pour les dons anonymes -->
-                            <div id="anonymous-submit-section" class="ul-donation-details-form-bottom" style="display: none; margin-top: 20px;">
+                            <div id="anonymous-submit-section" class="ul-donation-details-form-bottom modal-anonymous-submit-section">
                                 <button type="submit" id="donation-submit-btn-anonymous" class="ul-btn">
                                     <i class="flaticon-fast-forward-double-right-arrows-symbol"></i>
                                     <span id="donation-btn-text-anonymous">Faire un don maintenant</span>
@@ -351,21 +351,5 @@
             </div>
         </div>
 
-<style>
-    .error-message {
-        display: block;
-        color: #dc3545;
-        font-size: 14px;
-        margin-top: 5px;
-    }
-    .form-group input.error {
-        border-color: #dc3545;
-    }
-    #donation-submit-btn:disabled,
-    #donation-submit-btn-anonymous:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-    }
-</style>
 
 @endsection
