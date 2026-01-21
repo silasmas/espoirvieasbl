@@ -40,8 +40,8 @@
         <!-- header -->
         <div class="ul-sidebar-header">
             <div class="ul-sidebar-header-logo">
-                <a href="index.html">
-                    <img src="assets/img/logo.svg" alt="logo" class="logo">
+                <a href="{{ route('home') }}">
+                    <img src="{{ asset('assets/img/lg.jpg') }}" alt="Espoir Vie ASBL" class="logo">
                 </a>
             </div>
             <!-- sidebar closer -->
@@ -53,7 +53,7 @@
 
         <!-- sidebar footer -->
         <div class="ul-sidebar-footer">
-            <span class="ul-sidebar-footer-title">Follow us</span>
+            <span class="ul-sidebar-footer-title">Suivez-nous</span>
 
             <div class="ul-sidebar-footer-social">
                 <a href="#"><i class="flaticon-facebook"></i></a>
@@ -71,7 +71,7 @@
 
         <form action="#" class="ul-search-form">
             <div class="ul-search-form-right">
-                <input type="search" name="search" id="ul-search" placeholder="Search Here">
+                <input type="search" name="search" id="ul-search" placeholder="Rechercher ici">
                 <button type="submit"><span class="icon"><i class="flaticon-search"></i></span></button>
             </div>
         </form>
@@ -83,7 +83,8 @@
         <div class="ul-header-bottom to-be-sticky">
             <div class="ul-header-bottom-wrapper ul-header-container">
                 <div class="logo-container">
-                    <a href="index.html" class="d-inline-block"><img src="assets/img/logo.svg" alt="logo"
+                    <a href="{{ route('home') }}" class="d-inline-block">
+                        <img src="{{ asset('assets/img/lg.png') }}" height="50px" width="50px" alt="Espoir Vie ASBL"
                             class="logo"></a>
                 </div>
 
@@ -91,69 +92,11 @@
                 <div class="ul-header-nav-wrapper">
                     <div class="to-go-to-sidebar-in-mobile">
                         <nav class="ul-header-nav">
-                            <div class="has-sub-menu">
-                                <a role="button">Home</a>
-
-                                <div class="ul-header-submenu">
-                                    <ul>
-                                        <li><a href="index.html">Home 1</a></li>
-                                        <li><a href="index-2.html">Home 2</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <a href="about.html">About</a>
-                            <div class="has-sub-menu">
-                                <a role="button">Pages</a>
-
-                                <div class="ul-header-submenu">
-                                    <ul>
-                                        <li><a href="services.html">Services</a></li>
-                                        <li><a href="service-details.html">Service Details</a></li>
-                                        <li><a href="projects.html">Projects</a></li>
-                                        <li><a href="project-details.html">Project Details</a></li>
-                                        <li><a href="team.html">Team</a></li>
-                                        <li><a href="team-details.html">Team Member Details</a></li>
-                                        <li><a href="pricing.html">Pricing Plans</a></li>
-                                        <li><a href="faq.html">FAQs</a></li>
-                                        <li><a href="404.html">404</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-
-                            <div class="has-sub-menu">
-                                <a role="button">Donation</a>
-
-                                <div class="ul-header-submenu">
-                                    <ul>
-                                        <li><a href="donations.html">Donation Listing</a></li>
-                                        <li><a href="donation-details.html">Donation Details</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-
-                            <div class="has-sub-menu">
-                                <a role="button">Event</a>
-
-                                <div class="ul-header-submenu">
-                                    <ul>
-                                        <li><a href="events.html">Events</a></li>
-                                        <li><a href="event-details.html">Event Details</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-
-                            <div class="has-sub-menu">
-                                <a role="button">Blog</a>
-
-                                <div class="ul-header-submenu">
-                                    <ul>
-                                        <li><a href="blog.html">Blogs</a></li>
-                                        <li><a href="blog-2.html">Blogs Layout 2</a></li>
-                                        <li><a href="blog-details.html">Blog Details</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <a href="contact.html">Contact</a>
+                            <a href="{{ route('home') }}">Accueil</a>
+                            <a href="{{ route('about') }}">À propos</a>
+                            <a href="{{ route('events') }}">Événement</a>
+                            <a href="{{ route('donate') }}">Faire un don</a>
+                            <a href="{{ route('contact') }}">Nous contacter</a>
                         </nav>
                     </div>
                 </div>
@@ -161,8 +104,8 @@
                 <!-- actions -->
                 <div class="ul-header-actions">
                     <button class="ul-header-search-opener"><i class="flaticon-search"></i></button>
-                    <a href="contact.html" class="ul-btn d-sm-inline-flex d-none"><i
-                            class="flaticon-fast-forward-double-right-arrows-symbol"></i> Join With us </a>
+                    <a href="{{ route('donate') }}" class="ul-btn d-sm-inline-flex d-none"><i
+                            class="flaticon-fast-forward-double-right-arrows-symbol"></i> Faire un don</a>
                     <button class="ul-header-sidebar-opener d-lg-none d-inline-flex"><i
                             class="flaticon-menu"></i></button>
                 </div>
@@ -192,7 +135,7 @@
                         </div>
                         <!-- txt -->
                         <div class="ul-footer-top-contact-info-txt">
-                            <span class="ul-footer-top-contact-info-label">Address</span>
+                            <span class="ul-footer-top-contact-info-label">Adresse</span>
                             <h5 class="ul-footer-top-contact-info-address">4648 Rocky Road Philadelphia PA, 1920</h5>
                         </div>
                     </div>
@@ -207,7 +150,7 @@
                         </div>
                         <!-- txt -->
                         <div class="ul-footer-top-contact-info-txt">
-                            <span class="ul-footer-top-contact-info-label">Send Email</span>
+                            <span class="ul-footer-top-contact-info-label">Envoyer un email</span>
                             <h5 class="ul-footer-top-contact-info-address"><a
                                     href="mailto:info@exmple.com">info@exmple.com</a></h5>
                         </div>
@@ -223,7 +166,7 @@
                         </div>
                         <!-- txt -->
                         <div class="ul-footer-top-contact-info-txt">
-                            <span class="ul-footer-top-contact-info-label">Call Emergency</span>
+                            <span class="ul-footer-top-contact-info-label">Appel d'urgence</span>
                             <h5 class="ul-footer-top-contact-info-address"><a href="tel:88012365499">+88 0123 654
                                     99</a></h5>
                         </div>
@@ -236,9 +179,10 @@
             <div class="ul-footer-container">
                 <div class="ul-footer-middle-wrapper wow animate__fadeInUp">
                     <div class="ul-footer-about">
-                        <a href="index.html"><img src="assets/img/logo-white.svg" alt="logo" class="logo"></a>
-                        <p class="ul-footer-about-txt">Phasellus ultricies aliquam volutpat ullamcorper laoreet neque,
-                            a lacinia curabitur lacinia mollis</p>
+                        <a href="{{ route('home') }}">
+                            <img src="{{ asset('assets/img/lg.png') }}"
+                            height="80px" width="80px" alt="Espoir Vie ASBL" class="logo"></a>
+                        <p class="ul-footer-about-txt">Espoir Vie ASBL est une organisation à but non lucratif dédiée à améliorer la vie des personnes dans le besoin. Ensemble, créons un avenir meilleur pour tous.</p>
                         <div class="ul-footer-socials">
                             <a href="#"><i class="flaticon-facebook"></i></a>
                             <a href="#"><i class="flaticon-twitter"></i></a>
@@ -248,19 +192,18 @@
                     </div>
 
                     <div class="ul-footer-widget">
-                        <h3 class="ul-footer-widget-title">Quick Links</h3>
+                        <h3 class="ul-footer-widget-title">Liens rapides</h3>
 
                         <div class="ul-footer-widget-links">
-                            <a href="about.html">About Us</a>
-                            <a href="services.html">Our Services</a>
-                            <a href="blog.html">Our Blogs</a>
-                            <a href="faq.html">FAQ’S</a>
-                            <a href="contact.html">Contact Us</a>
+                            <a href="{{ route('about') }}">À propos</a>
+                            <a href="{{ route('events') }}">Événements</a>
+                            <a href="{{ route('donate') }}">Faire un don</a>
+                            <a href="{{ route('contact') }}">Nous contacter</a>
                         </div>
                     </div>
 
                     <div class="ul-footer-widget ul-footer-recent-posts">
-                        <h3 class="ul-footer-widget-title">Recent Posts</h3>
+                        <h3 class="ul-footer-widget-title">Articles récents</h3>
 
                         <div class="ul-blog-sidebar-posts">
                             <!-- single post -->
@@ -300,7 +243,7 @@
                     </div>
 
                     <div class="ul-footer-widget ul-nwsltr-widget">
-                        <h3 class="ul-footer-widget-title">Contact Us</h3>
+                        <h3 class="ul-footer-widget-title">Nous contacter</h3>
                         <div class="ul-footer-widget-links ul-footer-contact-links">
                             <a href="mailto:info@example.com"><i class="flaticon-mail"></i> info@example.com</a>
                             <a href="tel:123-456-7890"><i class="flaticon-telephone-call"></i> 123-456-7890</a>
@@ -308,7 +251,7 @@
                         <form action="#" class="ul-nwsltr-form">
                             <div class="top">
                                 <input type="email" name="email" id="nwsltr-email"
-                                    placeholder="Your Email Address" class="ul-nwsltr-input">
+                                    placeholder="Votre adresse email" class="ul-nwsltr-input">
                                 <button type="submit"><i class="flaticon-next"></i></button>
                             </div>
 
@@ -316,8 +259,7 @@
                                 <label for="nwsltr-agreement" class="ul-checkbox-wrapper">
                                     <input type="checkbox" name="agreement" id="nwsltr-agreement" hidden>
                                     <span class="ul-checkbox"><i class="flaticon-tick"></i></span>
-                                    <span class="ul-checkbox-txt">I agree with the <a href="#">Privacy
-                                            Policy</a></span>
+                                    <span class="ul-checkbox-txt">J'accepte la <a href="#">Politique de confidentialité</a></span>
                                 </label>
                             </div>
                         </form>
@@ -331,17 +273,17 @@
             <div class="ul-footer-container">
                 <div class="ul-footer-bottom-wrapper">
                     <p class="copyright-txt">&copy;
-                        <span id="footer-copyright-year"></span> Charitics. All rights reserved
+                        <span id="footer-copyright-year"></span> Espoir Vie ASBL. Tous droits réservés.
                     </p>
-                    <div class="ul-footer-bottom-nav"><a href="#">Terms & Conditions</a> <a
-                            href="#">Privacy Policy</a></div>
+                    <div class="ul-footer-bottom-nav"><a href="#">Conditions d'utilisation</a> <a
+                            href="#">Politique de confidentialité</a></div>
                 </div>
             </div>
         </div>
 
         <!-- vector -->
         <div class="ul-footer-vectors">
-            <img src="assets/img/footer-vector-img.png" alt="Footer Image" class="ul-footer-vector-1">
+            <img src="{{ asset('assets/img/footer-vector-img.png') }}" alt="Image du footer" class="ul-footer-vector-1">
         </div>
     </footer>
     <!-- FOOTER SECTION END -->

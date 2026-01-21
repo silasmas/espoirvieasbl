@@ -68,4 +68,20 @@ class HomeController extends Controller
 
         return view('pages.event-detail', compact('activity'));
     }
+
+    /**
+     * Affiche la page Faire un don
+     */
+    public function donate()
+    {
+        return view('pages.donate');
+    }
+
+    /**
+     * Affiche la page Nous contacter
+     */
+    public function contact()
+    {
+        return view('pages.contact');
+    }
 }

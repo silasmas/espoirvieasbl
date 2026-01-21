@@ -9,6 +9,8 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/a-propos', [HomeController::class, 'about'])->name('about');
 Route::get('/evenements', [HomeController::class, 'events'])->name('events');
 Route::get('/evenements/{activity}', [HomeController::class, 'showEvent'])->name('events.show');
+Route::get('/faire-un-don', [HomeController::class, 'donate'])->name('donate');
+Route::get('/nous-contacter', [HomeController::class, 'contact'])->name('contact');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

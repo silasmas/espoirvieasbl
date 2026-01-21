@@ -11,25 +11,25 @@
                 <div class="col">
                     <div class="ul-banner-txt">
                         <div class="wow animate__fadeInUp">
-                            <span class="ul-banner-sub-title ul-section-sub-title">Change The World Together</span>
-                            <h1 class="ul-banner-title">For The People & Cause You Care About</h1>
-                            <p class="ul-banner-descr">It is a long established fact that a reader will be distracted lorem the readable content of a page when looking at layout the point lorem established fact that It is a long established</p>
+                            <span class="ul-banner-sub-title ul-section-sub-title">Changeons le monde ensemble</span>
+                            <h1 class="ul-banner-title">Pour les personnes et les causes qui vous tiennent à cœur</h1>
+                            <p class="ul-banner-descr">Rejoignez-nous dans notre mission pour créer un impact positif et durable dans la vie de nombreuses personnes. Ensemble, nous pouvons faire la différence.</p>
                             <div class="ul-banner-btns">
-                                <a href="donations.html" class="ul-btn"><i class="flaticon-fast-forward-double-right-arrows-symbol"></i> Make Donation</a>
+                                <a href="{{ route('donate') }}" class="ul-btn"><i class="flaticon-fast-forward-double-right-arrows-symbol"></i> Faire un don</a>
 
                                 <div class="ul-banner-stat">
                                     <div class="imgs">
-                                        <img src="{{ asset('assets/img/user-1.png') }}" alt="Person">
-                                        <img src="{{ asset('assets/img/user-3.png') }}" alt="Person">
-                                        <img src="{{ asset('assets/img/user-2.png') }}" alt="Person">
+                                        <img src="{{ asset('assets/img/user-1.png') }}" alt="Personne">
+                                        <img src="{{ asset('assets/img/user-3.png') }}" alt="Personne">
+                                        <img src="{{ asset('assets/img/user-2.png') }}" alt="Personne">
                                         <span class="number">2.M</span>
                                     </div>
-                                    <span class="txt">Active donors</span>
+                                    <span class="txt">Donateurs actifs</span>
                                 </div>
                             </div>
                         </div>
 
-                        <img src="{{ asset('assets/img/vector-img.png') }}" alt="Vector" class="ul-banner-txt-vector">
+                        <img src="{{ asset('assets/img/vector-img.png') }}" alt="Vecteur" class="ul-banner-txt-vector">
                     </div>
                 </div>
 
@@ -37,14 +37,14 @@
                 <div class="col align-self-start">
                     <div class="ul-banner-img">
                         <div class="img-wrapper">
-                            <img src="{{ asset('assets/img/banner-img.png') }}" alt="Banner Image">
+                            <img src="{{ asset('assets/img/banner-img.png') }}" alt="Image de la bannière">
                             <!-- <div class="ul-banner-video-btn">
                                 <a href=""></a>
                             </div> -->
                         </div>
                         <div class="ul-banner-img-vectors">
-                            <img src="{{ asset('assets/img/banner-img-vector-1.png') }}" alt="vector" class="vector-1 wow animate__fadeInRight">
-                            <img src="{{ asset('assets/img/banner-img-vector-2.png') }}" alt="vector" class="vector-2 wow animate__fadeInDown">
+                            <img src="{{ asset('assets/img/banner-img-vector-1.png') }}" alt="vecteur" class="vector-1 wow animate__fadeInRight">
+                            <img src="{{ asset('assets/img/banner-img-vector-2.png') }}" alt="vecteur" class="vector-2 wow animate__fadeInDown">
                         </div>
                     </div>
                 </div>
@@ -61,11 +61,11 @@
                 <div class="col">
                     <div class="ul-about-imgs">
                         <div class="img-wrapper">
-                            <img src="{{ asset('assets/img/about-img.png') }}" alt="Image">
+                            <img src="{{ asset('assets/img/about-img.png') }}" alt="Image à propos">
                         </div>
                         <div class="ul-about-imgs-vectors">
-                            <img src="{{ asset('assets/img/about-img-vector-1.svg') }}" alt="Image" class="vector-1">
-                            <img src="{{ asset('assets/img/about-img-vector-2.svg') }}" alt="Image" class="vector-2">
+                            <img src="{{ asset('assets/img/about-img-vector-1.svg') }}" alt="Illustration" class="vector-1">
+                            <img src="{{ asset('assets/img/about-img-vector-2.svg') }}" alt="Illustration" class="vector-2">
                         </div>
                     </div>
                 </div>
@@ -73,31 +73,31 @@
                 <!-- txt -->
                 <div class="col">
                     <div class="ul-about-txt">
-                        <span class="ul-section-sub-title ul-section-sub-title--2">About US</span>
-                        <h2 class="ul-section-title">Helping Each Other can Make World Better</h2>
-                        <p class="ul-section-descr">Dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit The aspernaturaut odit aut fugit, sed quia consequuntur. Nonprofits around the world apply and join us to access more funding.</p>
+                        <span class="ul-section-sub-title ul-section-sub-title--2">À propos de nous</span>
+                        <h2 class="ul-section-title">S'entraider peut rendre le monde meilleur</h2>
+                        <p class="ul-section-descr">Espoir Vie ASBL est une organisation dédiée à améliorer les conditions de vie des personnes dans le besoin. Nous croyons que chaque individu mérite une chance de vivre dans la dignité avec espoir en l'avenir. Rejoignez-nous pour créer un impact durable.</p>
 
                         <div class="ul-about-block">
                             <div class="block-left">
                                 <div class="block-heading">
                                     <div class="icon"><i class="flaticon-love"></i></div>
-                                    <h3 class="block-title">Start Helping Team</h3>
+                                    <h3 class="block-title">Rejoignez notre équipe</h3>
                                 </div>
 
                                 <ul class="block-list">
-                                    <li>There are many variations of solve</li>
+                                    <li>De nombreuses façons d'aider et de faire la différence</li>
                                 </ul>
                             </div>
-                            <div class="block-right"><img src="{{ asset('assets/img/about-block-img.jpg') }}" alt="Image"></div>
+                            <div class="block-right"><img src="{{ asset('assets/img/about-block-img.jpg') }}" alt="Illustration à propos"></div>
                         </div>
 
                         <div class="ul-about-bottom">
-                            <a href="about.html" class="ul-btn"><i class="flaticon-fast-forward-double-right-arrows-symbol"></i> Explore More</a>
+                            <a href="{{ route('about') }}" class="ul-btn"><i class="flaticon-fast-forward-double-right-arrows-symbol"></i> En savoir plus</a>
 
                             <div class="ul-about-call">
                                 <div class="icon"><i class="flaticon-telephone-call"></i></div>
                                 <div class="txt">
-                                    <span class="call-title">Call Any Time</span>
+                                    <span class="call-title">Appelez-nous à tout moment</span>
                                     <a href="tel:+612345678990">+61 2345 678 990</a>
                                 </div>
                             </div>
@@ -109,7 +109,7 @@
 
         <!-- vector -->
         <div class="ul-about-vectors">
-            <img src="{{ asset('assets/img/about-vector-1.png') }}" alt="vector" class="vector-1">
+            <img src="{{ asset('assets/img/about-vector-1.png') }}" alt="vecteur" class="vector-1">
         </div>
     </section>
     <!-- ABOUT SECTION END -->
@@ -121,19 +121,19 @@
         <div class="ul-container">
             <div class="ul-section-heading ul-donations-heading justify-content-between text-center">
                 <div class="left">
-                    <span class="ul-section-sub-title"><span class="txt">Help & Donate us</span></span>
-                    <h2 class="ul-section-title">Inspiring and Helping for Better Lifestyle</h2>
+                    <span class="ul-section-sub-title"><span class="txt">Aidez-nous et faites un don</span></span>
+                    <h2 class="ul-section-title">Inspirer et aider pour un meilleur style de vie</h2>
                 </div>
 
                 <div class="flex-shrink-0">
                     <div class="ul-banner-stat">
                         <div class="imgs">
-                            <img src="{{ asset('assets/img/user-1.png') }}" alt="Person">
-                            <img src="{{ asset('assets/img/user-3.png') }}" alt="Person">
-                            <img src="{{ asset('assets/img/user-2.png') }}" alt="Person">
+                            <img src="{{ asset('assets/img/user-1.png') }}" alt="Personne">
+                            <img src="{{ asset('assets/img/user-3.png') }}" alt="Personne">
+                            <img src="{{ asset('assets/img/user-2.png') }}" alt="Personne">
                             <span class="number">2.M</span>
                         </div>
-                        <span class="txt text-white">Active donors</span>
+                        <span class="txt text-white">Donateurs actifs</span>
                     </div>
                 </div>
                 <div class="ul-slider-nav ul-donations-slider-nav">
@@ -151,8 +151,8 @@
                     <div class="swiper-slide">
                         <div class="ul-donation">
                             <div class="ul-donation-img">
-                                <img src="{{ asset('assets/img/donation-1.jpg') }}" alt="donation Image">
-                                <span class="tag">Foods</span>
+                                <img src="{{ asset('assets/img/donation-1.jpg') }}" alt="Image du don">
+                                <span class="tag">Alimentation</span>
                             </div>
                             <div class="ul-donation-txt">
                                 <div class="ul-donation-progress">
@@ -162,13 +162,13 @@
                                         </div>
                                     </div>
                                     <div class="ul-donation-progress-labels">
-                                        <span class="ul-donation-progress-label">Raised : $25,000</span>
-                                        <span class="ul-donation-progress-label">Goal : $30,000</span>
+                                        <span class="ul-donation-progress-label">Collecté : 25 000 €</span>
+                                        <span class="ul-donation-progress-label">Objectif : 30 000 €</span>
                                     </div>
                                 </div>
-                                <a href="donation-details.html" class="ul-donation-title">Lifes kills for Children in South African peoples</a>
-                                <p class="ul-donation-descr">We work together to make a lasting difference, helping people. With kindness and hard work</p>
-                                <a href="donation-details.html" class="ul-donation-btn">Donate now <i class="flaticon-up-right-arrow"></i></a>
+                                <a href="{{ route('donate') }}" class="ul-donation-title">Sauver des vies d'enfants en Afrique du Sud</a>
+                                <p class="ul-donation-descr">Nous travaillons ensemble pour faire une différence durable en aidant les personnes dans le besoin. Avec gentillesse et travail acharné.</p>
+                                <a href="{{ route('donate') }}" class="ul-donation-btn">Faire un don maintenant <i class="flaticon-up-right-arrow"></i></a>
                             </div>
                         </div>
                     </div>
@@ -177,8 +177,8 @@
                     <div class="swiper-slide">
                         <div class="ul-donation">
                             <div class="ul-donation-img">
-                                <img src="{{ asset('assets/img/donation-2.jpg') }}" alt="donation Image">
-                                <span class="tag">Foods</span>
+                                <img src="{{ asset('assets/img/donation-2.jpg') }}" alt="Image du don">
+                                <span class="tag">Alimentation</span>
                             </div>
                             <div class="ul-donation-txt">
                                 <div class="ul-donation-progress">
@@ -188,13 +188,13 @@
                                         </div>
                                     </div>
                                     <div class="ul-donation-progress-labels">
-                                        <span class="ul-donation-progress-label">Raised : $25,000</span>
-                                        <span class="ul-donation-progress-label">Goal : $30,000</span>
+                                        <span class="ul-donation-progress-label">Collecté : 25 000 €</span>
+                                        <span class="ul-donation-progress-label">Objectif : 30 000 €</span>
                                     </div>
                                 </div>
-                                <a href="donation-details.html" class="ul-donation-title">Lifes kills for Children in South African peoples</a>
-                                <p class="ul-donation-descr">We work together to make a lasting difference, helping people. With kindness and hard work</p>
-                                <a href="donation-details.html" class="ul-donation-btn">Donate now <i class="flaticon-up-right-arrow"></i></a>
+                                <a href="{{ route('donate') }}" class="ul-donation-title">Sauver des vies d'enfants en Afrique du Sud</a>
+                                <p class="ul-donation-descr">Nous travaillons ensemble pour faire une différence durable en aidant les personnes dans le besoin. Avec gentillesse et travail acharné.</p>
+                                <a href="{{ route('donate') }}" class="ul-donation-btn">Faire un don maintenant <i class="flaticon-up-right-arrow"></i></a>
                             </div>
                         </div>
                     </div>
@@ -203,8 +203,8 @@
                     <div class="swiper-slide">
                         <div class="ul-donation">
                             <div class="ul-donation-img">
-                                <img src="{{ asset('assets/img/donation-3.jpg') }}" alt="donation Image">
-                                <span class="tag">Foods</span>
+                                <img src="{{ asset('assets/img/donation-3.jpg') }}" alt="Image du don">
+                                <span class="tag">Alimentation</span>
                             </div>
                             <div class="ul-donation-txt">
                                 <div class="ul-donation-progress">
@@ -214,13 +214,13 @@
                                         </div>
                                     </div>
                                     <div class="ul-donation-progress-labels">
-                                        <span class="ul-donation-progress-label">Raised : $25,000</span>
-                                        <span class="ul-donation-progress-label">Goal : $30,000</span>
+                                        <span class="ul-donation-progress-label">Collecté : 25 000 €</span>
+                                        <span class="ul-donation-progress-label">Objectif : 30 000 €</span>
                                     </div>
                                 </div>
-                                <a href="donation-details.html" class="ul-donation-title">Lifes kills for Children in South African peoples</a>
-                                <p class="ul-donation-descr">We work together to make a lasting difference, helping people. With kindness and hard work</p>
-                                <a href="donation-details.html" class="ul-donation-btn">Donate now <i class="flaticon-up-right-arrow"></i></a>
+                                <a href="{{ route('donate') }}" class="ul-donation-title">Sauver des vies d'enfants en Afrique du Sud</a>
+                                <p class="ul-donation-descr">Nous travaillons ensemble pour faire une différence durable en aidant les personnes dans le besoin. Avec gentillesse et travail acharné.</p>
+                                <a href="{{ route('donate') }}" class="ul-donation-btn">Faire un don maintenant <i class="flaticon-up-right-arrow"></i></a>
                             </div>
                         </div>
                     </div>
@@ -229,8 +229,8 @@
                     <div class="swiper-slide">
                         <div class="ul-donation">
                             <div class="ul-donation-img">
-                                <img src="{{ asset('assets/img/donation-4.jpg') }}" alt="donation Image">
-                                <span class="tag">Foods</span>
+                                <img src="{{ asset('assets/img/donation-4.jpg') }}" alt="Image du don">
+                                <span class="tag">Alimentation</span>
                             </div>
                             <div class="ul-donation-txt">
                                 <div class="ul-donation-progress">
@@ -240,13 +240,13 @@
                                         </div>
                                     </div>
                                     <div class="ul-donation-progress-labels">
-                                        <span class="ul-donation-progress-label">Raised : $25,000</span>
-                                        <span class="ul-donation-progress-label">Goal : $30,000</span>
+                                        <span class="ul-donation-progress-label">Collecté : 25 000 €</span>
+                                        <span class="ul-donation-progress-label">Objectif : 30 000 €</span>
                                     </div>
                                 </div>
-                                <a href="donation-details.html" class="ul-donation-title">Lifes kills for Children in South African peoples</a>
-                                <p class="ul-donation-descr">We work together to make a lasting difference, helping people. With kindness and hard work</p>
-                                <a href="donation-details.html" class="ul-donation-btn">Donate now <i class="flaticon-up-right-arrow"></i></a>
+                                <a href="{{ route('donate') }}" class="ul-donation-title">Sauver des vies d'enfants en Afrique du Sud</a>
+                                <p class="ul-donation-descr">Nous travaillons ensemble pour faire une différence durable en aidant les personnes dans le besoin. Avec gentillesse et travail acharné.</p>
+                                <a href="{{ route('donate') }}" class="ul-donation-btn">Faire un don maintenant <i class="flaticon-up-right-arrow"></i></a>
                             </div>
                         </div>
                     </div>
@@ -255,8 +255,8 @@
                     <div class="swiper-slide">
                         <div class="ul-donation">
                             <div class="ul-donation-img">
-                                <img src="{{ asset('assets/img/donation-1.jpg') }}" alt="donation Image">
-                                <span class="tag">Foods</span>
+                                <img src="{{ asset('assets/img/donation-1.jpg') }}" alt="Image du don">
+                                <span class="tag">Alimentation</span>
                             </div>
                             <div class="ul-donation-txt">
                                 <div class="ul-donation-progress">
@@ -266,13 +266,13 @@
                                         </div>
                                     </div>
                                     <div class="ul-donation-progress-labels">
-                                        <span class="ul-donation-progress-label">Raised : $25,000</span>
-                                        <span class="ul-donation-progress-label">Goal : $30,000</span>
+                                        <span class="ul-donation-progress-label">Collecté : 25 000 €</span>
+                                        <span class="ul-donation-progress-label">Objectif : 30 000 €</span>
                                     </div>
                                 </div>
-                                <a href="donation-details.html" class="ul-donation-title">Lifes kills for Children in South African peoples</a>
-                                <p class="ul-donation-descr">We work together to make a lasting difference, helping people. With kindness and hard work</p>
-                                <a href="donation-details.html" class="ul-donation-btn">Donate now <i class="flaticon-up-right-arrow"></i></a>
+                                <a href="{{ route('donate') }}" class="ul-donation-title">Sauver des vies d'enfants en Afrique du Sud</a>
+                                <p class="ul-donation-descr">Nous travaillons ensemble pour faire une différence durable en aidant les personnes dans le besoin. Avec gentillesse et travail acharné.</p>
+                                <a href="{{ route('donate') }}" class="ul-donation-btn">Faire un don maintenant <i class="flaticon-up-right-arrow"></i></a>
                             </div>
                         </div>
                     </div>
@@ -281,8 +281,8 @@
                     <div class="swiper-slide">
                         <div class="ul-donation">
                             <div class="ul-donation-img">
-                                <img src="{{ asset('assets/img/donation-2.jpg') }}" alt="donation Image">
-                                <span class="tag">Foods</span>
+                                <img src="{{ asset('assets/img/donation-2.jpg') }}" alt="Image du don">
+                                <span class="tag">Alimentation</span>
                             </div>
                             <div class="ul-donation-txt">
                                 <div class="ul-donation-progress">
@@ -292,13 +292,13 @@
                                         </div>
                                     </div>
                                     <div class="ul-donation-progress-labels">
-                                        <span class="ul-donation-progress-label">Raised : $25,000</span>
-                                        <span class="ul-donation-progress-label">Goal : $30,000</span>
+                                        <span class="ul-donation-progress-label">Collecté : 25 000 €</span>
+                                        <span class="ul-donation-progress-label">Objectif : 30 000 €</span>
                                     </div>
                                 </div>
-                                <a href="donation-details.html" class="ul-donation-title">Lifes kills for Children in South African peoples</a>
-                                <p class="ul-donation-descr">We work together to make a lasting difference, helping people. With kindness and hard work</p>
-                                <a href="donation-details.html" class="ul-donation-btn">Donate now <i class="flaticon-up-right-arrow"></i></a>
+                                <a href="{{ route('donate') }}" class="ul-donation-title">Sauver des vies d'enfants en Afrique du Sud</a>
+                                <p class="ul-donation-descr">Nous travaillons ensemble pour faire une différence durable en aidant les personnes dans le besoin. Avec gentillesse et travail acharné.</p>
+                                <a href="{{ route('donate') }}" class="ul-donation-btn">Faire un don maintenant <i class="flaticon-up-right-arrow"></i></a>
                             </div>
                         </div>
                     </div>
@@ -307,8 +307,8 @@
                     <div class="swiper-slide">
                         <div class="ul-donation">
                             <div class="ul-donation-img">
-                                <img src="{{ asset('assets/img/donation-3.jpg') }}" alt="donation Image">
-                                <span class="tag">Foods</span>
+                                <img src="{{ asset('assets/img/donation-3.jpg') }}" alt="Image du don">
+                                <span class="tag">Alimentation</span>
                             </div>
                             <div class="ul-donation-txt">
                                 <div class="ul-donation-progress">
@@ -318,13 +318,13 @@
                                         </div>
                                     </div>
                                     <div class="ul-donation-progress-labels">
-                                        <span class="ul-donation-progress-label">Raised : $25,000</span>
-                                        <span class="ul-donation-progress-label">Goal : $30,000</span>
+                                        <span class="ul-donation-progress-label">Collecté : 25 000 €</span>
+                                        <span class="ul-donation-progress-label">Objectif : 30 000 €</span>
                                     </div>
                                 </div>
-                                <a href="donation-details.html" class="ul-donation-title">Lifes kills for Children in South African peoples</a>
-                                <p class="ul-donation-descr">We work together to make a lasting difference, helping people. With kindness and hard work</p>
-                                <a href="donation-details.html" class="ul-donation-btn">Donate now <i class="flaticon-up-right-arrow"></i></a>
+                                <a href="{{ route('donate') }}" class="ul-donation-title">Sauver des vies d'enfants en Afrique du Sud</a>
+                                <p class="ul-donation-descr">Nous travaillons ensemble pour faire une différence durable en aidant les personnes dans le besoin. Avec gentillesse et travail acharné.</p>
+                                <a href="{{ route('donate') }}" class="ul-donation-btn">Faire un don maintenant <i class="flaticon-up-right-arrow"></i></a>
                             </div>
                         </div>
                     </div>
@@ -333,8 +333,8 @@
                     <div class="swiper-slide">
                         <div class="ul-donation">
                             <div class="ul-donation-img">
-                                <img src="{{ asset('assets/img/donation-4.jpg') }}" alt="donation Image">
-                                <span class="tag">Foods</span>
+                                <img src="{{ asset('assets/img/donation-4.jpg') }}" alt="Image du don">
+                                <span class="tag">Alimentation</span>
                             </div>
                             <div class="ul-donation-txt">
                                 <div class="ul-donation-progress">
@@ -344,13 +344,13 @@
                                         </div>
                                     </div>
                                     <div class="ul-donation-progress-labels">
-                                        <span class="ul-donation-progress-label">Raised : $25,000</span>
-                                        <span class="ul-donation-progress-label">Goal : $30,000</span>
+                                        <span class="ul-donation-progress-label">Collecté : 25 000 €</span>
+                                        <span class="ul-donation-progress-label">Objectif : 30 000 €</span>
                                     </div>
                                 </div>
-                                <a href="donation-details.html" class="ul-donation-title">Lifes kills for Children in South African peoples</a>
-                                <p class="ul-donation-descr">We work together to make a lasting difference, helping people. With kindness and hard work</p>
-                                <a href="donation-details.html" class="ul-donation-btn">Donate now <i class="flaticon-up-right-arrow"></i></a>
+                                <a href="{{ route('donate') }}" class="ul-donation-title">Sauver des vies d'enfants en Afrique du Sud</a>
+                                <p class="ul-donation-descr">Nous travaillons ensemble pour faire une différence durable en aidant les personnes dans le besoin. Avec gentillesse et travail acharné.</p>
+                                <a href="{{ route('donate') }}" class="ul-donation-btn">Faire un don maintenant <i class="flaticon-up-right-arrow"></i></a>
                             </div>
                         </div>
                     </div>
@@ -371,53 +371,53 @@
                     <!-- donate form -->
                     <div class="col-lg-6 position-relative">
                         <div class="ul-donate-form-wrapper">
-                            <h3 class="ul-donate-form-title">Custome Donate Now</h3>
+                            <h3 class="ul-donate-form-title">Faire un don personnalisé</h3>
                             <form action="#" class="ul-donate-form">
                                 <div>
                                     <input type="radio" name="donate-amount" id="donate-amount-1" checked hidden>
-                                    <label for="donate-amount-1" class="ul-donate-form-label">$10</label>
+                                    <label for="donate-amount-1" class="ul-donate-form-label">10 €</label>
                                 </div>
 
                                 <div>
                                     <input type="radio" name="donate-amount" id="donate-amount-2" hidden>
-                                    <label for="donate-amount-2" class="ul-donate-form-label">$20</label>
+                                    <label for="donate-amount-2" class="ul-donate-form-label">20 €</label>
                                 </div>
 
                                 <div>
                                     <input type="radio" name="donate-amount" id="donate-amount-3" hidden>
-                                    <label for="donate-amount-3" class="ul-donate-form-label">$30</label>
+                                    <label for="donate-amount-3" class="ul-donate-form-label">30 €</label>
                                 </div>
 
                                 <div>
                                     <input type="radio" name="donate-amount" id="donate-amount-4" hidden>
-                                    <label for="donate-amount-4" class="ul-donate-form-label">$40</label>
+                                    <label for="donate-amount-4" class="ul-donate-form-label">40 €</label>
                                 </div>
 
                                 <div>
                                     <input type="radio" name="donate-amount" id="donate-amount-5" hidden>
-                                    <label for="donate-amount-5" class="ul-donate-form-label">$50</label>
+                                    <label for="donate-amount-5" class="ul-donate-form-label">50 €</label>
                                 </div>
 
                                 <div class="custom-amount-wrapper">
                                     <input type="radio" name="donate-amount" id="custom-amount">
                                     <label for="donate-amount-custom" class="ul-donate-form-label">
-                                        <input type="number" name="custom-amount" id="donate-amount-custom" placeholder="Custom Amount" class="ul-donate-form-custom-input">
+                                        <input type="number" name="custom-amount" id="donate-amount-custom" placeholder="Montant personnalisé" class="ul-donate-form-custom-input">
                                     </label>
                                 </div>
 
                                 <div>
-                                    <button type="submit" class="ul-btn"><i class="flaticon-fast-forward-double-right-arrows-symbol"></i> Donate Now</button>
+                                    <button type="submit" class="ul-btn"><i class="flaticon-fast-forward-double-right-arrows-symbol"></i> Faire un don maintenant</button>
                                 </div>
                             </form>
                         </div>
-                        <img src="{{ asset('assets/img/donate-form-vector.svg') }}" alt="vector" class="ul-donate-form-vector">
+                        <img src="{{ asset('assets/img/donate-form-vector.svg') }}" alt="vecteur" class="ul-donate-form-vector">
                     </div>
 
                     <!-- donate form  -->
                     <div class="col-xl-5 col-lg-6">
                         <div class="ul-donate-form-section-txt">
-                            <span class="ul-section-sub-title text-white">Donate Now</span>
-                            <h2 class="ul-section-title text-white">Support Kids by Raising Valuable Donations</h2>
+                            <span class="ul-section-sub-title text-white">Faire un don maintenant</span>
+                            <h2 class="ul-section-title text-white">Soutenez les enfants en faisant un don précieux</h2>
 
                             <div class="ul-donation-progress">
                                 <div class="donation-progress-container ul-progress-container">
@@ -426,8 +426,8 @@
                                     </div>
                                 </div>
                                 <div class="ul-donation-progress-labels">
-                                    <span class="ul-donation-progress-label">Raised : $25,000</span>
-                                    <span class="ul-donation-progress-label">Goal : $30,000</span>
+                                    <span class="ul-donation-progress-label">Collecté : 25 000 €</span>
+                                    <span class="ul-donation-progress-label">Objectif : 30 000 €</span>
                                 </div>
                             </div>
                         </div>
@@ -448,7 +448,7 @@
                         <div class="ul-stats-item">
                             <i class="flaticon-costumer"></i>
                             <span class="number">260+</span>
-                            <span class="txt">Total Happy Children</span>
+                            <span class="txt">Enfants aidés</span>
                         </div>
                     </div>
 
@@ -456,7 +456,7 @@
                         <div class="ul-stats-item">
                             <i class="flaticon-team"></i>
                             <span class="number">110+</span>
-                            <span class="txt">Total Our Volunteer</span>
+                            <span class="txt">Nos bénévoles</span>
                         </div>
                     </div>
 
@@ -464,7 +464,7 @@
                         <div class="ul-stats-item">
                             <i class="flaticon-package"></i>
                             <span class="number">190+</span>
-                            <span class="txt">Our Products & Gifts</span>
+                            <span class="txt">Projets et activités</span>
                         </div>
                     </div>
 
@@ -472,7 +472,7 @@
                         <div class="ul-stats-item">
                             <i class="flaticon-relationship"></i>
                             <span class="number">560+</span>
-                            <span class="txt">Worldwide Donor</span>
+                            <span class="txt">Donateurs dans le monde</span>
                         </div>
                     </div>
                 </div>
@@ -488,10 +488,10 @@
             <!-- heading -->
             <div class="ul-section-heading align-items-center wow animate__fadeInUp">
                 <div class="left">
-                    <span class="ul-section-sub-title">Upcoming Events</span>
-                    <h2 class="ul-section-title text-white">Charitics Information Of Event Schedule</h2>
+                    <span class="ul-section-sub-title">Événements à venir</span>
+                    <h2 class="ul-section-title text-white">Calendrier des événements Espoir Vie</h2>
                 </div>
-                <a href="events.html" class="ul-btn"><i class="flaticon-fast-forward-double-right-arrows-symbol"></i> Explore More</a>
+                <a href="{{ route('events') }}" class="ul-btn"><i class="flaticon-fast-forward-double-right-arrows-symbol"></i> En savoir plus</a>
             </div>
 
             <!-- events -->
@@ -501,17 +501,17 @@
                     <div class="col wow animate__fadeInUp">
                         <div class="ul-event">
                             <div class="ul-event-img">
-                                <img src="{{ asset('assets/img/event-img.jpg') }}" alt="Event Image">
-                                <span class="date">29 <span>July</span></span>
+                                <img src="{{ asset('assets/img/event-img.jpg') }}" alt="Image de l'événement">
+                                <span class="date">29 <span>Juillet</span></span>
                             </div>
                             <div class="ul-event-txt">
-                                <h3 class="ul-event-title"><a href="event-details.html">Manager Disapproved of the Most Recent Work.</a></h3>
-                                <p class="ul-event-descr">Dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernaturaut</p>
+                                <h3 class="ul-event-title"><a href="{{ route('events') }}">Événement solidaire pour les familles dans le besoin</a></h3>
+                                <p class="ul-event-descr">Rejoignez-nous pour cet événement exceptionnel dédié à l'amélioration des conditions de vie des familles et des enfants dans le besoin.</p>
                                 <div class="ul-event-info">
-                                    <span class="ul-event-info-title">Venue</span>
-                                    <p class="ul-event-info-descr">350 5th AveNew York, NY 118 United States</p>
+                                    <span class="ul-event-info-title">Lieu</span>
+                                    <p class="ul-event-info-descr">Bruxelles, Belgique</p>
                                 </div>
-                                <a href="event-details.html" class="ul-btn"><i class="flaticon-fast-forward-double-right-arrows-symbol"></i> Event Details</a>
+                                <a href="{{ route('events') }}" class="ul-btn"><i class="flaticon-fast-forward-double-right-arrows-symbol"></i> Détails de l'événement</a>
                             </div>
                         </div>
                     </div>
@@ -520,17 +520,17 @@
                     <div class="col wow animate__fadeInUp">
                         <div class="ul-event">
                             <div class="ul-event-img">
-                                <img src="{{ asset('assets/img/blog-b-1.jpg') }}" alt="Event Image">
-                                <span class="date">29 <span>July</span></span>
+                                <img src="{{ asset('assets/img/blog-b-1.jpg') }}" alt="Image de l'événement">
+                                <span class="date">29 <span>Juillet</span></span>
                             </div>
                             <div class="ul-event-txt">
-                                <h3 class="ul-event-title"><a href="event-details.html">Manager Disapproved of the Most Recent Work.</a></h3>
-                                <p class="ul-event-descr">Dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernaturaut</p>
+                                <h3 class="ul-event-title"><a href="{{ route('events') }}">Événement solidaire pour les familles dans le besoin</a></h3>
+                                <p class="ul-event-descr">Rejoignez-nous pour cet événement exceptionnel dédié à l'amélioration des conditions de vie des familles et des enfants dans le besoin.</p>
                                 <div class="ul-event-info">
-                                    <span class="ul-event-info-title">Venue</span>
-                                    <p class="ul-event-info-descr">350 5th AveNew York, NY 118 United States</p>
+                                    <span class="ul-event-info-title">Lieu</span>
+                                    <p class="ul-event-info-descr">Bruxelles, Belgique</p>
                                 </div>
-                                <a href="event-details.html" class="ul-btn"><i class="flaticon-fast-forward-double-right-arrows-symbol"></i> Event Details</a>
+                                <a href="{{ route('events') }}" class="ul-btn"><i class="flaticon-fast-forward-double-right-arrows-symbol"></i> Détails de l'événement</a>
                             </div>
                         </div>
                     </div>
@@ -540,16 +540,16 @@
                         <div class="ul-event">
                             <div class="ul-event-img">
                                 <img src="{{ asset('assets/img/blog-2.jpg') }}" alt="Event Image">
-                                <span class="date">29 <span>July</span></span>
+                                <span class="date">29 <span>Juillet</span></span>
                             </div>
                             <div class="ul-event-txt">
-                                <h3 class="ul-event-title"><a href="event-details.html">Manager Disapproved of the Most Recent Work.</a></h3>
-                                <p class="ul-event-descr">Dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernaturaut</p>
+                                <h3 class="ul-event-title"><a href="{{ route('events') }}">Événement solidaire pour les familles dans le besoin</a></h3>
+                                <p class="ul-event-descr">Rejoignez-nous pour cet événement exceptionnel dédié à l'amélioration des conditions de vie des familles et des enfants dans le besoin.</p>
                                 <div class="ul-event-info">
-                                    <span class="ul-event-info-title">Venue</span>
-                                    <p class="ul-event-info-descr">350 5th AveNew York, NY 118 United States</p>
+                                    <span class="ul-event-info-title">Lieu</span>
+                                    <p class="ul-event-info-descr">Bruxelles, Belgique</p>
                                 </div>
-                                <a href="event-details.html" class="ul-btn"><i class="flaticon-fast-forward-double-right-arrows-symbol"></i> Event Details</a>
+                                <a href="{{ route('events') }}" class="ul-btn"><i class="flaticon-fast-forward-double-right-arrows-symbol"></i> Détails de l'événement</a>
                             </div>
                         </div>
                     </div>
@@ -559,16 +559,16 @@
                         <div class="ul-event">
                             <div class="ul-event-img">
                                 <img src="{{ asset('assets/img/blog-b-3.jpg') }}" alt="Event Image">
-                                <span class="date">29 <span>July</span></span>
+                                <span class="date">29 <span>Juillet</span></span>
                             </div>
                             <div class="ul-event-txt">
-                                <h3 class="ul-event-title"><a href="event-details.html">Manager Disapproved of the Most Recent Work.</a></h3>
-                                <p class="ul-event-descr">Dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernaturaut</p>
+                                <h3 class="ul-event-title"><a href="{{ route('events') }}">Événement solidaire pour les familles dans le besoin</a></h3>
+                                <p class="ul-event-descr">Rejoignez-nous pour cet événement exceptionnel dédié à l'amélioration des conditions de vie des familles et des enfants dans le besoin.</p>
                                 <div class="ul-event-info">
-                                    <span class="ul-event-info-title">Venue</span>
-                                    <p class="ul-event-info-descr">350 5th AveNew York, NY 118 United States</p>
+                                    <span class="ul-event-info-title">Lieu</span>
+                                    <p class="ul-event-info-descr">Bruxelles, Belgique</p>
                                 </div>
-                                <a href="event-details.html" class="ul-btn"><i class="flaticon-fast-forward-double-right-arrows-symbol"></i> Event Details</a>
+                                <a href="{{ route('events') }}" class="ul-btn"><i class="flaticon-fast-forward-double-right-arrows-symbol"></i> Détails de l'événement</a>
                             </div>
                         </div>
                     </div>
@@ -578,8 +578,8 @@
         </div>
         <!-- vectors -->
         <div class="ul-events-vectors">
-            <img src="{{ asset('assets/img/events-vector-1.png') }}" alt="Events Image" class="vector-1">
-            <img src="{{ asset('assets/img/events-vector-2.svg') }}" alt="Events Image" class="vector-2">
+            <img src="{{ asset('assets/img/events-vector-1.png') }}" alt="Image des événements" class="vector-1">
+            <img src="{{ asset('assets/img/events-vector-2.svg') }}" alt="Image des événements" class="vector-2">
         </div>
     </section>
     <!-- EVENTS SECTION END -->
@@ -592,54 +592,54 @@
                 <div class="row row-cols-md-2 row-cols-1 gy-4 align-items-center">
                     <div class="col">
                         <div class="ul-why-join-img">
-                            <img src="{{ asset('assets/img/why-join.jpg') }}" alt="Image">
+                            <img src="{{ asset('assets/img/why-join.jpg') }}" alt="Image pourquoi nous rejoindre">
                         </div>
                     </div>
 
                     <!-- txt -->
                     <div class="col">
                         <div class="ul-why-join-txt">
-                            <span class="ul-section-sub-title">Join us</span>
-                            <h2 class="ul-section-title">Why We Need You Become a Volunteer</h2>
-                            <p class="ul-section-descr">We help companies develop powerful corporate social responsibility, grantmaking, and employee engagement strategies.</p>
+                            <span class="ul-section-sub-title">Rejoignez-nous</span>
+                            <h2 class="ul-section-title">Pourquoi avons-nous besoin de vous comme bénévole</h2>
+                            <p class="ul-section-descr">Votre engagement fait la différence. Ensemble, nous développons des stratégies de responsabilité sociale puissantes et créons un impact durable dans nos communautés.</p>
 
                             <div class="ul-accordion">
                                 <div class="ul-single-accordion-item open">
                                     <div class="ul-single-accordion-item__header">
                                         <div class="left">
-                                            <h3 class="ul-single-accordion-item__title">Recognition and Fulfillment</h3>
+                                            <h3 class="ul-single-accordion-item__title">Reconnaissance et accomplissement</h3>
                                         </div>
                                         <span class="icon"><i class="flaticon-next"></i></span>
                                     </div>
 
                                     <div class="ul-single-accordion-item__body">
-                                        <p>Aonsectetur adipiscing elit Aenean scelerisque augue vitae consequat Juisque eget congue velit in cursus leo sodales the turpis euismod quis sapien euismod quis sapien the. E-learning is suitable for students, professionals, and anyone interested.</p>
+                                        <p>Rejoignez une équipe dédiée qui reconnaît et valorise votre contribution. Participez à des projets significatifs qui ont un impact réel sur la vie des personnes dans le besoin.</p>
                                     </div>
                                 </div>
 
                                 <div class="ul-single-accordion-item">
                                     <div class="ul-single-accordion-item__header">
                                         <div class="left">
-                                            <h3 class="ul-single-accordion-item__title">Why Join Us as a Volunteer?</h3>
+                                            <h3 class="ul-single-accordion-item__title">Pourquoi nous rejoindre comme bénévole ?</h3>
                                         </div>
                                         <span class="icon"><i class="flaticon-next"></i></span>
                                     </div>
 
                                     <div class="ul-single-accordion-item__body">
-                                        <p>Aonsectetur adipiscing elit Aenean scelerisque augue vitae consequat Juisque eget congue velit in cursus leo sodales the turpis euismod quis sapien euismod quis sapien the. E-learning is suitable for students, professionals, and anyone interested.</p>
+                                        <p>Devenez bénévole pour développer vos compétences, rencontrer des personnes partageant les mêmes valeurs, et contribuer à des causes qui vous tiennent à cœur. Votre temps et votre énergie font toute la différence.</p>
                                     </div>
                                 </div>
 
                                 <div class="ul-single-accordion-item">
                                     <div class="ul-single-accordion-item__header">
                                         <div class="left">
-                                            <h3 class="ul-single-accordion-item__title">Be Part of a Community</h3>
+                                            <h3 class="ul-single-accordion-item__title">Faire partie d'une communauté</h3>
                                         </div>
                                         <span class="icon"><i class="flaticon-next"></i></span>
                                     </div>
 
                                     <div class="ul-single-accordion-item__body">
-                                        <p>Aonsectetur adipiscing elit Aenean scelerisque augue vitae consequat Juisque eget congue velit in cursus leo sodales the turpis euismod quis sapien euismod quis sapien the. E-learning is suitable for students, professionals, and anyone interested.</p>
+                                        <p>Rejoignez une communauté de personnes engagées qui partagent votre passion pour aider les autres. Ensemble, nous créons un réseau de solidarité et d'entraide.</p>
                                     </div>
                                 </div>
                             </div>
@@ -658,11 +658,11 @@
             <!-- Heading -->
             <div class="ul-section-heading justify-content-between">
                 <div class="left">
-                    <span class="ul-section-sub-title">Our Team</span>
-                    <h2 class="ul-section-title">Skilled Legal Professionals Dedicated to You</h2>
+                    <span class="ul-section-sub-title">Notre équipe</span>
+                    <h2 class="ul-section-title">Des professionnels dévoués à votre service</h2>
                 </div>
                 <div>
-                    <a href="team.html" class="ul-btn"><i class="flaticon-fast-forward-double-right-arrows-symbol"></i> Join With us</a>
+                    <a href="{{ route('contact') }}" class="ul-btn"><i class="flaticon-fast-forward-double-right-arrows-symbol"></i> Nous rejoindre</a>
                 </div>
             </div>
 
@@ -671,7 +671,7 @@
                 <div class="col">
                     <div class="ul-team-member">
                         <div class="ul-team-member-img">
-                            <img src="{{ asset('assets/img/member-1.jpg') }}" alt="Team Member Image">
+                            <img src="{{ asset('assets/img/member-1.jpg') }}" alt="Photo du membre de l'équipe">
                             <div class="ul-team-member-socials">
                                 <a href="#"><i class="flaticon-facebook"></i></a>
                                 <a href="#"><i class="flaticon-twitter"></i></a>
@@ -680,8 +680,8 @@
                             </div>
                         </div>
                         <div class="ul-team-member-info">
-                            <h3 class="ul-team-member-name"><a href="team-details.html">John Doe</a></h3>
-                            <p class="ul-team-member-designation">Attorney</p>
+                            <h3 class="ul-team-member-name"><a href="#">Membre de l'équipe</a></h3>
+                            <p class="ul-team-member-designation">Bénévole</p>
                         </div>
                     </div>
                 </div>
@@ -699,8 +699,8 @@
                             </div>
                         </div>
                         <div class="ul-team-member-info">
-                            <h3 class="ul-team-member-name"><a href="team-details.html">John Doe</a></h3>
-                            <p class="ul-team-member-designation">Attorney</p>
+                            <h3 class="ul-team-member-name"><a href="#">Membre de l'équipe</a></h3>
+                            <p class="ul-team-member-designation">Bénévole</p>
                         </div>
                     </div>
                 </div>
@@ -718,8 +718,8 @@
                             </div>
                         </div>
                         <div class="ul-team-member-info">
-                            <h3 class="ul-team-member-name"><a href="team-details.html">John Doe</a></h3>
-                            <p class="ul-team-member-designation">Attorney</p>
+                            <h3 class="ul-team-member-name"><a href="#">Membre de l'équipe</a></h3>
+                            <p class="ul-team-member-designation">Bénévole</p>
                         </div>
                     </div>
                 </div>
@@ -737,8 +737,8 @@
                             </div>
                         </div>
                         <div class="ul-team-member-info">
-                            <h3 class="ul-team-member-name"><a href="team-details.html">John Doe</a></h3>
-                            <p class="ul-team-member-designation">Attorney</p>
+                            <h3 class="ul-team-member-name"><a href="#">Membre de l'équipe</a></h3>
+                            <p class="ul-team-member-designation">Bénévole</p>
                         </div>
                     </div>
                 </div>
@@ -753,8 +753,8 @@
         <div class="ul-testimonial-container">
             <div class="ul-section-heading text-center">
                 <div>
-                    <span class="ul-section-sub-title">Testimonials</span>
-                    <h2 class="ul-section-title">What They Are Talking About Charitics</h2>
+                    <span class="ul-section-sub-title">Témoignages</span>
+                    <h2 class="ul-section-title">Ce qu'ils disent d'Espoir Vie</h2>
                 </div>
             </div>
 
@@ -770,13 +770,13 @@
                                 <i class="flaticon-star"></i>
                                 <i class="flaticon-star-1"></i>
                             </div>
-                            <p class="ul-review-descr">Praesent ut lacus a velit tincidunt aliquam a eget urna. Sed ullamcorper tristique nisl at pharetra turpis accumsan et etiam eu sollicitudin eros. In imperdiet accumsan.</p>
+                            <p class="ul-review-descr">Espoir Vie ASBL a fait une différence incroyable dans ma vie et celle de ma famille. Leur dévouement et leur compassion sont vraiment remarquables. Je suis reconnaissant pour tout ce qu'ils font.</p>
                             <div class="ul-review-bottom">
                                 <div class="ul-review-reviewer">
-                                    <div class="reviewer-image"><img src="{{ asset('assets/img/member-1.jpg') }}" alt="reviewer image"></div>
+                                    <div class="reviewer-image"><img src="{{ asset('assets/img/member-1.jpg') }}" alt="Photo du témoin"></div>
                                     <div>
-                                        <h3 class="reviewer-name">Esther Howard</h3>
-                                        <span class="reviewer-role">Web Designer</span>
+                                        <h3 class="reviewer-name">Marie Dupont</h3>
+                                        <span class="reviewer-role">Bénévole</span>
                                     </div>
                                 </div>
 
@@ -796,13 +796,13 @@
                                 <i class="flaticon-star"></i>
                                 <i class="flaticon-star-1"></i>
                             </div>
-                            <p class="ul-review-descr">Praesent ut lacus a velit tincidunt aliquam a eget urna. Sed ullamcorper tristique nisl at pharetra turpis accumsan et etiam eu sollicitudin eros. In imperdiet accumsan.</p>
+                            <p class="ul-review-descr">Merci à Espoir Vie ASBL pour leur engagement exceptionnel. Votre travail fait vraiment une différence dans notre communauté. Je suis fier de soutenir votre cause.</p>
                             <div class="ul-review-bottom">
                                 <div class="ul-review-reviewer">
-                                    <div class="reviewer-image"><img src="{{ asset('assets/img/member-2.jpg') }}" alt="reviewer image"></div>
+                                    <div class="reviewer-image"><img src="{{ asset('assets/img/member-2.jpg') }}" alt="Photo du témoin"></div>
                                     <div>
-                                        <h3 class="reviewer-name">Esther Howard</h3>
-                                        <span class="reviewer-role">Web Designer</span>
+                                        <h3 class="reviewer-name">Pierre Dubois</h3>
+                                        <span class="reviewer-role">Donateur</span>
                                     </div>
                                 </div>
 
@@ -822,13 +822,13 @@
                                 <i class="flaticon-star"></i>
                                 <i class="flaticon-star-1"></i>
                             </div>
-                            <p class="ul-review-descr">Praesent ut lacus a velit tincidunt aliquam a eget urna. Sed ullamcorper tristique nisl at pharetra turpis accumsan et etiam eu sollicitudin eros. In imperdiet accumsan.</p>
+                            <p class="ul-review-descr">Espoir Vie ASBL transforme des vies chaque jour. Leur transparence et leur dévouement sont exemplaires. Continuez votre excellent travail !</p>
                             <div class="ul-review-bottom">
                                 <div class="ul-review-reviewer">
-                                    <div class="reviewer-image"><img src="{{ asset('assets/img/member-3.jpg') }}" alt="reviewer image"></div>
+                                    <div class="reviewer-image"><img src="{{ asset('assets/img/member-3.jpg') }}" alt="Photo du témoin"></div>
                                     <div>
-                                        <h3 class="reviewer-name">Esther Howard</h3>
-                                        <span class="reviewer-role">Web Designer</span>
+                                        <h3 class="reviewer-name">Claire Bernard</h3>
+                                        <span class="reviewer-role">Partenaire</span>
                                     </div>
                                 </div>
 
@@ -848,13 +848,13 @@
                                 <i class="flaticon-star"></i>
                                 <i class="flaticon-star-1"></i>
                             </div>
-                            <p class="ul-review-descr">Praesent ut lacus a velit tincidunt aliquam a eget urna. Sed ullamcorper tristique nisl at pharetra turpis accumsan et etiam eu sollicitudin eros. In imperdiet accumsan.</p>
+                            <p class="ul-review-descr">Grâce à Espoir Vie ASBL, j'ai pu redonner espoir à ma famille. Leur aide a été déterminante dans une période difficile de notre vie. Merci pour votre générosité.</p>
                             <div class="ul-review-bottom">
                                 <div class="ul-review-reviewer">
-                                    <div class="reviewer-image"><img src="{{ asset('assets/img/member-4.jpg') }}" alt="reviewer image"></div>
+                                    <div class="reviewer-image"><img src="{{ asset('assets/img/member-4.jpg') }}" alt="Photo du témoin"></div>
                                     <div>
-                                        <h3 class="reviewer-name">Esther Howard</h3>
-                                        <span class="reviewer-role">Web Designer</span>
+                                        <h3 class="reviewer-name">Sophie Martin</h3>
+                                        <span class="reviewer-role">Bénévole</span>
                                     </div>
                                 </div>
 
@@ -874,13 +874,13 @@
                                 <i class="flaticon-star"></i>
                                 <i class="flaticon-star-1"></i>
                             </div>
-                            <p class="ul-review-descr">Praesent ut lacus a velit tincidunt aliquam a eget urna. Sed ullamcorper tristique nisl at pharetra turpis accumsan et etiam eu sollicitudin eros. In imperdiet accumsan.</p>
+                            <p class="ul-review-descr">Espoir Vie ASBL a fait une différence incroyable dans ma vie et celle de ma famille. Leur dévouement et leur compassion sont vraiment remarquables. Je suis reconnaissant pour tout ce qu'ils font.</p>
                             <div class="ul-review-bottom">
                                 <div class="ul-review-reviewer">
-                                    <div class="reviewer-image"><img src="{{ asset('assets/img/member-1.jpg') }}" alt="reviewer image"></div>
+                                    <div class="reviewer-image"><img src="{{ asset('assets/img/member-1.jpg') }}" alt="Photo du témoin"></div>
                                     <div>
-                                        <h3 class="reviewer-name">Esther Howard</h3>
-                                        <span class="reviewer-role">Web Designer</span>
+                                        <h3 class="reviewer-name">Marie Dupont</h3>
+                                        <span class="reviewer-role">Bénévole</span>
                                     </div>
                                 </div>
 
@@ -906,9 +906,9 @@
                 <div class="col-sm-5">
                     <div class="ul-section-heading">
                         <div class="left">
-                            <span class="ul-section-sub-title"> Latest Blog </span>
-                            <h2 class="ul-section-title">Read Our Latest News</h2>
-                            <p class="ul-section-descr">We help companies develop powerful corporate social responsibility, grantmaking, and employee engagement strategies.</p>
+                            <span class="ul-section-sub-title">Derniers articles</span>
+                            <h2 class="ul-section-title">Lisez nos dernières actualités</h2>
+                            <p class="ul-section-descr">Découvrez nos dernières actions, nos projets en cours et les témoignages de ceux que nous aidons. Restez informé de nos activités et de notre impact.</p>
                             <div class="ul-blogs-slider-nav ul-slider-nav">
                                 <button class="prev"><i class="flaticon-back"></i></button>
                                 <button class="next"><i class="flaticon-next"></i></button>
@@ -924,10 +924,10 @@
                             <!-- single blog -->
                             <div class="swiper-slide">
                                 <div class="ul-blog">
-                                    <div class="ul-blog-img"><img src="{{ asset('assets/img/blog-1.jpg') }}" alt="Blog Image">
+                                    <div class="ul-blog-img"><img src="{{ asset('assets/img/blog-1.jpg') }}" alt="Image de l'article">
                                         <div class="date">
                                             <span class="number">15</span>
-                                            <span class="txt">Dec</span>
+                                            <span class="txt">Déc</span>
                                         </div>
                                     </div>
                                     <div class="ul-blog-txt">
@@ -935,16 +935,16 @@
                                             <!-- single info -->
                                             <div class="ul-blog-info">
                                                 <span class="icon"><i class="flaticon-account"></i></span>
-                                                <span class="text font-normal text-[14px] text-etGray">By Admin</span>
+                                                <span class="text font-normal text-[14px] text-etGray">Par l'équipe</span>
                                             </div>
                                             <!-- single info -->
                                             <div class="ul-blog-info">
                                                 <span class="icon"><i class="flaticon-price-tag"></i></span>
-                                                <span class="text font-normal text-[14px] text-etGray">Donation</span>
+                                                <span class="text font-normal text-[14px] text-etGray">Don</span>
                                             </div>
                                         </div>
-                                        <a href="blog-details.html" class="ul-blog-title">Give Education, It’s The Best Gift Ever.</a>
-                                        <a href="blog-details.html" class="ul-blog-btn">Read More <span class="icon"><i class="flaticon-next"></i></span></a>
+                                        <a href="#" class="ul-blog-title">Donner l'éducation, c'est le plus beau cadeau que l'on puisse offrir</a>
+                                        <a href="#" class="ul-blog-btn">Lire la suite <span class="icon"><i class="flaticon-next"></i></span></a>
                                     </div>
                                 </div>
                             </div>
@@ -952,10 +952,10 @@
                             <!-- single blog -->
                             <div class="swiper-slide">
                                 <div class="ul-blog">
-                                    <div class="ul-blog-img"><img src="{{ asset('assets/img/blog-2.jpg') }}" alt="Blog Image">
+                                    <div class="ul-blog-img"><img src="{{ asset('assets/img/blog-2.jpg') }}" alt="Image de l'article">
                                         <div class="date">
                                             <span class="number">15</span>
-                                            <span class="txt">Dec</span>
+                                            <span class="txt">Déc</span>
                                         </div>
                                     </div>
                                     <div class="ul-blog-txt">
@@ -963,16 +963,16 @@
                                             <!-- single info -->
                                             <div class="ul-blog-info">
                                                 <span class="icon"><i class="flaticon-account"></i></span>
-                                                <span class="text font-normal text-[14px] text-etGray">By Admin</span>
+                                                <span class="text font-normal text-[14px] text-etGray">Par l'équipe</span>
                                             </div>
                                             <!-- single info -->
                                             <div class="ul-blog-info">
                                                 <span class="icon"><i class="flaticon-price-tag"></i></span>
-                                                <span class="text font-normal text-[14px] text-etGray">Donation</span>
+                                                <span class="text font-normal text-[14px] text-etGray">Don</span>
                                             </div>
                                         </div>
-                                        <a href="blog-details.html" class="ul-blog-title">Don’t treat oceans as universal garbage cans</a>
-                                        <a href="blog-details.html" class="ul-blog-btn">Read More <span class="icon"><i class="flaticon-next"></i></span></a>
+                                        <a href="#" class="ul-blog-title">Ne traitons pas les océans comme des poubelles universelles</a>
+                                        <a href="#" class="ul-blog-btn">Lire la suite <span class="icon"><i class="flaticon-next"></i></span></a>
                                     </div>
                                 </div>
                             </div>
@@ -980,10 +980,10 @@
                             <!-- single blog -->
                             <div class="swiper-slide">
                                 <div class="ul-blog">
-                                    <div class="ul-blog-img"><img src="{{ asset('assets/img/blog-3.jpg') }}" alt="Blog Image">
+                                    <div class="ul-blog-img"><img src="{{ asset('assets/img/blog-3.jpg') }}" alt="Image de l'article">
                                         <div class="date">
                                             <span class="number">15</span>
-                                            <span class="txt">Dec</span>
+                                            <span class="txt">Déc</span>
                                         </div>
                                     </div>
                                     <div class="ul-blog-txt">
@@ -991,16 +991,16 @@
                                             <!-- single info -->
                                             <div class="ul-blog-info">
                                                 <span class="icon"><i class="flaticon-account"></i></span>
-                                                <span class="text font-normal text-[14px] text-etGray">By Admin</span>
+                                                <span class="text font-normal text-[14px] text-etGray">Par l'équipe</span>
                                             </div>
                                             <!-- single info -->
                                             <div class="ul-blog-info">
                                                 <span class="icon"><i class="flaticon-price-tag"></i></span>
-                                                <span class="text font-normal text-[14px] text-etGray">Donation</span>
+                                                <span class="text font-normal text-[14px] text-etGray">Don</span>
                                             </div>
                                         </div>
-                                        <a href="blog-details.html" class="ul-blog-title">The sun and the sand makes beaches beautiful</a>
-                                        <a href="blog-details.html" class="ul-blog-btn">Read More <span class="icon"><i class="flaticon-next"></i></span></a>
+                                        <a href="#" class="ul-blog-title">Protéger nos plages pour les générations futures</a>
+                                        <a href="#" class="ul-blog-btn">Lire la suite <span class="icon"><i class="flaticon-next"></i></span></a>
                                     </div>
                                 </div>
                             </div>
@@ -1008,10 +1008,10 @@
                             <!-- single blog -->
                             <div class="swiper-slide">
                                 <div class="ul-blog">
-                                    <div class="ul-blog-img"><img src="{{ asset('assets/img/blog-1.jpg') }}" alt="Blog Image">
+                                    <div class="ul-blog-img"><img src="{{ asset('assets/img/blog-1.jpg') }}" alt="Image de l'article">
                                         <div class="date">
                                             <span class="number">15</span>
-                                            <span class="txt">Dec</span>
+                                            <span class="txt">Déc</span>
                                         </div>
                                     </div>
                                     <div class="ul-blog-txt">
@@ -1019,16 +1019,16 @@
                                             <!-- single info -->
                                             <div class="ul-blog-info">
                                                 <span class="icon"><i class="flaticon-account"></i></span>
-                                                <span class="text font-normal text-[14px] text-etGray">By Admin</span>
+                                                <span class="text font-normal text-[14px] text-etGray">Par l'équipe</span>
                                             </div>
                                             <!-- single info -->
                                             <div class="ul-blog-info">
                                                 <span class="icon"><i class="flaticon-price-tag"></i></span>
-                                                <span class="text font-normal text-[14px] text-etGray">Donation</span>
+                                                <span class="text font-normal text-[14px] text-etGray">Don</span>
                                             </div>
                                         </div>
-                                        <a href="blog-details.html" class="ul-blog-title">The sun and the sand makes beaches beautiful</a>
-                                        <a href="blog-details.html" class="ul-blog-btn">Read More <span class="icon"><i class="flaticon-next"></i></span></a>
+                                        <a href="#" class="ul-blog-title">Protéger nos plages pour les générations futures</a>
+                                        <a href="#" class="ul-blog-btn">Lire la suite <span class="icon"><i class="flaticon-next"></i></span></a>
                                     </div>
                                 </div>
                             </div>
@@ -1047,7 +1047,7 @@
             <div class="swiper-wrapper">
                 <!-- single gallery item -->
                 <div class="ul-gallery-item swiper-slide">
-                    <img src="{{ asset('assets/img/gallery-item-1.png') }}" alt="Gallery Image">
+                    <img src="{{ asset('assets/img/gallery-item-1.png') }}" alt="Image de la galerie">
                     <div class="ul-gallery-item-btn-wrapper">
                         <a href="{{ asset('assets/img/gallery-item-1.png') }}" data-fslightbox="gallery"><i class="flaticon-instagram"></i></a>
                     </div>
@@ -1055,7 +1055,7 @@
 
                 <!-- single gallery item -->
                 <div class="ul-gallery-item swiper-slide">
-                    <img src="{{ asset('assets/img/gallery-item-2.png') }}" alt="Gallery Image">
+                    <img src="{{ asset('assets/img/gallery-item-2.png') }}" alt="Image de la galerie">
                     <div class="ul-gallery-item-btn-wrapper">
                         <a href="{{ asset('assets/img/gallery-item-2.png') }}" data-fslightbox="gallery"><i class="flaticon-instagram"></i></a>
                     </div>
@@ -1063,7 +1063,7 @@
 
                 <!-- single gallery item -->
                 <div class="ul-gallery-item swiper-slide">
-                    <img src="{{ asset('assets/img/gallery-item-3.png') }}" alt="Gallery Image">
+                    <img src="{{ asset('assets/img/gallery-item-3.png') }}" alt="Image de la galerie">
                     <div class="ul-gallery-item-btn-wrapper">
                         <a href="{{ asset('assets/img/gallery-item-3.png') }}" data-fslightbox="gallery"><i class="flaticon-instagram"></i></a>
                     </div>
@@ -1071,7 +1071,7 @@
 
                 <!-- single gallery item -->
                 <div class="ul-gallery-item swiper-slide">
-                    <img src="{{ asset('assets/img/gallery-item-4.png') }}" alt="Gallery Image">
+                    <img src="{{ asset('assets/img/gallery-item-4.png') }}" alt="Image de la galerie">
                     <div class="ul-gallery-item-btn-wrapper">
                         <a href="{{ asset('assets/img/gallery-item-4.png') }}" data-fslightbox="gallery"><i class="flaticon-instagram"></i></a>
                     </div>
@@ -1079,7 +1079,7 @@
 
                 <!-- single gallery item -->
                 <div class="ul-gallery-item swiper-slide">
-                    <img src="{{ asset('assets/img/gallery-item-5.png') }}" alt="Gallery Image">
+                    <img src="{{ asset('assets/img/gallery-item-5.png') }}" alt="Image de la galerie">
                     <div class="ul-gallery-item-btn-wrapper">
                         <a href="{{ asset('assets/img/gallery-item-5.png') }}" data-fslightbox="gallery"><i class="flaticon-instagram"></i></a>
                     </div>
@@ -1087,7 +1087,7 @@
 
                 <!-- single gallery item -->
                 <div class="ul-gallery-item swiper-slide">
-                    <img src="{{ asset('assets/img/gallery-item-6.png') }}" alt="Gallery Image">
+                    <img src="{{ asset('assets/img/gallery-item-6.png') }}" alt="Image de la galerie">
                     <div class="ul-gallery-item-btn-wrapper">
                         <a href="{{ asset('assets/img/gallery-item-6.png') }}" data-fslightbox="gallery"><i class="flaticon-instagram"></i></a>
                     </div>
@@ -1095,7 +1095,7 @@
 
                 <!-- single gallery item -->
                 <div class="ul-gallery-item swiper-slide">
-                    <img src="{{ asset('assets/img/gallery-item-1.png') }}" alt="Gallery Image">
+                    <img src="{{ asset('assets/img/gallery-item-1.png') }}" alt="Image de la galerie">
                     <div class="ul-gallery-item-btn-wrapper">
                         <a href="{{ asset('assets/img/gallery-item-1.png') }}" data-fslightbox="gallery"><i class="flaticon-instagram"></i></a>
                     </div>
@@ -1103,7 +1103,7 @@
 
                 <!-- single gallery item -->
                 <div class="ul-gallery-item swiper-slide">
-                    <img src="{{ asset('assets/img/gallery-item-2.png') }}" alt="Gallery Image">
+                    <img src="{{ asset('assets/img/gallery-item-2.png') }}" alt="Image de la galerie">
                     <div class="ul-gallery-item-btn-wrapper">
                         <a href="{{ asset('assets/img/gallery-item-2.png') }}" data-fslightbox="gallery"><i class="flaticon-instagram"></i></a>
                     </div>
