@@ -22,9 +22,13 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]);
 
-        // Seed des activités/projets
+        // Seed de toutes les données
         $this->call([
+            AdminSeeder::class,
             ActivitySeeder::class,
+            EventSeeder::class,
+            TestimonialSeeder::class,
+            ArticleSeeder::class,
         ]);
     }
 }

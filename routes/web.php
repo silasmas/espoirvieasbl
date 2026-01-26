@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 // Routes publiques
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/a-propos', [HomeController::class, 'about'])->name('about');
+Route::get('/notre-equipe', [HomeController::class, 'team'])->name('team');
 Route::get('/evenements', [HomeController::class, 'events'])->name('events');
 Route::get('/evenements/{activity}', [HomeController::class, 'showEvent'])->name('events.show');
 Route::get('/faire-un-don', [HomeController::class, 'donate'])->name('donate');
@@ -17,6 +18,13 @@ Route::get('/nous-contacter', [HomeController::class, 'contact'])->name('contact
 Route::post('/nous-contacter', [HomeController::class, 'storeContactMessage'])->name('contact.store');
 Route::post('/newsletter/subscribe', [HomeController::class, 'subscribeNewsletter'])->name('newsletter.subscribe');
 Route::get('/newsletter/unsubscribe/{token}', [HomeController::class, 'unsubscribeNewsletter'])->name('newsletter.unsubscribe');
+
+// Route de recherche globale (API)
+Route::get('/api/search', [HomeController::class, 'globalSearch'])->name('api.search');
+
+// Routes pour les articles/blog
+Route::get('/articles', [HomeController::class, 'articles'])->name('articles');
+Route::get('/articles/{slug}', [HomeController::class, 'showArticle'])->name('article.show');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

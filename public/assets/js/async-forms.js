@@ -561,6 +561,367 @@
 
     /**
      * =================================================================================
+     * RECHERCHE GLOBALE ASYNCHRONE
+     * =================================================================================
+     */
+
+    /**
+     * Initialise la recherche globale asynchrone
+     */
+    function initGlobalSearch() {
+        const searchInput = document.getElementById('ul-search');
+        const searchForm = document.getElementById('global-search-form');
+        
+        if (!searchInput || !searchForm) return;
+
+        // Créer le conteneur de résultats s'il n'existe pas
+        let searchResults = document.getElementById('search-results');
+        if (!searchResults) {
+            searchResults = document.createElement('div');
+            searchResults.id = 'search-results';
+            searchResults.className = 'search-results-dropdown';
+            searchForm.appendChild(searchResults);
+        }
+
+        let searchTimeout = null;
+        let currentQuery = '';
+        let isSearchOpen = false;
+
+        /**
+         * Effectue la recherche asynchrone
+         */
+        async function performSearch(query) {
+            currentQuery = query;
+
+            if (query.length < 2) {
+                showSearchHint();
+                return;
+            }
+
+            // Afficher le loading
+            showSearchLoading();
+
+            try {
+                const searchUrl = searchForm.dataset.searchUrl || '/api/search';
+                const response = await fetch(`${searchUrl}?q=${encodeURIComponent(query)}`, {
+                    headers: {
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Erreur réseau');
+                }
+
+                const data = await response.json();
+
+                // Vérifier que la query est toujours la même (éviter les conditions de course)
+                if (query === currentQuery && data.success) {
+                    displaySearchResults(data.results, query);
+                }
+            } catch (error) {
+                console.error('Erreur de recherche:', error);
+                showSearchError();
+            }
+        }
+
+        /**
+         * Affiche l'indication de saisie
+         */
+        function showSearchHint() {
+            searchResults.innerHTML = `
+                <div class="search-hint">
+                    <span class="search-hint-icon"><i class="flaticon-search"></i></span>
+                    <p>Tapez au moins 2 caractères pour rechercher</p>
+                </div>
+            `;
+            searchResults.classList.add('active');
+            isSearchOpen = true;
+        }
+
+        /**
+         * Affiche l'état de chargement
+         */
+        function showSearchLoading() {
+            searchResults.innerHTML = `
+                <div class="search-loading">
+                    <div class="search-loading-spinner"></div>
+                    <p>Recherche en cours...</p>
+                </div>
+            `;
+            searchResults.classList.add('active');
+            isSearchOpen = true;
+        }
+
+        /**
+         * Affiche une erreur
+         */
+        function showSearchError() {
+            searchResults.innerHTML = `
+                <div class="search-no-results">
+                    <span class="search-no-results-icon"><i class="flaticon-warning"></i></span>
+                    <h5>Erreur de connexion</h5>
+                    <p>Impossible d'effectuer la recherche. Veuillez réessayer.</p>
+                </div>
+            `;
+        }
+
+        /**
+         * Affiche les résultats de recherche
+         */
+        function displaySearchResults(results, query) {
+            if (!results || results.length === 0) {
+                searchResults.innerHTML = `
+                    <div class="search-no-results">
+                        <span class="search-no-results-icon"><i class="flaticon-search"></i></span>
+                        <h5>Aucun résultat trouvé</h5>
+                        <p>Aucun résultat pour "<strong>${escapeHtml(query)}</strong>"</p>
+                        <p style="margin-top: 8px; font-size: 13px;">Essayez avec d'autres termes de recherche.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Grouper les résultats par type
+            const grouped = {
+                article: results.filter(r => r.type === 'article'),
+                event: results.filter(r => r.type === 'event'),
+                team: results.filter(r => r.type === 'team')
+            };
+
+            let html = `
+                <div class="search-results-header">
+                    <h4><i class="flaticon-search" style="margin-right: 8px;"></i>Résultats de recherche</h4>
+                    <span>${results.length} résultat${results.length > 1 ? 's' : ''}</span>
+                </div>
+            `;
+
+            // Afficher les articles
+            if (grouped.article.length > 0) {
+                html += `<div class="search-group-title"><i class="flaticon-price-tag" style="margin-right: 6px;"></i>Articles (${grouped.article.length})</div>`;
+                grouped.article.forEach(item => {
+                    html += createSearchResultItem(item, query);
+                });
+            }
+
+            // Afficher les événements
+            if (grouped.event.length > 0) {
+                html += `<div class="search-group-title"><i class="flaticon-calendar" style="margin-right: 6px;"></i>Événements (${grouped.event.length})</div>`;
+                grouped.event.forEach(item => {
+                    html += createSearchResultItem(item, query);
+                });
+            }
+
+            // Afficher l'équipe
+            if (grouped.team.length > 0) {
+                html += `<div class="search-group-title"><i class="flaticon-team" style="margin-right: 6px;"></i>Équipe (${grouped.team.length})</div>`;
+                grouped.team.forEach(item => {
+                    html += createSearchResultItem(item, query);
+                });
+            }
+
+            searchResults.innerHTML = html;
+        }
+
+        /**
+         * Crée un élément de résultat HTML
+         */
+        function createSearchResultItem(item, query) {
+            const title = highlightSearchText(item.title, query);
+            const description = highlightSearchText(item.description || '', query);
+            const fallbackImage = '/assets/img/blog-1.jpg';
+            
+            return `
+                <a href="${item.url}" class="search-result-item" tabindex="0">
+                    <img src="${item.image || fallbackImage}" alt="${escapeHtml(item.title)}" class="search-result-image" onerror="this.src='${fallbackImage}'">
+                    <div class="search-result-content">
+                        <h5 class="search-result-title">${title}</h5>
+                        <p class="search-result-description">${description}</p>
+                    </div>
+                    <span class="search-result-type ${item.type}">${item.type_label}</span>
+                </a>
+            `;
+        }
+
+        /**
+         * Met en surbrillance le texte recherché
+         */
+        function highlightSearchText(text, query) {
+            if (!query || !text) return escapeHtml(text || '');
+            const escaped = escapeHtml(text);
+            const regex = new RegExp(`(${escapeRegex(query)})`, 'gi');
+            return escaped.replace(regex, '<span class="search-highlight">$1</span>');
+        }
+
+        /**
+         * Échappe les caractères HTML
+         */
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        /**
+         * Échappe les caractères regex
+         */
+        function escapeRegex(string) {
+            return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        }
+
+        /**
+         * Ferme les résultats de recherche
+         */
+        function closeSearchResults() {
+            searchResults.classList.remove('active');
+            isSearchOpen = false;
+        }
+
+        /**
+         * Ouvre les résultats de recherche
+         */
+        function openSearchResults() {
+            if (currentQuery.length >= 2) {
+                searchResults.classList.add('active');
+                isSearchOpen = true;
+            } else if (searchInput.value.length > 0) {
+                showSearchHint();
+            }
+        }
+
+        // Événement de saisie avec debounce
+        searchInput.addEventListener('input', function(e) {
+            const query = e.target.value.trim();
+
+            // Annuler le timeout précédent
+            if (searchTimeout) {
+                clearTimeout(searchTimeout);
+            }
+
+            if (query.length === 0) {
+                closeSearchResults();
+                return;
+            }
+
+            if (query.length < 2) {
+                showSearchHint();
+                return;
+            }
+
+            // Debounce de 300ms
+            searchTimeout = setTimeout(() => {
+                performSearch(query);
+            }, 300);
+        });
+
+        // Empêcher la soumission du formulaire
+        searchForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const query = searchInput.value.trim();
+            if (query.length >= 2) {
+                performSearch(query);
+            }
+        });
+
+        // Focus sur le champ de recherche
+        searchInput.addEventListener('focus', function() {
+            if (this.value.length > 0) {
+                openSearchResults();
+            }
+        });
+
+        // Fermer les résultats quand on clique ailleurs
+        document.addEventListener('click', function(e) {
+            if (!searchForm.contains(e.target) && !searchResults.contains(e.target)) {
+                closeSearchResults();
+            }
+        });
+
+        // Navigation au clavier
+        searchInput.addEventListener('keydown', function(e) {
+            if (!isSearchOpen) return;
+
+            const items = searchResults.querySelectorAll('.search-result-item');
+            if (items.length === 0) return;
+
+            const activeItem = searchResults.querySelector('.search-result-item:focus');
+            let currentIndex = Array.from(items).indexOf(activeItem);
+
+            switch (e.key) {
+                case 'ArrowDown':
+                    e.preventDefault();
+                    if (currentIndex < items.length - 1) {
+                        items[currentIndex + 1].focus();
+                    } else {
+                        items[0].focus();
+                    }
+                    break;
+
+                case 'ArrowUp':
+                    e.preventDefault();
+                    if (currentIndex > 0) {
+                        items[currentIndex - 1].focus();
+                    } else if (currentIndex === 0) {
+                        searchInput.focus();
+                    } else {
+                        items[items.length - 1].focus();
+                    }
+                    break;
+
+                case 'Escape':
+                    e.preventDefault();
+                    closeSearchResults();
+                    searchInput.blur();
+                    break;
+
+                case 'Enter':
+                    if (activeItem) {
+                        e.preventDefault();
+                        window.location.href = activeItem.href;
+                    }
+                    break;
+            }
+        });
+
+        // Navigation au clavier sur les éléments de résultat
+        searchResults.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeSearchResults();
+                searchInput.focus();
+            }
+        });
+
+        // Fermer les résultats quand on ferme le modal de recherche
+        const searchCloser = document.querySelector('.ul-search-closer');
+        if (searchCloser) {
+            searchCloser.addEventListener('click', function() {
+                closeSearchResults();
+                searchInput.value = '';
+                currentQuery = '';
+            });
+        }
+
+        // Également écouter les clics en dehors pour fermer
+        const searchWrapper = document.querySelector('.ul-search-form-wrapper');
+        if (searchWrapper) {
+            // Quand le wrapper perd la classe active (modal fermé)
+            const observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+                        if (!searchWrapper.classList.contains('active')) {
+                            closeSearchResults();
+                        }
+                    }
+                });
+            });
+            observer.observe(searchWrapper, { attributes: true });
+        }
+    }
+
+    /**
+     * =================================================================================
      * INITIALISATION
      * =================================================================================
      */
@@ -570,6 +931,7 @@
         initContactForm();
         initNewsletterForm();
         initDonationForm();
+        initGlobalSearch();
     });
 
 })();

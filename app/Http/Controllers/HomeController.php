@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Activity;
+use App\Models\Admin;
+use App\Models\Article;
 use App\Models\ContactMessage;
 use App\Models\NewsletterSubscription;
 use App\Models\Donor;
 use App\Models\Donation;
+use App\Models\Testimonial;
 use App\Mail\NewsletterSubscriptionEmail;
 use App\Mail\ContactMessageReceivedEmail;
 use App\Services\MailService;
@@ -47,7 +50,46 @@ class HomeController extends Controller
             ->limit(8)
             ->get();
 
-        return view('pages.home', compact('featuredActivities', 'recentActivities', 'donationActivities'));
+        // Récupérer les événements à venir (max 4)
+        $upcomingEvents = Activity::where('is_public', true)
+            ->where('type', 'event')
+            ->where('status', '!=', 'cancelled')
+            ->where(function ($query) {
+                $query->where('status', 'planned')
+                    ->orWhere('status', 'ongoing');
+            })
+            ->where('start_date', '>=', now())
+            ->orderBy('start_date', 'asc')
+            ->limit(4)
+            ->get();
+
+        // Récupérer les membres de l'équipe visibles
+        $teamMembers = Admin::teamVisible()
+            ->teamOrdered()
+            ->limit(4)
+            ->get();
+
+        // Récupérer les témoignages actifs
+        $testimonials = Testimonial::active()
+            ->ordered()
+            ->limit(6)
+            ->get();
+
+        // Récupérer les articles récents publiés
+        $articles = Article::published()
+            ->recent()
+            ->limit(6)
+            ->get();
+
+        return view('pages.home', compact(
+            'featuredActivities',
+            'recentActivities',
+            'donationActivities',
+            'upcomingEvents',
+            'teamMembers',
+            'testimonials',
+            'articles'
+        ));
     }
 
     /**
@@ -56,6 +98,19 @@ class HomeController extends Controller
     public function about()
     {
         return view('pages.about');
+    }
+
+    /**
+     * Affiche la page Notre équipe
+     */
+    public function team()
+    {
+        // Récupérer tous les membres de l'équipe visibles
+        $teamMembers = Admin::teamVisible()
+            ->teamOrdered()
+            ->get();
+
+        return view('pages.team', compact('teamMembers'));
     }
 
     /**
@@ -584,6 +639,154 @@ class HomeController extends Controller
                 'message' => 'Une erreur est survenue lors de l\'inscription. Veuillez réessayer plus tard.'
             ], 500);
         }
+    }
+
+    /**
+     * Recherche globale (articles, événements, équipe)
+     */
+    public function globalSearch(Request $request): JsonResponse
+    {
+        $query = $request->get('q', '');
+        
+        if (strlen($query) < 2) {
+            return response()->json([
+                'success' => true,
+                'results' => [],
+                'message' => 'Veuillez saisir au moins 2 caractères.'
+            ]);
+        }
+
+        $results = [];
+
+        // Recherche dans les articles
+        $articles = Article::published()
+            ->where(function ($q) use ($query) {
+                $q->where('title', 'LIKE', "%{$query}%")
+                  ->orWhere('excerpt', 'LIKE', "%{$query}%")
+                  ->orWhere('content', 'LIKE', "%{$query}%")
+                  ->orWhere('category', 'LIKE', "%{$query}%");
+            })
+            ->limit(5)
+            ->get();
+
+        foreach ($articles as $article) {
+            $results[] = [
+                'type' => 'article',
+                'type_label' => 'Article',
+                'id' => $article->id,
+                'title' => $article->title,
+                'description' => Str::limit($article->excerpt ?? strip_tags($article->content), 80),
+                'image' => $article->image ? (Str::startsWith($article->image, ['http://', 'https://']) ? $article->image : asset('storage/' . $article->image)) : asset('assets/img/blog-1.jpg'),
+                'url' => route('article.show', $article->slug),
+                'category' => $article->category,
+            ];
+        }
+
+        // Recherche dans les événements
+        $events = Activity::where('is_public', true)
+            ->where('type', 'event')
+            ->where('status', '!=', 'cancelled')
+            ->where(function ($q) use ($query) {
+                $q->where('title', 'LIKE', "%{$query}%")
+                  ->orWhere('short_description', 'LIKE', "%{$query}%")
+                  ->orWhere('description', 'LIKE', "%{$query}%")
+                  ->orWhere('location', 'LIKE', "%{$query}%")
+                  ->orWhere('category', 'LIKE', "%{$query}%");
+            })
+            ->limit(5)
+            ->get();
+
+        foreach ($events as $event) {
+            $imageUrl = $event->image;
+            if ($imageUrl && !Str::startsWith($imageUrl, ['http://', 'https://'])) {
+                $imageUrl = asset('storage/' . $imageUrl);
+            } elseif (!$imageUrl) {
+                $imageUrl = asset('assets/img/event-img.jpg');
+            }
+
+            $results[] = [
+                'type' => 'event',
+                'type_label' => 'Événement',
+                'id' => $event->id,
+                'title' => $event->title,
+                'description' => Str::limit($event->short_description ?? $event->description, 80),
+                'image' => $imageUrl,
+                'url' => route('events.show', $event),
+                'category' => $event->category,
+                'date' => $event->start_date ? $event->start_date->format('d/m/Y') : null,
+            ];
+        }
+
+        // Recherche dans les membres de l'équipe
+        $teamMembers = Admin::teamVisible()
+            ->where(function ($q) use ($query) {
+                $q->where('name', 'LIKE', "%{$query}%")
+                  ->orWhere('position', 'LIKE', "%{$query}%")
+                  ->orWhere('bio', 'LIKE', "%{$query}%");
+            })
+            ->limit(5)
+            ->get();
+
+        foreach ($teamMembers as $member) {
+            $imageUrl = $member->photo;
+            if ($imageUrl && !Str::startsWith($imageUrl, ['http://', 'https://'])) {
+                $imageUrl = asset('storage/' . $imageUrl);
+            } elseif (!$imageUrl) {
+                $imageUrl = asset('assets/img/member-1.jpg');
+            }
+
+            $results[] = [
+                'type' => 'team',
+                'type_label' => 'Équipe',
+                'id' => $member->id,
+                'title' => $member->name,
+                'description' => $member->position ?? 'Membre de l\'équipe',
+                'image' => $imageUrl,
+                'url' => route('team') . '#member-detail-' . $member->id,
+                'category' => $member->position,
+            ];
+        }
+
+        return response()->json([
+            'success' => true,
+            'results' => $results,
+            'total' => count($results),
+            'query' => $query,
+        ]);
+    }
+
+    /**
+     * Affiche la liste des articles
+     */
+    public function articles()
+    {
+        $articles = Article::published()
+            ->recent()
+            ->paginate(12);
+
+        return view('pages.articles', compact('articles'));
+    }
+
+    /**
+     * Affiche un article spécifique
+     */
+    public function showArticle(string $slug)
+    {
+        $article = Article::where('slug', $slug)
+            ->published()
+            ->firstOrFail();
+
+        // Incrémenter le compteur de vues
+        $article->increment('views_count');
+
+        // Récupérer les articles récents (hors l'article actuel)
+        $recentArticles = Article::published()
+            ->where('id', '!=', $article->id)
+            ->recent()
+            ->limit(3)
+            ->get();
+
+        return view('pages.article-detail', compact('article', 'recentArticles'));
     }
 
     /**

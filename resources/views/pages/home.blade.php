@@ -367,81 +367,46 @@
             <!-- events -->
             <div class="ul-events-wrapper">
                 <div class="row ul-bs-row row-cols-lg-2 row-cols-1">
-                    <!-- single event -->
-                    <div class="col wow animate__fadeInUp">
-                        <div class="ul-event">
-                            <div class="ul-event-img">
-                                <img src="{{ asset('assets/img/event-img.jpg') }}" alt="Image de l'événement">
-                                <span class="date">29 <span>Juillet</span></span>
-                            </div>
-                            <div class="ul-event-txt">
-                                <h3 class="ul-event-title"><a href="{{ route('events') }}">Événement solidaire pour les familles dans le besoin</a></h3>
-                                <p class="ul-event-descr">Rejoignez-nous pour cet événement exceptionnel dédié à l'amélioration des conditions de vie des familles et des enfants dans le besoin.</p>
-                                <div class="ul-event-info">
-                                    <span class="ul-event-info-title">Lieu</span>
-                                    <p class="ul-event-info-descr">Bruxelles, Belgique</p>
+                    @if(isset($upcomingEvents) && $upcomingEvents->count() > 0)
+                        @foreach($upcomingEvents as $event)
+                            <div class="col wow animate__fadeInUp">
+                                <div class="ul-event">
+                                    <div class="ul-event-img">
+                                        @if($event->image)
+                                            <img src="{{ activity_image_url($event->image) }}" alt="{{ $event->title }}" style="width: 100%; height: 250px; object-fit: cover;">
+                                        @else
+                                            <img src="{{ asset('assets/img/event-img.jpg') }}" alt="{{ $event->title }}" style="width: 100%; height: 250px; object-fit: cover;">
+                                        @endif
+                                        <span class="date">{{ $event->start_date->format('d') }} <span>{{ $event->start_date->translatedFormat('M') }}</span></span>
+                                    </div>
+                                    <div class="ul-event-txt">
+                                        <h3 class="ul-event-title"><a href="{{ route('events.show', $event) }}">{{ $event->title }}</a></h3>
+                                        <p class="ul-event-descr">{{ Str::limit($event->short_description ?? $event->description, 150) }}</p>
+                                        <div class="ul-event-info">
+                                            <span class="ul-event-info-title">Lieu</span>
+                                            <p class="ul-event-info-descr">{{ $event->location ?? 'À déterminer' }}{{ $event->country ? ', ' . $event->country : '' }}</p>
+                                        </div>
+                                        <a href="{{ route('events.show', $event) }}" class="ul-btn"><i class="flaticon-fast-forward-double-right-arrows-symbol"></i> Détails de l'événement</a>
+                                    </div>
                                 </div>
-                                <a href="{{ route('events') }}" class="ul-btn"><i class="flaticon-fast-forward-double-right-arrows-symbol"></i> Détails de l'événement</a>
+                            </div>
+                        @endforeach
+                    @else
+                        <!-- Affichage par défaut si aucun événement -->
+                        <div class="col wow animate__fadeInUp">
+                            <div class="ul-event">
+                                <div class="ul-event-img">
+                                    <img src="{{ asset('assets/img/event-img.jpg') }}" alt="Aucun événement">
+                                    <span class="date">-- <span>---</span></span>
+                                </div>
+                                <div class="ul-event-txt">
+                                    <h3 class="ul-event-title"><a href="{{ route('events') }}">Aucun événement à venir</a></h3>
+                                    <p class="ul-event-descr">Restez connecté ! De nouveaux événements seront bientôt annoncés. Consultez régulièrement notre calendrier.</p>
+                                    <a href="{{ route('events') }}" class="ul-btn"><i class="flaticon-fast-forward-double-right-arrows-symbol"></i> Voir tous les événements</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-
-                    <!-- single event -->
-                    <div class="col wow animate__fadeInUp">
-                        <div class="ul-event">
-                            <div class="ul-event-img">
-                                <img src="{{ asset('assets/img/blog-b-1.jpg') }}" alt="Image de l'événement">
-                                <span class="date">29 <span>Juillet</span></span>
-                            </div>
-                            <div class="ul-event-txt">
-                                <h3 class="ul-event-title"><a href="{{ route('events') }}">Événement solidaire pour les familles dans le besoin</a></h3>
-                                <p class="ul-event-descr">Rejoignez-nous pour cet événement exceptionnel dédié à l'amélioration des conditions de vie des familles et des enfants dans le besoin.</p>
-                                <div class="ul-event-info">
-                                    <span class="ul-event-info-title">Lieu</span>
-                                    <p class="ul-event-info-descr">Bruxelles, Belgique</p>
-                                </div>
-                                <a href="{{ route('events') }}" class="ul-btn"><i class="flaticon-fast-forward-double-right-arrows-symbol"></i> Détails de l'événement</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- single event -->
-                    <div class="col wow animate__fadeInUp">
-                        <div class="ul-event">
-                            <div class="ul-event-img">
-                                <img src="{{ asset('assets/img/blog-2.jpg') }}" alt="Event Image">
-                                <span class="date">29 <span>Juillet</span></span>
-                            </div>
-                            <div class="ul-event-txt">
-                                <h3 class="ul-event-title"><a href="{{ route('events') }}">Événement solidaire pour les familles dans le besoin</a></h3>
-                                <p class="ul-event-descr">Rejoignez-nous pour cet événement exceptionnel dédié à l'amélioration des conditions de vie des familles et des enfants dans le besoin.</p>
-                                <div class="ul-event-info">
-                                    <span class="ul-event-info-title">Lieu</span>
-                                    <p class="ul-event-info-descr">Bruxelles, Belgique</p>
-                                </div>
-                                <a href="{{ route('events') }}" class="ul-btn"><i class="flaticon-fast-forward-double-right-arrows-symbol"></i> Détails de l'événement</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- single event -->
-                    <div class="col wow animate__fadeInUp">
-                        <div class="ul-event">
-                            <div class="ul-event-img">
-                                <img src="{{ asset('assets/img/blog-b-3.jpg') }}" alt="Event Image">
-                                <span class="date">29 <span>Juillet</span></span>
-                            </div>
-                            <div class="ul-event-txt">
-                                <h3 class="ul-event-title"><a href="{{ route('events') }}">Événement solidaire pour les familles dans le besoin</a></h3>
-                                <p class="ul-event-descr">Rejoignez-nous pour cet événement exceptionnel dédié à l'amélioration des conditions de vie des familles et des enfants dans le besoin.</p>
-                                <div class="ul-event-info">
-                                    <span class="ul-event-info-title">Lieu</span>
-                                    <p class="ul-event-info-descr">Bruxelles, Belgique</p>
-                                </div>
-                                <a href="{{ route('events') }}" class="ul-btn"><i class="flaticon-fast-forward-double-right-arrows-symbol"></i> Détails de l'événement</a>
-                            </div>
-                        </div>
-                    </div>
+                    @endif
                 </div>
             </div>
 
@@ -532,86 +497,71 @@
                     <h2 class="ul-section-title">Des professionnels dévoués à votre service</h2>
                 </div>
                 <div>
-                    <a href="{{ route('contact') }}" class="ul-btn"><i class="flaticon-fast-forward-double-right-arrows-symbol"></i> Nous rejoindre</a>
+                    <a href="{{ route('team') }}" class="ul-btn"><i class="flaticon-fast-forward-double-right-arrows-symbol"></i> Voir toute l'équipe</a>
                 </div>
             </div>
 
             <div class="row row-cols-md-4 row-cols-sm-3 row-cols-2 row-cols-xxs-1 ul-team-row justify-content-center">
-                <!-- single member -->
-                <div class="col">
-                    <div class="ul-team-member">
-                        <div class="ul-team-member-img">
-                            <img src="{{ asset('assets/img/member-1.jpg') }}" alt="Photo du membre de l'équipe">
-                            <div class="ul-team-member-socials">
-                                <a href="#"><i class="flaticon-facebook"></i></a>
-                                <a href="#"><i class="flaticon-twitter"></i></a>
-                                <a href="#"><i class="flaticon-linkedin-big-logo"></i></a>
-                                <a href="#"><i class="flaticon-instagram"></i></a>
+                @if(isset($teamMembers) && $teamMembers->count() > 0)
+                    @foreach($teamMembers as $index => $member)
+                        <div class="col">
+                            <div class="ul-team-member">
+                                <div class="ul-team-member-img">
+                                    @if($member->photo)
+                                        @if(Str::startsWith($member->photo, ['http://', 'https://']))
+                                            <img src="{{ $member->photo }}" alt="{{ $member->name }}">
+                                        @else
+                                            <img src="{{ asset('storage/' . $member->photo) }}" alt="{{ $member->name }}">
+                                        @endif
+                                    @else
+                                        <img src="{{ asset('assets/img/member-' . (($index % 4) + 1) . '.jpg') }}" alt="{{ $member->name }}">
+                                    @endif
+                                    @if($member->hasSocialLinks())
+                                        <div class="ul-team-member-socials">
+                                            @if($member->facebook_url)
+                                                <a href="{{ $member->facebook_url }}" target="_blank" rel="noopener"><i class="flaticon-facebook"></i></a>
+                                            @endif
+                                            @if($member->twitter_url)
+                                                <a href="{{ $member->twitter_url }}" target="_blank" rel="noopener"><i class="flaticon-twitter"></i></a>
+                                            @endif
+                                            @if($member->linkedin_url)
+                                                <a href="{{ $member->linkedin_url }}" target="_blank" rel="noopener"><i class="flaticon-linkedin-big-logo"></i></a>
+                                            @endif
+                                            @if($member->instagram_url)
+                                                <a href="{{ $member->instagram_url }}" target="_blank" rel="noopener"><i class="flaticon-instagram"></i></a>
+                                            @endif
+                                        </div>
+                                    @endif
+                                </div>
+                                <div class="ul-team-member-info">
+                                    <h3 class="ul-team-member-name"><a href="#">{{ $member->name }}</a></h3>
+                                    <p class="ul-team-member-designation">{{ $member->position ?? 'Membre de l\'équipe' }}</p>
+                                </div>
                             </div>
                         </div>
-                        <div class="ul-team-member-info">
-                            <h3 class="ul-team-member-name"><a href="#">Membre de l'équipe</a></h3>
-                            <p class="ul-team-member-designation">Bénévole</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- single member -->
-                <div class="col">
-                    <div class="ul-team-member">
-                        <div class="ul-team-member-img">
-                            <img src="{{ asset('assets/img/member-2.jpg') }}" alt="Team Member Image">
-                            <div class="ul-team-member-socials">
-                                <a href="#"><i class="flaticon-facebook"></i></a>
-                                <a href="#"><i class="flaticon-twitter"></i></a>
-                                <a href="#"><i class="flaticon-linkedin-big-logo"></i></a>
-                                <a href="#"><i class="flaticon-instagram"></i></a>
+                    @endforeach
+                @else
+                    <!-- Affichage par défaut si aucun membre -->
+                    @for($i = 1; $i <= 4; $i++)
+                        <div class="col">
+                            <div class="ul-team-member">
+                                <div class="ul-team-member-img">
+                                    <img src="{{ asset('assets/img/member-' . $i . '.jpg') }}" alt="Membre de l'équipe">
+                                    <div class="ul-team-member-socials">
+                                        <a href="#"><i class="flaticon-facebook"></i></a>
+                                        <a href="#"><i class="flaticon-twitter"></i></a>
+                                        <a href="#"><i class="flaticon-linkedin-big-logo"></i></a>
+                                        <a href="#"><i class="flaticon-instagram"></i></a>
+                                    </div>
+                                </div>
+                                <div class="ul-team-member-info">
+                                    <h3 class="ul-team-member-name"><a href="#">Membre de l'équipe</a></h3>
+                                    <p class="ul-team-member-designation">Bénévole</p>
+                                </div>
                             </div>
                         </div>
-                        <div class="ul-team-member-info">
-                            <h3 class="ul-team-member-name"><a href="#">Membre de l'équipe</a></h3>
-                            <p class="ul-team-member-designation">Bénévole</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- single member -->
-                <div class="col">
-                    <div class="ul-team-member">
-                        <div class="ul-team-member-img">
-                            <img src="{{ asset('assets/img/member-3.jpg') }}" alt="Team Member Image">
-                            <div class="ul-team-member-socials">
-                                <a href="#"><i class="flaticon-facebook"></i></a>
-                                <a href="#"><i class="flaticon-twitter"></i></a>
-                                <a href="#"><i class="flaticon-linkedin-big-logo"></i></a>
-                                <a href="#"><i class="flaticon-instagram"></i></a>
-                            </div>
-                        </div>
-                        <div class="ul-team-member-info">
-                            <h3 class="ul-team-member-name"><a href="#">Membre de l'équipe</a></h3>
-                            <p class="ul-team-member-designation">Bénévole</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- single member -->
-                <div class="col">
-                    <div class="ul-team-member">
-                        <div class="ul-team-member-img">
-                            <img src="{{ asset('assets/img/member-4.jpg') }}" alt="Team Member Image">
-                            <div class="ul-team-member-socials">
-                                <a href="#"><i class="flaticon-facebook"></i></a>
-                                <a href="#"><i class="flaticon-twitter"></i></a>
-                                <a href="#"><i class="flaticon-linkedin-big-logo"></i></a>
-                                <a href="#"><i class="flaticon-instagram"></i></a>
-                            </div>
-                        </div>
-                        <div class="ul-team-member-info">
-                            <h3 class="ul-team-member-name"><a href="#">Membre de l'équipe</a></h3>
-                            <p class="ul-team-member-designation">Bénévole</p>
-                        </div>
-                    </div>
-                </div>
+                    @endfor
+                @endif
             </div>
         </div>
     </section>
@@ -630,135 +580,79 @@
 
             <div class="ul-testimonial-slider swiper">
                 <div class="swiper-wrapper">
-                    <!-- single slide -->
-                    <div class="swiper-slide">
-                        <div class="ul-review">
-                            <div class="ul-review-rating">
-                                <i class="flaticon-star"></i>
-                                <i class="flaticon-star"></i>
-                                <i class="flaticon-star"></i>
-                                <i class="flaticon-star"></i>
-                                <i class="flaticon-star-1"></i>
-                            </div>
-                            <p class="ul-review-descr">Espoir Vie ASBL a fait une différence incroyable dans ma vie et celle de ma famille. Leur dévouement et leur compassion sont vraiment remarquables. Je suis reconnaissant pour tout ce qu'ils font.</p>
-                            <div class="ul-review-bottom">
-                                <div class="ul-review-reviewer">
-                                    <div class="reviewer-image"><img src="{{ asset('assets/img/member-1.jpg') }}" alt="Photo du témoin"></div>
-                                    <div>
-                                        <h3 class="reviewer-name">Marie Dupont</h3>
-                                        <span class="reviewer-role">Bénévole</span>
+                    @if(isset($testimonials) && $testimonials->count() > 0)
+                        @foreach($testimonials as $index => $testimonial)
+                            <div class="swiper-slide">
+                                <div class="ul-review">
+                                    <div class="ul-review-rating">
+                                        @for($i = 1; $i <= 5; $i++)
+                                            @if($i <= $testimonial->rating)
+                                                <i class="flaticon-star"></i>
+                                            @else
+                                                <i class="flaticon-star-1"></i>
+                                            @endif
+                                        @endfor
+                                    </div>
+                                    <p class="ul-review-descr">{{ $testimonial->content }}</p>
+                                    <div class="ul-review-bottom">
+                                        <div class="ul-review-reviewer">
+                                            <div class="reviewer-image">
+                                                @if($testimonial->photo)
+                                                    @if(Str::startsWith($testimonial->photo, ['http://', 'https://']))
+                                                        <img src="{{ $testimonial->photo }}" alt="{{ $testimonial->name }}">
+                                                    @else
+                                                        <img src="{{ asset('storage/' . $testimonial->photo) }}" alt="{{ $testimonial->name }}">
+                                                    @endif
+                                                @else
+                                                    <img src="{{ asset('assets/img/member-' . (($index % 4) + 1) . '.jpg') }}" alt="{{ $testimonial->name }}">
+                                                @endif
+                                            </div>
+                                            <div>
+                                                <h3 class="reviewer-name">{{ $testimonial->name }}</h3>
+                                                <span class="reviewer-role">{{ $testimonial->role ?? 'Membre' }}</span>
+                                            </div>
+                                        </div>
+
+                                        <!-- icon -->
+                                        <div class="ul-review-icon"><i class="flaticon-left"></i></div>
                                     </div>
                                 </div>
-
-                                <!-- icon -->
-                                <div class="ul-review-icon"><i class="flaticon-left"></i></div>
                             </div>
-                        </div>
-                    </div>
-
-                    <!-- single slide -->
-                    <div class="swiper-slide">
-                        <div class="ul-review">
-                            <div class="ul-review-rating">
-                                <i class="flaticon-star"></i>
-                                <i class="flaticon-star"></i>
-                                <i class="flaticon-star"></i>
-                                <i class="flaticon-star"></i>
-                                <i class="flaticon-star-1"></i>
-                            </div>
-                            <p class="ul-review-descr">Merci à Espoir Vie ASBL pour leur engagement exceptionnel. Votre travail fait vraiment une différence dans notre communauté. Je suis fier de soutenir votre cause.</p>
-                            <div class="ul-review-bottom">
-                                <div class="ul-review-reviewer">
-                                    <div class="reviewer-image"><img src="{{ asset('assets/img/member-2.jpg') }}" alt="Photo du témoin"></div>
-                                    <div>
-                                        <h3 class="reviewer-name">Pierre Dubois</h3>
-                                        <span class="reviewer-role">Donateur</span>
+                        @endforeach
+                    @else
+                        <!-- Témoignages par défaut si aucun en DB -->
+                        @php
+                            $defaultTestimonials = [
+                                ['name' => 'Marie Dupont', 'role' => 'Bénévole', 'content' => 'Espoir Vie ASBL a fait une différence incroyable dans ma vie et celle de ma famille. Leur dévouement et leur compassion sont vraiment remarquables.'],
+                                ['name' => 'Pierre Dubois', 'role' => 'Donateur', 'content' => 'Merci à Espoir Vie ASBL pour leur engagement exceptionnel. Votre travail fait vraiment une différence dans notre communauté.'],
+                                ['name' => 'Claire Bernard', 'role' => 'Partenaire', 'content' => 'Espoir Vie ASBL transforme des vies chaque jour. Leur transparence et leur dévouement sont exemplaires.'],
+                            ];
+                        @endphp
+                        @foreach($defaultTestimonials as $index => $testimonial)
+                            <div class="swiper-slide">
+                                <div class="ul-review">
+                                    <div class="ul-review-rating">
+                                        <i class="flaticon-star"></i>
+                                        <i class="flaticon-star"></i>
+                                        <i class="flaticon-star"></i>
+                                        <i class="flaticon-star"></i>
+                                        <i class="flaticon-star-1"></i>
+                                    </div>
+                                    <p class="ul-review-descr">{{ $testimonial['content'] }}</p>
+                                    <div class="ul-review-bottom">
+                                        <div class="ul-review-reviewer">
+                                            <div class="reviewer-image"><img src="{{ asset('assets/img/member-' . ($index + 1) . '.jpg') }}" alt="{{ $testimonial['name'] }}"></div>
+                                            <div>
+                                                <h3 class="reviewer-name">{{ $testimonial['name'] }}</h3>
+                                                <span class="reviewer-role">{{ $testimonial['role'] }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="ul-review-icon"><i class="flaticon-left"></i></div>
                                     </div>
                                 </div>
-
-                                <!-- icon -->
-                                <div class="ul-review-icon"><i class="flaticon-left"></i></div>
                             </div>
-                        </div>
-                    </div>
-
-                    <!-- single slide -->
-                    <div class="swiper-slide">
-                        <div class="ul-review">
-                            <div class="ul-review-rating">
-                                <i class="flaticon-star"></i>
-                                <i class="flaticon-star"></i>
-                                <i class="flaticon-star"></i>
-                                <i class="flaticon-star"></i>
-                                <i class="flaticon-star-1"></i>
-                            </div>
-                            <p class="ul-review-descr">Espoir Vie ASBL transforme des vies chaque jour. Leur transparence et leur dévouement sont exemplaires. Continuez votre excellent travail !</p>
-                            <div class="ul-review-bottom">
-                                <div class="ul-review-reviewer">
-                                    <div class="reviewer-image"><img src="{{ asset('assets/img/member-3.jpg') }}" alt="Photo du témoin"></div>
-                                    <div>
-                                        <h3 class="reviewer-name">Claire Bernard</h3>
-                                        <span class="reviewer-role">Partenaire</span>
-                                    </div>
-                                </div>
-
-                                <!-- icon -->
-                                <div class="ul-review-icon"><i class="flaticon-left"></i></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- single slide -->
-                    <div class="swiper-slide">
-                        <div class="ul-review">
-                            <div class="ul-review-rating">
-                                <i class="flaticon-star"></i>
-                                <i class="flaticon-star"></i>
-                                <i class="flaticon-star"></i>
-                                <i class="flaticon-star"></i>
-                                <i class="flaticon-star-1"></i>
-                            </div>
-                            <p class="ul-review-descr">Grâce à Espoir Vie ASBL, j'ai pu redonner espoir à ma famille. Leur aide a été déterminante dans une période difficile de notre vie. Merci pour votre générosité.</p>
-                            <div class="ul-review-bottom">
-                                <div class="ul-review-reviewer">
-                                    <div class="reviewer-image"><img src="{{ asset('assets/img/member-4.jpg') }}" alt="Photo du témoin"></div>
-                                    <div>
-                                        <h3 class="reviewer-name">Sophie Martin</h3>
-                                        <span class="reviewer-role">Bénévole</span>
-                                    </div>
-                                </div>
-
-                                <!-- icon -->
-                                <div class="ul-review-icon"><i class="flaticon-left"></i></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- single slide -->
-                    <div class="swiper-slide">
-                        <div class="ul-review">
-                            <div class="ul-review-rating">
-                                <i class="flaticon-star"></i>
-                                <i class="flaticon-star"></i>
-                                <i class="flaticon-star"></i>
-                                <i class="flaticon-star"></i>
-                                <i class="flaticon-star-1"></i>
-                            </div>
-                            <p class="ul-review-descr">Espoir Vie ASBL a fait une différence incroyable dans ma vie et celle de ma famille. Leur dévouement et leur compassion sont vraiment remarquables. Je suis reconnaissant pour tout ce qu'ils font.</p>
-                            <div class="ul-review-bottom">
-                                <div class="ul-review-reviewer">
-                                    <div class="reviewer-image"><img src="{{ asset('assets/img/member-1.jpg') }}" alt="Photo du témoin"></div>
-                                    <div>
-                                        <h3 class="reviewer-name">Marie Dupont</h3>
-                                        <span class="reviewer-role">Bénévole</span>
-                                    </div>
-                                </div>
-
-                                <!-- icon -->
-                                <div class="ul-review-icon"><i class="flaticon-left"></i></div>
-                            </div>
-                        </div>
-                    </div>
+                        @endforeach
+                    @endif
                 </div>
 
                 <div class="ul-testimonial-slider-pagination"></div>
@@ -783,6 +677,7 @@
                                 <button class="prev"><i class="flaticon-back"></i></button>
                                 <button class="next"><i class="flaticon-next"></i></button>
                             </div>
+                            <a href="{{ route('articles') }}" class="ul-btn" style="margin-top: 20px;"><i class="flaticon-fast-forward-double-right-arrows-symbol"></i> Voir tous les articles</a>
                         </div>
                     </div>
                 </div>
@@ -791,117 +686,80 @@
                 <div class="col-sm-7">
                     <div class="ul-blogs-slider swiper">
                         <div class="swiper-wrapper">
-                            <!-- single blog -->
-                            <div class="swiper-slide">
-                                <div class="ul-blog">
-                                    <div class="ul-blog-img"><img src="{{ asset('assets/img/blog-1.jpg') }}" alt="Image de l'article">
-                                        <div class="date">
-                                            <span class="number">15</span>
-                                            <span class="txt">Déc</span>
-                                        </div>
-                                    </div>
-                                    <div class="ul-blog-txt">
-                                        <div class="ul-blog-infos">
-                                            <!-- single info -->
-                                            <div class="ul-blog-info">
-                                                <span class="icon"><i class="flaticon-account"></i></span>
-                                                <span class="text font-normal text-[14px] text-etGray">Par l'équipe</span>
+                            @if(isset($articles) && $articles->count() > 0)
+                                @foreach($articles as $index => $article)
+                                    <div class="swiper-slide">
+                                        <div class="ul-blog">
+                                            <div class="ul-blog-img">
+                                                @if($article->image)
+                                                    @if(Str::startsWith($article->image, ['http://', 'https://']))
+                                                        <img src="{{ $article->image }}" alt="{{ $article->title }}">
+                                                    @else
+                                                        <img src="{{ asset('storage/' . $article->image) }}" alt="{{ $article->title }}">
+                                                    @endif
+                                                @else
+                                                    <img src="{{ asset('assets/img/blog-' . (($index % 3) + 1) . '.jpg') }}" alt="{{ $article->title }}">
+                                                @endif
+                                                <div class="date">
+                                                    <span class="number">{{ $article->published_at ? $article->published_at->format('d') : $article->created_at->format('d') }}</span>
+                                                    <span class="txt">{{ $article->published_at ? $article->published_at->translatedFormat('M') : $article->created_at->translatedFormat('M') }}</span>
+                                                </div>
                                             </div>
-                                            <!-- single info -->
-                                            <div class="ul-blog-info">
-                                                <span class="icon"><i class="flaticon-price-tag"></i></span>
-                                                <span class="text font-normal text-[14px] text-etGray">Don</span>
-                                            </div>
-                                        </div>
-                                        <a href="#" class="ul-blog-title">Donner l'éducation, c'est le plus beau cadeau que l'on puisse offrir</a>
-                                        <a href="#" class="ul-blog-btn">Lire la suite <span class="icon"><i class="flaticon-next"></i></span></a>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- single blog -->
-                            <div class="swiper-slide">
-                                <div class="ul-blog">
-                                    <div class="ul-blog-img"><img src="{{ asset('assets/img/blog-2.jpg') }}" alt="Image de l'article">
-                                        <div class="date">
-                                            <span class="number">15</span>
-                                            <span class="txt">Déc</span>
-                                        </div>
-                                    </div>
-                                    <div class="ul-blog-txt">
-                                        <div class="ul-blog-infos">
-                                            <!-- single info -->
-                                            <div class="ul-blog-info">
-                                                <span class="icon"><i class="flaticon-account"></i></span>
-                                                <span class="text font-normal text-[14px] text-etGray">Par l'équipe</span>
-                                            </div>
-                                            <!-- single info -->
-                                            <div class="ul-blog-info">
-                                                <span class="icon"><i class="flaticon-price-tag"></i></span>
-                                                <span class="text font-normal text-[14px] text-etGray">Don</span>
+                                            <div class="ul-blog-txt">
+                                                <div class="ul-blog-infos">
+                                                    <div class="ul-blog-info">
+                                                        <span class="icon"><i class="flaticon-account"></i></span>
+                                                        <span class="text font-normal text-[14px] text-etGray">Par {{ $article->author_display_name }}</span>
+                                                    </div>
+                                                    @if($article->category)
+                                                        <div class="ul-blog-info">
+                                                            <span class="icon"><i class="flaticon-price-tag"></i></span>
+                                                            <span class="text font-normal text-[14px] text-etGray">{{ $article->category }}</span>
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                                <a href="{{ route('article.show', $article->slug) }}" class="ul-blog-title">{{ Str::limit($article->title, 60) }}</a>
+                                                <a href="{{ route('article.show', $article->slug) }}" class="ul-blog-btn">Lire la suite <span class="icon"><i class="flaticon-next"></i></span></a>
                                             </div>
                                         </div>
-                                        <a href="#" class="ul-blog-title">Ne traitons pas les océans comme des poubelles universelles</a>
-                                        <a href="#" class="ul-blog-btn">Lire la suite <span class="icon"><i class="flaticon-next"></i></span></a>
                                     </div>
-                                </div>
-                            </div>
-
-                            <!-- single blog -->
-                            <div class="swiper-slide">
-                                <div class="ul-blog">
-                                    <div class="ul-blog-img"><img src="{{ asset('assets/img/blog-3.jpg') }}" alt="Image de l'article">
-                                        <div class="date">
-                                            <span class="number">15</span>
-                                            <span class="txt">Déc</span>
-                                        </div>
-                                    </div>
-                                    <div class="ul-blog-txt">
-                                        <div class="ul-blog-infos">
-                                            <!-- single info -->
-                                            <div class="ul-blog-info">
-                                                <span class="icon"><i class="flaticon-account"></i></span>
-                                                <span class="text font-normal text-[14px] text-etGray">Par l'équipe</span>
+                                @endforeach
+                            @else
+                                <!-- Articles par défaut si aucun en DB -->
+                                @php
+                                    $defaultArticles = [
+                                        ['title' => 'Donner l\'éducation, c\'est le plus beau cadeau que l\'on puisse offrir', 'category' => 'Éducation'],
+                                        ['title' => 'Ne traitons pas les océans comme des poubelles universelles', 'category' => 'Environnement'],
+                                        ['title' => 'Protéger nos plages pour les générations futures', 'category' => 'Environnement'],
+                                    ];
+                                @endphp
+                                @foreach($defaultArticles as $index => $article)
+                                    <div class="swiper-slide">
+                                        <div class="ul-blog">
+                                            <div class="ul-blog-img"><img src="{{ asset('assets/img/blog-' . ($index + 1) . '.jpg') }}" alt="{{ $article['title'] }}">
+                                                <div class="date">
+                                                    <span class="number">15</span>
+                                                    <span class="txt">Déc</span>
+                                                </div>
                                             </div>
-                                            <!-- single info -->
-                                            <div class="ul-blog-info">
-                                                <span class="icon"><i class="flaticon-price-tag"></i></span>
-                                                <span class="text font-normal text-[14px] text-etGray">Don</span>
-                                            </div>
-                                        </div>
-                                        <a href="#" class="ul-blog-title">Protéger nos plages pour les générations futures</a>
-                                        <a href="#" class="ul-blog-btn">Lire la suite <span class="icon"><i class="flaticon-next"></i></span></a>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- single blog -->
-                            <div class="swiper-slide">
-                                <div class="ul-blog">
-                                    <div class="ul-blog-img"><img src="{{ asset('assets/img/blog-1.jpg') }}" alt="Image de l'article">
-                                        <div class="date">
-                                            <span class="number">15</span>
-                                            <span class="txt">Déc</span>
-                                        </div>
-                                    </div>
-                                    <div class="ul-blog-txt">
-                                        <div class="ul-blog-infos">
-                                            <!-- single info -->
-                                            <div class="ul-blog-info">
-                                                <span class="icon"><i class="flaticon-account"></i></span>
-                                                <span class="text font-normal text-[14px] text-etGray">Par l'équipe</span>
-                                            </div>
-                                            <!-- single info -->
-                                            <div class="ul-blog-info">
-                                                <span class="icon"><i class="flaticon-price-tag"></i></span>
-                                                <span class="text font-normal text-[14px] text-etGray">Don</span>
+                                            <div class="ul-blog-txt">
+                                                <div class="ul-blog-infos">
+                                                    <div class="ul-blog-info">
+                                                        <span class="icon"><i class="flaticon-account"></i></span>
+                                                        <span class="text font-normal text-[14px] text-etGray">Par l'équipe</span>
+                                                    </div>
+                                                    <div class="ul-blog-info">
+                                                        <span class="icon"><i class="flaticon-price-tag"></i></span>
+                                                        <span class="text font-normal text-[14px] text-etGray">{{ $article['category'] }}</span>
+                                                    </div>
+                                                </div>
+                                                <a href="#" class="ul-blog-title">{{ $article['title'] }}</a>
+                                                <a href="#" class="ul-blog-btn">Lire la suite <span class="icon"><i class="flaticon-next"></i></span></a>
                                             </div>
                                         </div>
-                                        <a href="#" class="ul-blog-title">Protéger nos plages pour les générations futures</a>
-                                        <a href="#" class="ul-blog-btn">Lire la suite <span class="icon"><i class="flaticon-next"></i></span></a>
                                     </div>
-                                </div>
-                            </div>
+                                @endforeach
+                            @endif
                         </div>
                     </div>
                 </div>

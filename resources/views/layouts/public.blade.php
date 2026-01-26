@@ -70,11 +70,13 @@
     <div class="ul-search-form-wrapper flex-grow-1 flex-shrink-0">
         <button class="ul-search-closer"><i class="flaticon-close"></i></button>
 
-        <form action="#" class="ul-search-form">
+        <form action="#" class="ul-search-form" id="global-search-form" data-search-url="{{ route('api.search') }}">
             <div class="ul-search-form-right">
-                <input type="search" name="search" id="ul-search" placeholder="Rechercher ici">
+                <input type="search" name="search" id="ul-search" placeholder="Rechercher articles, événements, équipe..." autocomplete="off">
                 <button type="submit"><span class="icon"><i class="flaticon-search"></i></span></button>
             </div>
+            <!-- Résultats de recherche (injecté par JS) -->
+            <div id="search-results" class="search-results-dropdown"></div>
         </form>
     </div>
     <!-- SEARCH MODAL SECTION END -->
@@ -95,7 +97,9 @@
                         <nav class="ul-header-nav">
                             <a href="{{ route('home') }}">Accueil</a>
                             <a href="{{ route('about') }}">À propos</a>
-                            <a href="{{ route('events') }}">Événement</a>
+                            <a href="{{ route('team') }}">Notre équipe</a>
+                            <a href="{{ route('events') }}">Événements</a>
+                            <a href="{{ route('articles') }}">Articles</a>
                             <a href="{{ route('donate') }}">Faire un don</a>
                             <a href="{{ route('contact') }}">Nous contacter</a>
                         </nav>
@@ -494,7 +498,9 @@
 
                         <div class="ul-footer-widget-links">
                             <a href="{{ route('about') }}">À propos</a>
+                            <a href="{{ route('team') }}">Notre équipe</a>
                             <a href="{{ route('events') }}">Événements</a>
+                            <a href="{{ route('articles') }}">Articles</a>
                             <a href="{{ route('donate') }}">Faire un don</a>
                             <a href="{{ route('contact') }}">Nous contacter</a>
                         </div>
