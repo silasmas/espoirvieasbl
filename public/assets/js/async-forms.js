@@ -561,6 +561,305 @@
 
     /**
      * =================================================================================
+     * FORMULAIRE DONATEUR (MODAL "DEVENIR DONATEUR")
+     * =================================================================================
+     */
+
+    function initDonorRegisterForm() {
+        const wrapper = document.getElementById('donor-register-wrapper');
+        if (!wrapper) return;
+
+        const form = wrapper.querySelector('form');
+        if (!form) return;
+
+        // Notification
+        let notification = wrapper.querySelector('.async-notification');
+        if (!notification) {
+            notification = document.createElement('div');
+            notification.className = 'async-notification';
+            notification.style.display = 'none';
+            wrapper.insertBefore(notification, wrapper.firstChild);
+        }
+
+        const phoneInput = form.querySelector('input[name="phone"]');
+        const countrySelect = form.querySelector('select[name="country"]');
+        const submitBtn = form.querySelector('button[type="submit"]');
+
+        // Mapping simple pays -> indicatif téléphonique
+        const countryDialCodes = {
+            'Afghanistan': '+93',
+            'Afrique du Sud': '+27',
+            'Albanie': '+355',
+            'Algérie': '+213',
+            'Allemagne': '+49',
+            'Andorre': '+376',
+            'Angola': '+244',
+            'Arabie Saoudite': '+966',
+            'Argentine': '+54',
+            'Arménie': '+374',
+            'Australie': '+61',
+            'Autriche': '+43',
+            'Azerbaïdjan': '+994',
+            'Belgique': '+32',
+            'Bénin': '+229',
+            'Bolivie': '+591',
+            'Bosnie-Herzégovine': '+387',
+            'Botswana': '+267',
+            'Brésil': '+55',
+            'Bulgarie': '+359',
+            'Burkina Faso': '+226',
+            'Burundi': '+257',
+            'Cameroun': '+237',
+            'Canada': '+1',
+            'Cap-Vert': '+238',
+            'Chili': '+56',
+            'Chine': '+86',
+            'Chypre': '+357',
+            'Colombie': '+57',
+            'Comores': '+269',
+            'Congo-Brazzaville': '+242',
+            'Congo-Kinshasa': '+243',
+            'Corée du Sud': '+82',
+            'Costa Rica': '+506',
+            'Côte d\'Ivoire': '+225',
+            'Croatie': '+385',
+            'Danemark': '+45',
+            'Djibouti': '+253',
+            'Égypte': '+20',
+            'Émirats Arabes Unis': '+971',
+            'Équateur': '+593',
+            'Érythrée': '+291',
+            'Espagne': '+34',
+            'Estonie': '+372',
+            'Eswatini': '+268',
+            'États-Unis': '+1',
+            'Éthiopie': '+251',
+            'Finlande': '+358',
+            'France': '+33',
+            'Gabon': '+241',
+            'Gambie': '+220',
+            'Géorgie': '+995',
+            'Ghana': '+233',
+            'Grèce': '+30',
+            'Guatemala': '+502',
+            'Guinée': '+224',
+            'Guinée-Bissau': '+245',
+            'Guinée équatoriale': '+240',
+            'Haïti': '+509',
+            'Honduras': '+504',
+            'Hongrie': '+36',
+            'Inde': '+91',
+            'Indonésie': '+62',
+            'Irak': '+964',
+            'Iran': '+98',
+            'Irlande': '+353',
+            'Islande': '+354',
+            'Israël': '+972',
+            'Italie': '+39',
+            'Jamaïque': '+1-876',
+            'Japon': '+81',
+            'Jordanie': '+962',
+            'Kazakhstan': '+7',
+            'Kenya': '+254',
+            'Kirghizistan': '+996',
+            'Kosovo': '+383',
+            'Koweït': '+965',
+            'Laos': '+856',
+            'Lesotho': '+266',
+            'Lettonie': '+371',
+            'Liban': '+961',
+            'Liberia': '+231',
+            'Libye': '+218',
+            'Liechtenstein': '+423',
+            'Lituanie': '+370',
+            'Luxembourg': '+352',
+            'Madagascar': '+261',
+            'Malaisie': '+60',
+            'Malawi': '+265',
+            'Mali': '+223',
+            'Maroc': '+212',
+            'Maurice': '+230',
+            'Mauritanie': '+222',
+            'Mexique': '+52',
+            'Moldavie': '+373',
+            'Monaco': '+377',
+            'Mongolie': '+976',
+            'Mozambique': '+258',
+            'Namibie': '+264',
+            'Népal': '+977',
+            'Nicaragua': '+505',
+            'Niger': '+227',
+            'Nigeria': '+234',
+            'Norvège': '+47',
+            'Nouvelle-Zélande': '+64',
+            'Ouganda': '+256',
+            'Ouzbékistan': '+998',
+            'Pakistan': '+92',
+            'Palestine': '+970',
+            'Panama': '+507',
+            'Paraguay': '+595',
+            'Pays-Bas': '+31',
+            'Pérou': '+51',
+            'Philippines': '+63',
+            'Pologne': '+48',
+            'Portugal': '+351',
+            'Qatar': '+974',
+            'République Centrafricaine': '+236',
+            'République Dominicaine': '+1-809',
+            'République Tchèque': '+420',
+            'Roumanie': '+40',
+            'Royaume-Uni': '+44',
+            'Russie': '+7',
+            'Rwanda': '+250',
+            'Saint-Marin': '+378',
+            'Salvador': '+503',
+            'Sénégal': '+221',
+            'Serbie': '+381',
+            'Sierra Leone': '+232',
+            'Singapour': '+65',
+            'Slovaquie': '+421',
+            'Slovénie': '+386',
+            'Somalie': '+252',
+            'Soudan': '+249',
+            'Soudan du Sud': '+211',
+            'Sri Lanka': '+94',
+            'Suède': '+46',
+            'Suisse': '+41',
+            'Syrie': '+963',
+            'Tanzanie': '+255',
+            'Tchad': '+235',
+            'Thaïlande': '+66',
+            'Togo': '+228',
+            'Tunisie': '+216',
+            'Turquie': '+90',
+            'Ukraine': '+380',
+            'Uruguay': '+598',
+            'Venezuela': '+58',
+            'Viêt Nam': '+84',
+            'Yémen': '+967',
+            'Zambie': '+260',
+            'Zimbabwe': '+263',
+        };
+
+        function updatePhonePrefix() {
+            if (!phoneInput || !countrySelect) return;
+            const country = countrySelect.value;
+            const code = countryDialCodes[country];
+            if (!code) return;
+
+            // Préremplir uniquement si le champ est vide (évite d'écraser un numéro déjà saisi)
+            if (!phoneInput.value.trim()) {
+                phoneInput.value = code + ' ';
+            }
+        }
+
+        if (countrySelect) {
+            countrySelect.addEventListener('change', updatePhonePrefix);
+        }
+
+        function clearFormErrors() {
+            form.querySelectorAll('.error-message').forEach(span => span.textContent = '');
+            form.querySelectorAll('input, select, textarea').forEach(el => el.classList.remove('error'));
+        }
+
+        function applyFormErrors(errors) {
+            clearFormErrors();
+            Object.keys(errors).forEach(field => {
+                const input = form.querySelector(`[name="${field}"]`);
+                if (!input) return;
+                input.classList.add('error');
+                const group = input.closest('.form-group');
+                const span = group ? group.querySelector('.error-message') : null;
+                if (span) {
+                    span.textContent = errors[field][0];
+                }
+            });
+        }
+
+        // Quand on tape le téléphone manuellement, essayer de déduire le pays à partir du code
+        if (phoneInput && countrySelect) {
+            phoneInput.addEventListener('input', function () {
+                const value = phoneInput.value.trim();
+                if (!value.startsWith('+')) {
+                    return;
+                }
+
+                // Extraire le préfixe jusqu'au premier espace ou caractère non numérique
+                const match = value.match(/^\+[\d-]+/);
+                if (!match) return;
+                const enteredCode = match[0];
+
+                // Chercher un pays dont le code correspond
+                const entries = Object.entries(countryDialCodes);
+                const found = entries.find(([, code]) => enteredCode.startsWith(code) || code.startsWith(enteredCode));
+                if (found) {
+                    const [countryName] = found;
+                    if (countrySelect.value !== countryName) {
+                        countrySelect.value = countryName;
+                    }
+                }
+            });
+        }
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.dataset.originalHtml = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Traitement...';
+                submitBtn.classList.add('loading');
+            }
+
+            const formData = new FormData(form);
+            formData.append('_token', config.csrfToken);
+
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json',
+                },
+            })
+            .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        clearFormErrors();
+                        showNotification(notification, data.message || 'Votre compte donateur a été créé avec succès.', 'success');
+                        form.reset();
+                    } else {
+                        if (data.errors) {
+                            applyFormErrors(data.errors);
+                            showNotification(notification, data.message || 'Veuillez corriger les erreurs dans le formulaire.', 'error');
+                        } else {
+                            const extra = data.debug ? ` Détail technique : ${data.debug}` : '';
+                            console.error('Erreur inscription donateur:', data.debug || data);
+                            showNotification(notification, (data.message || 'Une erreur est survenue lors de la création de votre compte.') + extra, 'error', 0);
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Erreur inscription donateur:', error);
+                    showNotification(notification, 'Une erreur est survenue lors de la création de votre compte. Veuillez réessayer plus tard.', 'error');
+                })
+                .finally(() => {
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        if (submitBtn.dataset.originalHtml) {
+                            submitBtn.innerHTML = submitBtn.dataset.originalHtml;
+                        }
+                        submitBtn.classList.remove('loading');
+                    }
+                });
+        });
+
+        // Préremplir le code pays au chargement si un pays est déjà sélectionné
+        updatePhonePrefix();
+    }
+
+    /**
+     * =================================================================================
      * RECHERCHE GLOBALE ASYNCHRONE
      * =================================================================================
      */
@@ -931,7 +1230,335 @@
         initContactForm();
         initNewsletterForm();
         initDonationForm();
+        initDonorRegisterForm();
         initGlobalSearch();
+
+        // Toggle du menu profil dans le header (si présent)
+        const profileWrapper = document.querySelector('.ul-profile-dropdown-wrapper');
+        if (profileWrapper) {
+            const toggleBtn = profileWrapper.querySelector('.ul-profile-toggle');
+            const dropdown = profileWrapper.querySelector('.ul-profile-dropdown');
+            if (toggleBtn && dropdown) {
+                toggleBtn.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    const isVisible = dropdown.style.display === 'block';
+                    dropdown.style.display = isVisible ? 'none' : 'block';
+                });
+
+                document.addEventListener('click', function () {
+                    dropdown.style.display = 'none';
+                });
+            }
+        }
+
+        // Modal de mise à jour du profil donateur (page mon profil)
+        const donorEditBtn = document.getElementById('donor-edit-profile-btn');
+        const donorProfileModal = document.getElementById('donor-profile-modal');
+        const donorProfileModalClose = document.getElementById('donor-profile-modal-close');
+        const donationTypeSelect = document.getElementById('modal_donation_type');
+        const donationAmountGroup = document.getElementById('modal_donation_amount_group');
+        const donationNatureGroup = document.getElementById('modal_donation_nature_group');
+        const donorProfileForm = document.getElementById('donor-profile-form');
+        const donorProfileNotification = document.getElementById('donor-profile-notification');
+        const passwordLink = document.getElementById('donor-password-link');
+        const passwordModal = document.getElementById('donor-password-modal');
+        const passwordModalClose = document.getElementById('donor-password-modal-close');
+        const sendDonationBtn = document.getElementById('donor-send-donation-btn');
+        const sendDonationModal = document.getElementById('donor-send-donation-modal');
+        const sendDonationModalClose = document.getElementById('donor-send-donation-modal-close');
+        const deleteAccountBtn = document.getElementById('donor-delete-account-btn');
+        const deleteAccountModal = document.getElementById('donor-delete-account-modal');
+        const deleteAccountModalClose = document.getElementById('donor-delete-account-modal-close');
+
+        function toggleDonorModal(open) {
+            if (!donorProfileModal) return;
+            if (open) {
+                donorProfileModal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+                void donorProfileModal.offsetWidth;
+                donorProfileModal.classList.add('show');
+            } else {
+                donorProfileModal.classList.remove('show');
+                setTimeout(() => {
+                    donorProfileModal.style.display = 'none';
+                    document.body.style.overflow = '';
+                }, 250);
+            }
+        }
+
+        if (donorEditBtn && donorProfileModal) {
+            donorEditBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+                toggleDonorModal(true);
+            });
+        }
+
+        if (donorProfileModal && donorProfileModalClose) {
+            donorProfileModalClose.addEventListener('click', function (e) {
+                e.preventDefault();
+                toggleDonorModal(false);
+            });
+
+            donorProfileModal.addEventListener('mousedown', function (e) {
+                if (e.target === donorProfileModal) {
+                    toggleDonorModal(false);
+                }
+            });
+
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape' && donorProfileModal.classList.contains('show')) {
+                    toggleDonorModal(false);
+                }
+            });
+        }
+
+        if (donationTypeSelect && donationAmountGroup && donationNatureGroup) {
+            function updateModalDonationType() {
+                const value = donationTypeSelect.value;
+                if (value === 'espece') {
+                    donationAmountGroup.style.display = 'block';
+                    donationNatureGroup.style.display = 'none';
+                } else if (value === 'nature') {
+                    donationAmountGroup.style.display = 'none';
+                    donationNatureGroup.style.display = 'block';
+                } else {
+                    donationAmountGroup.style.display = 'none';
+                    donationNatureGroup.style.display = 'none';
+                }
+            }
+
+            donationTypeSelect.addEventListener('change', updateModalDonationType);
+            updateModalDonationType();
+        }
+
+        // Modals simples pour mot de passe, envoi de don et suppression de compte
+        function setupSimpleModal(trigger, modal, closer) {
+            if (!trigger || !modal || !closer) return;
+
+            function open() {
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+                void modal.offsetWidth;
+                modal.classList.add('show');
+            }
+
+            function close() {
+                modal.classList.remove('show');
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                    document.body.style.overflow = '';
+                }, 250);
+            }
+
+            trigger.addEventListener('click', function (e) {
+                e.preventDefault();
+                open();
+            });
+
+            closer.addEventListener('click', function (e) {
+                e.preventDefault();
+                close();
+            });
+
+            modal.addEventListener('mousedown', function (e) {
+                if (e.target === modal) {
+                    close();
+                }
+            });
+
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape' && modal.classList.contains('show')) {
+                    close();
+                }
+            });
+        }
+
+        setupSimpleModal(passwordLink, passwordModal, passwordModalClose);
+        setupSimpleModal(sendDonationBtn, sendDonationModal, sendDonationModalClose);
+        setupSimpleModal(deleteAccountBtn, deleteAccountModal, deleteAccountModalClose);
+
+        // Bascule des sections du modal "Envoyer mon don" selon le type
+        const donationTypeSend = document.getElementById('donation_type_send');
+        const sendSectionEspece = document.getElementById('send-donation-espece');
+        const sendSectionNature = document.getElementById('send-donation-nature');
+
+        if (donationTypeSend && sendSectionEspece && sendSectionNature) {
+            function updateSendSections() {
+                const value = donationTypeSend.value;
+                if (value === 'espece') {
+                    sendSectionEspece.style.display = 'block';
+                    sendSectionNature.style.display = 'none';
+                } else if (value === 'nature') {
+                    sendSectionEspece.style.display = 'none';
+                    sendSectionNature.style.display = 'block';
+                } else {
+                    sendSectionEspece.style.display = 'none';
+                    sendSectionNature.style.display = 'none';
+                }
+            }
+
+            donationTypeSend.addEventListener('change', updateSendSections);
+            updateSendSections();
+        }
+
+        // Soumission asynchrone du formulaire de mise à jour du profil (modal)
+        if (donorProfileForm) {
+            const submitBtn = donorProfileForm.querySelector('button[type="submit"]');
+
+            function clearDonorProfileErrors() {
+                donorProfileForm.querySelectorAll('.error-message').forEach(span => span.textContent = '');
+                donorProfileForm.querySelectorAll('input, select, textarea').forEach(el => el.classList.remove('error'));
+            }
+
+            function applyDonorProfileErrors(errors) {
+                clearDonorProfileErrors();
+                Object.keys(errors).forEach(field => {
+                    const input = donorProfileForm.querySelector(`[name="${field}"]`);
+                    if (!input) return;
+                    input.classList.add('error');
+                    const group = input.closest('.form-group');
+                    const span = group ? group.querySelector('.error-message') : null;
+                    if (span) {
+                        span.textContent = errors[field][0];
+                    }
+                });
+            }
+
+            donorProfileForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                if (!donorProfileNotification) return;
+
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    submitBtn.dataset.originalHtml = submitBtn.innerHTML;
+                    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Mise à jour...';
+                    submitBtn.classList.add('loading');
+                }
+
+                const formData = new FormData(donorProfileForm);
+                formData.append('_token', config.csrfToken);
+
+                fetch(donorProfileForm.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Accept': 'application/json',
+                    },
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            clearDonorProfileErrors();
+                            showNotification(donorProfileNotification, data.message || 'Profil mis à jour avec succès.', 'success');
+
+                            if (data.user) {
+                                const u = data.user;
+
+                                const nameSpan = document.getElementById('profile-name-value');
+                                const emailSpan = document.getElementById('profile-email-value');
+                                const phoneSpan = document.getElementById('profile-phone-value');
+                                const countrySpan = document.getElementById('profile-country-value');
+                                const typeSpan = document.getElementById('profile-donation-type-value');
+                                const amountRow = document.getElementById('profile-donation-amount-row');
+                                const amountSpan = document.getElementById('profile-donation-amount-value');
+                                const natureRow = document.getElementById('profile-donation-nature-row');
+                                const natureSpan = document.getElementById('profile-donation-nature-value');
+                                const periodRow = document.getElementById('profile-donation-period-row');
+                                const periodSpan = document.getElementById('profile-donation-period-value');
+                                const headerName = document.getElementById('header-profile-name');
+
+                                if (nameSpan && u.name) nameSpan.textContent = u.name;
+                                if (emailSpan && u.email) emailSpan.textContent = u.email;
+                                if (phoneSpan) phoneSpan.textContent = u.phone || 'Non renseigné';
+                                if (countrySpan) countrySpan.textContent = u.country || 'Non renseigné';
+
+                                if (typeSpan) {
+                                    if (u.donation_type === 'espece') {
+                                        typeSpan.textContent = 'En espèces (' + (u.donation_currency || 'Devise non définie') + ')';
+                                    } else if (u.donation_type === 'nature') {
+                                        typeSpan.textContent = 'En nature';
+                                    } else {
+                                        typeSpan.textContent = 'Non défini';
+                                    }
+                                }
+
+                                if (amountRow && amountSpan) {
+                                    if (u.donation_type === 'espece' && u.donation_amount) {
+                                        amountRow.style.display = '';
+                                        const amount = parseFloat(u.donation_amount);
+                                        const formatted = isNaN(amount)
+                                            ? ''
+                                            : amount.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                                        amountSpan.textContent = formatted + ' ' + (u.donation_currency || '');
+                                    } else {
+                                        amountRow.style.display = 'none';
+                                    }
+                                }
+
+                                if (natureRow && natureSpan) {
+                                    if (u.donation_type === 'nature' && u.donation_description) {
+                                        natureRow.style.display = '';
+                                        natureSpan.textContent = u.donation_description;
+                                    } else {
+                                        natureRow.style.display = 'none';
+                                    }
+                                }
+
+                                if (periodRow && periodSpan) {
+                                    if (u.donation_period) {
+                                        try {
+                                            const date = new Date(u.donation_period);
+                                            if (!isNaN(date.getTime())) {
+                                                const day = String(date.getDate()).padStart(2, '0');
+                                                const month = String(date.getMonth() + 1).padStart(2, '0');
+                                                const year = date.getFullYear();
+                                                periodSpan.textContent = `${day}/${month}/${year}`;
+                                                periodRow.style.display = '';
+                                            } else {
+                                                periodRow.style.display = 'none';
+                                            }
+                                        } catch (e) {
+                                            periodRow.style.display = 'none';
+                                        }
+                                    } else {
+                                        periodRow.style.display = 'none';
+                                    }
+                                }
+
+                                if (headerName && u.name) {
+                                    headerName.textContent = u.name.length > 18 ? (u.name.substring(0, 15) + '...') : u.name;
+                                }
+                            }
+
+                            setTimeout(() => {
+                                toggleDonorModal(false);
+                            }, 800);
+                        } else {
+                            if (data.errors) {
+                                applyDonorProfileErrors(data.errors);
+                                showNotification(donorProfileNotification, data.message || 'Veuillez corriger les erreurs dans le formulaire.', 'error');
+                            } else {
+                                showNotification(donorProfileNotification, data.message || 'Une erreur est survenue lors de la mise à jour du profil.', 'error');
+                            }
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Erreur mise à jour profil donateur:', error);
+                        showNotification(donorProfileNotification, 'Une erreur est survenue lors de la mise à jour du profil. Veuillez réessayer plus tard.', 'error');
+                    })
+                    .finally(() => {
+                        if (submitBtn) {
+                            submitBtn.disabled = false;
+                            if (submitBtn.dataset.originalHtml) {
+                                submitBtn.innerHTML = submitBtn.dataset.originalHtml;
+                            }
+                            submitBtn.classList.remove('loading');
+                        }
+                    });
+            });
+        }
     });
 
 })();

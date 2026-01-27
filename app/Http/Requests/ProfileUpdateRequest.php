@@ -25,6 +25,18 @@ class ProfileUpdateRequest extends FormRequest
                 'max:255',
                 Rule::unique(User::class)->ignore($this->user()->id),
             ],
+            'phone' => [
+                'nullable',
+                'string',
+                'max:30',
+                Rule::unique(User::class, 'phone')->ignore($this->user()->id),
+            ],
+            'country' => ['nullable', 'string', 'max:100'],
+            'donation_period' => ['nullable', 'date'],
+            'donation_type' => ['nullable', 'string', 'in:espece,nature'],
+            'donation_amount' => ['nullable', 'numeric', 'min:1'],
+            'donation_currency' => ['nullable', 'string', 'in:USD,CDF'],
+            'donation_description' => ['nullable', 'string', 'max:1000'],
         ];
     }
 }

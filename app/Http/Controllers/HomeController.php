@@ -9,6 +9,8 @@ use App\Models\ContactMessage;
 use App\Models\NewsletterSubscription;
 use App\Models\Donor;
 use App\Models\Donation;
+use App\Models\User;
+use App\Mail\DonorWelcomeMail;
 use App\Models\Testimonial;
 use App\Mail\NewsletterSubscriptionEmail;
 use App\Mail\ContactMessageReceivedEmail;
@@ -256,9 +258,10 @@ class HomeController extends Controller
             $rules['email'] = 'required|email|max:255';
         }
 
-        // Si la méthode de paiement est mobile_money, le fournisseur est requis
+        // Si la méthode de paiement est mobile_money, le fournisseur et le téléphone sont requis
         if ($request->payment_method === 'mobile_money') {
             $rules['mobile_money_provider'] = 'required|string|in:orange_money,mtn_mobile_money,airtel_money,moov_money';
+            $rules['phone'] = 'required|string|max:30';
         }
 
         $validator = Validator::make($request->all(), $rules, [
@@ -272,6 +275,7 @@ class HomeController extends Controller
             'payment_method.required' => 'La méthode de paiement est requise.',
             'donation_type.required' => 'Le type de don est requis.',
             'mobile_money_provider.required' => 'Veuillez sélectionner un opérateur Mobile Money.',
+            'phone.required' => 'Le numéro de téléphone est requis pour les paiements Mobile Money.',
         ]);
 
         if ($validator->fails()) {
@@ -292,6 +296,7 @@ class HomeController extends Controller
                     [
                         'first_name' => $request->first_name,
                         'last_name' => $request->last_name,
+                        'phone' => $request->phone ?? null,
                         'status' => 'active',
                     ]
                 );
@@ -301,6 +306,7 @@ class HomeController extends Controller
                     $donor->update([
                         'first_name' => $request->first_name,
                         'last_name' => $request->last_name,
+                        'phone' => $request->phone ?? $donor->phone,
                     ]);
                 }
             }
@@ -356,6 +362,110 @@ class HomeController extends Controller
                 'success' => false,
                 'message' => 'Une erreur est survenue lors du traitement de votre don. Veuillez réessayer plus tard.'
             ], 500);
+        }
+    }
+
+    /**
+     * Inscrit un nouveau donateur (compte utilisateur simple)
+     */
+    public function registerDonor(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'max:255', 'unique:users,email'],
+            'phone' => ['required', 'string', 'max:30', 'unique:users,phone'],
+            'country' => ['required', 'string', 'max:100'],
+            'donation_period' => ['required', 'date'],
+            'donation_type' => ['required', 'string', 'in:espece,nature'],
+            'donation_amount' => ['nullable', 'numeric', 'min:1', 'required_if:donation_type,espece'],
+            'donation_currency' => ['nullable', 'string', 'in:USD,CDF', 'required_if:donation_type,espece'],
+            'donation_nature_description' => ['nullable', 'string', 'max:1000', 'required_if:donation_type,nature'],
+        ], [
+            'name.required' => 'Le nom complet est requis.',
+            'email.required' => 'L\'adresse email est requise.',
+            'email.email' => 'Veuillez fournir une adresse email valide.',
+            'email.unique' => 'Un compte existe déjà avec cette adresse email.',
+            'phone.required' => 'Le numéro de téléphone est requis.',
+            'phone.unique' => 'Un compte existe déjà avec ce numéro de téléphone.',
+            'country.required' => 'Le pays est requis.',
+            'donation_period.required' => 'La date de don est requise.',
+            'donation_period.date' => 'Veuillez fournir une date valide.',
+            'donation_type.required' => 'Le type de don est requis.',
+            'donation_type.in' => 'Le type de don doit être soit en espèces, soit en nature.',
+            'donation_amount.required_if' => 'Le montant est requis pour un don en espèces.',
+            'donation_amount.numeric' => 'Le montant doit être un nombre.',
+            'donation_amount.min' => 'Le montant minimum est de 1.',
+            'donation_currency.required_if' => 'La devise est requise pour un don en espèces.',
+            'donation_currency.in' => 'La devise doit être USD ou CDF.',
+            'donation_nature_description.required_if' => 'Veuillez préciser votre don en nature.',
+        ]);
+
+        if ($validator->fails()) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Veuillez corriger les erreurs dans le formulaire.',
+                    'errors' => $validator->errors(),
+                ], 422);
+            }
+
+            return back()->withErrors($validator)->withInput();
+        }
+
+        $validated = $validator->validated();
+
+        try {
+            $plainPassword = Str::random(10);
+
+            $user = User::create([
+                'name' => $validated['name'],
+                'email' => $validated['email'],
+                'password' => $plainPassword,
+                'phone' => $validated['phone'],
+                'country' => $validated['country'],
+                'donation_period' => $validated['donation_period'],
+                'donation_type' => $validated['donation_type'],
+                'donation_amount' => $validated['donation_type'] === 'espece'
+                    ? $validated['donation_amount']
+                    : null,
+                'donation_currency' => $validated['donation_type'] === 'espece'
+                    ? $validated['donation_currency']
+                    : null,
+                'donation_description' => $validated['donation_type'] === 'nature'
+                    ? $validated['donation_nature_description']
+                    : null,
+            ]);
+
+            try {
+                Mail::to($user->email)->send(new DonorWelcomeMail($user, $plainPassword));
+            } catch (\Exception $mailException) {
+                Log::error('Erreur lors de l\'envoi de l\'email de bienvenue donateur : ' . $mailException->getMessage());
+            }
+
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Votre compte donateur a été créé avec succès. Vérifiez votre email pour vos identifiants de connexion.',
+                ]);
+            }
+
+            return back()->with('donor_registered', true)
+                ->with('donor_registered_message', 'Votre compte donateur a été créé avec succès. Vérifiez votre email pour vos identifiants de connexion.');
+        } catch (\Exception $e) {
+            Log::error('Erreur lors de l\'inscription du donateur : ' . $e->getMessage());
+
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Une erreur interne est survenue lors de la création de votre compte.',
+                    // Infos supplémentaires utiles en développement (visible dans l’onglet Réseau)
+                    'debug' => $e->getMessage(),
+                ], 500);
+            }
+
+            return back()->withErrors([
+                'donor_register' => 'Une erreur interne est survenue lors de la création de votre compte. Veuillez vérifier les paramètres de votre base de données ou contacter l’administrateur.',
+            ])->withInput();
         }
     }
 

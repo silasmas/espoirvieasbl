@@ -219,6 +219,352 @@
     margin-top: 18px;
 }
 
+/* Onglets du modal de don */
+.ul-donation-tabs {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 18px;
+    border-radius: 999px;
+    background: #f1f3f5;
+    padding: 4px;
+}
+
+.ul-donation-tab {
+    border: none;
+    background: transparent;
+    color: #495057;
+    font-size: 13px;
+    padding: 6px 16px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.ul-donation-tab.active {
+    background: var(--ul-primary);
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.ul-donation-tab-pane {
+    margin-top: 18px;
+}
+
+/* Bouton de login dans le header */
+.ul-btn-login {
+    margin-right: 10px;
+    background: transparent;
+    border-color: rgba(255, 255, 255, 0.7);
+    color: #ffffff;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.ul-btn-login i {
+    font-size: 16px;
+}
+
+/* Quand le header est sur fond clair (après scroll) */
+.to-be-sticky.sticky .ul-btn-login,
+.ul-header.sticky .ul-btn-login {
+    background: transparent;
+    color: var(--ul-primary);
+    border-color: var(--ul-primary);
+}
+
+.ul-btn-login:hover,
+.ul-btn-login:focus {
+    background: rgba(255, 255, 255, 0.12);
+    color: var(--ul-primary);
+    border-color: var(--ul-primary);
+}
+
+/* Profil utilisateur dans le header */
+.ul-profile-dropdown-wrapper {
+    position: relative;
+    margin-right: 12px;
+}
+
+.ul-profile-toggle {
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    background: transparent;
+    color: #fff;
+    border-radius: 50%;
+    padding: 0;
+    width: 38px;
+    height: 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.to-be-sticky.sticky .ul-profile-toggle,
+.ul-header.sticky .ul-profile-toggle {
+    border-color: var(--ul-primary);
+    color: var(--ul-primary);
+    background: #ffffff;
+}
+
+.ul-profile-avatar {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--ul-primary);
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 600;
+    overflow: hidden;
+}
+
+.to-be-sticky.sticky .ul-profile-avatar,
+.ul-header.sticky .ul-profile-avatar {
+    background: var(--ul-primary);
+    color: #fff;
+}
+
+.ul-profile-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+}
+
+.ul-profile-caret {
+    font-size: 10px;
+    transform: rotate(90deg);
+}
+
+.ul-profile-dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    min-width: 180px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+    padding: 8px 0;
+    z-index: 1100;
+    display: none;
+}
+
+.ul-profile-dropdown a,
+.ul-profile-dropdown button {
+    display: block;
+    width: 100%;
+    padding: 8px 16px;
+    font-size: 13px;
+    color: #333;
+    text-align: left;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.ul-profile-dropdown a:hover,
+.ul-profile-dropdown button:hover {
+    background: #f1f3f5;
+}
+
+/* Cartes et aside de l’espace donateur */
+.ul-donor-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 24px 28px;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.06);
+    margin-bottom: 24px;
+}
+
+.ul-donor-card-title {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #1f2933;
+}
+
+.ul-donor-card-subtitle {
+    font-size: 14px;
+    color: #6b7280;
+    margin-bottom: 20px;
+}
+
+.ul-donor-card-body {
+    border-top: 1px solid #edf2f7;
+    margin-top: 10px;
+    padding-top: 16px;
+}
+
+.ul-donor-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #f3f4f6;
+    font-size: 14px;
+}
+
+.ul-donor-row .label {
+    font-weight: 600;
+    color: #4b5563;
+}
+
+.ul-donor-row .value {
+    color: #111827;
+    text-align: right;
+}
+
+.ul-donor-card-footer {
+    margin-top: 18px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.ul-donor-aside {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.ul-donor-aside-card {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 18px 20px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
+}
+
+.ul-donor-aside-card h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.ul-donor-aside-card ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+.ul-donor-aside-card ul li + li {
+    margin-top: 6px;
+}
+
+.ul-donor-aside-card ul li a {
+    display: inline-block;
+    font-size: 14px;
+    color: #4b5563;
+    text-decoration: none;
+}
+
+.ul-donor-aside-card ul li a.active,
+.ul-donor-aside-card ul li a:hover {
+    color: var(--ul-primary);
+    font-weight: 600;
+}
+
+.ul-donor-aside-card.ul-donor-highlight {
+    background: linear-gradient(135deg, #0172b8 0%, #005a8c 100%);
+    color: #ffffff;
+}
+
+.ul-donor-aside-card.ul-donor-highlight h3 {
+    color: #ffffff;
+}
+
+.ul-donor-aside-card.ul-donor-highlight p {
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+
+/* Variante secondaire (envoyer don) */
+.ul-donor-aside-card.ul-donor-highlight-secondary {
+    background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+    color: #ffffff;
+}
+
+.ul-donor-aside-card.ul-donor-highlight-secondary h3,
+.ul-donor-aside-card.ul-donor-highlight-secondary p {
+    color: #ffffff;
+}
+
+/* Variante danger (suppression compte) */
+.ul-donor-aside-card.ul-donor-danger {
+    background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
+    color: #ffffff;
+}
+
+.ul-donor-aside-card.ul-donor-danger h3,
+.ul-donor-aside-card.ul-donor-danger p {
+    color: #ffffff;
+}
+
+.ul-donor-empty {
+    padding: 32px 16px;
+    text-align: center;
+}
+
+.ul-donor-empty i {
+    font-size: 40px;
+    color: var(--ul-primary);
+    display: block;
+    margin-bottom: 12px;
+}
+
+.ul-donor-empty h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.ul-donor-empty p {
+    font-size: 14px;
+    color: #6b7280;
+    margin-bottom: 16px;
+}
+
+/* Correction de l'affichage de l'icône dans les boutons de la section vide */
+.ul-donor-empty .ul-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.ul-donor-empty .ul-btn i {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin: 0;
+    /* Retirer le cercle autour de l'icône - style simple comme dans la sidebar */
+    background-color: transparent !important;
+    border-radius: 0 !important;
+    width: auto !important;
+    aspect-ratio: auto !important;
+    font-size: clamp(14px, 0.9vw, 18px) !important;
+    color: var(--white) !important;
+}
+
+.ul-donor-empty .ul-btn:hover i {
+    color: var(--white) !important;
+    background-color: transparent !important;
+}
+
+@media (max-width: 991px) {
+    .ul-donor-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .ul-donor-row .value {
+        margin-top: 4px;
+    }
+}
+
 /* ====================================================================================
    NOTIFICATIONS ASYNCHRONES
    ==================================================================================== */
@@ -285,6 +631,17 @@
 #spontaneous-donation-submit-btn-anonymous:disabled {
     opacity: 0.6;
     cursor: not-allowed;
+}
+
+/* Loader générique sur les boutons */
+.ul-btn.loading,
+button.loading {
+    opacity: 0.7;
+    cursor: wait;
+}
+
+.ul-btn.loading .spinner-border {
+    margin-right: 6px;
 }
 
 /* ====================================================================================

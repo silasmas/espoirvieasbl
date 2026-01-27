@@ -21,6 +21,14 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'photo',
+        'phone',
+        'country',
+        'donation_period',
+        'donation_amount',
+        'donation_currency',
+        'donation_type',
+        'donation_description',
     ];
 
     /**
