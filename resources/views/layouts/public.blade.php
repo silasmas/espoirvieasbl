@@ -837,7 +837,7 @@
                                 <label for="nwsltr-agreement" class="ul-checkbox-wrapper">
                                     <input type="checkbox" name="agreement" id="nwsltr-agreement" value="1" required>
                                     {{-- <span class="ul-checkbox"><i class="flaticon-tick"></i></span> --}}
-                                    <span class="ul-checkbox-txt">J'accepte la <a href="#">Politique de confidentialité</a></span>
+                                    <span class="ul-checkbox-txt">J'accepte la <a href="{{ route('privacy') }}">Politique de confidentialité</a></span>
                                 </label>
                             </div>
                             <span class="error-message" id="error-nwsltr-email" style="display: none;"></span>
@@ -855,11 +855,12 @@
                         <span id="footer-copyright-year"></span> Espoir Vie ASBL. Tous droits réservés.
                     </p>
                     <div class="ul-footer-bottom-nav">
-                        <a href="#">Conditions d'utilisation</a>
-                        <a href="#">Politique de confidentialité</a></div>
-                </div>
+                        <a href="{{ route('terms') }}">Conditions d'utilisation</a>
+                        <a href="{{ route('privacy') }}">Politique de confidentialité</a>
                     </div>
                 </div>
+            </div>
+        </div>
 
         <!-- vector -->
         <div class="ul-footer-vectors">

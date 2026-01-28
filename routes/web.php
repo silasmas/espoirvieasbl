@@ -28,6 +28,10 @@ Route::get('/api/search', [HomeController::class, 'globalSearch'])->name('api.se
 Route::get('/articles', [HomeController::class, 'articles'])->name('articles');
 Route::get('/articles/{slug}', [HomeController::class, 'showArticle'])->name('article.show');
 
+// Pages légales
+Route::view('/conditions-utilisation', 'pages.terms')->name('terms');
+Route::view('/politique-confidentialite', 'pages.privacy')->name('privacy');
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
