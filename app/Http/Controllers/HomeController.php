@@ -370,10 +370,13 @@ class HomeController extends Controller
      */
     public function registerDonor(Request $request)
     {
+        // On valide désormais l'unicité sur la table "donors" (référence métier des donateurs)
+        // plutôt que sur "users". Le modèle User reste utilisé pour l'authentification,
+        // mais les informations de donateur sont centralisées dans la table "donors".
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', 'max:255', 'unique:users,email'],
-            'phone' => ['required', 'string', 'max:30', 'unique:users,phone'],
+            'email' => ['required', 'email', 'max:255', 'unique:donors,email'],
+            'phone' => ['required', 'string', 'max:30', 'unique:donors,phone'],
             'country' => ['required', 'string', 'max:100'],
             'donation_period' => ['required', 'date'],
             'donation_type' => ['required', 'string', 'in:espece,nature'],
@@ -415,26 +418,53 @@ class HomeController extends Controller
         $validated = $validator->validated();
 
         try {
+            // Mot de passe aléatoire qui sera envoyé au donateur
             $plainPassword = Str::random(10);
 
-            $user = User::create([
-                'name' => $validated['name'],
-                'email' => $validated['email'],
-                'password' => $plainPassword,
-                'phone' => $validated['phone'],
-                'country' => $validated['country'],
-                'donation_period' => $validated['donation_period'],
-                'donation_type' => $validated['donation_type'],
-                'donation_amount' => $validated['donation_type'] === 'espece'
-                    ? $validated['donation_amount']
-                    : null,
-                'donation_currency' => $validated['donation_type'] === 'espece'
-                    ? $validated['donation_currency']
-                    : null,
-                'donation_description' => $validated['donation_type'] === 'nature'
-                    ? $validated['donation_nature_description']
-                    : null,
-            ]);
+            // 1) Créer ou mettre à jour le "vrai" profil donateur dans la table donors
+            // On utilise l'email comme clé fonctionnelle, ce qui aligne cette inscription
+            // avec les autres endroits qui créent des Donor (processDonation, don spontané…).
+            $donor = Donor::updateOrCreate(
+                ['email' => strtolower($validated['email'])],
+                [
+                    // Ici, le formulaire expose un champ "name" complet.
+                    // Si tu veux séparer prénom/nom, tu pourras adapter plus tard.
+                    'first_name' => $validated['name'],
+                    'last_name' => '',
+                    'phone' => $validated['phone'],
+                    'country' => $validated['country'],
+                    'status' => 'active',
+                    // On garde une trace de la première intention de don dans les notes internes.
+                    'notes' => sprintf(
+                        'Inscription via formulaire "devenir donateur" le %s, type de don: %s',
+                        now()->toDateTimeString(),
+                        $validated['donation_type']
+                    ),
+                ]
+            );
+
+            // 2) Créer ou mettre à jour le compte utilisateur technique (auth)
+            // L'utilisateur sert à la connexion au dashboard public.
+            $user = User::updateOrCreate(
+                ['email' => $donor->email],
+                [
+                    'name' => $validated['name'],
+                    'password' => $plainPassword, // sera hashé automatiquement via le cast "hashed"
+                    'phone' => $validated['phone'],
+                    'country' => $validated['country'],
+                    'donation_period' => $validated['donation_period'],
+                    'donation_type' => $validated['donation_type'],
+                    'donation_amount' => $validated['donation_type'] === 'espece'
+                        ? $validated['donation_amount']
+                        : null,
+                    'donation_currency' => $validated['donation_type'] === 'espece'
+                        ? $validated['donation_currency']
+                        : null,
+                    'donation_description' => $validated['donation_type'] === 'nature'
+                        ? $validated['donation_nature_description']
+                        : null,
+                ]
+            );
 
             try {
                 Mail::to($user->email)->send(new DonorWelcomeMail($user, $plainPassword));

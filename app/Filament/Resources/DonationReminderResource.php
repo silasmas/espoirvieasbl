@@ -13,6 +13,8 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Actions;
+use Illuminate\Contracts\Support\Htmlable;
+use BackedEnum;
 
 class DonationReminderResource extends Resource
 {
@@ -25,6 +27,14 @@ class DonationReminderResource extends Resource
     protected static ?string $pluralModelLabel = 'Rappels';
 
     protected static ?int $navigationSort = 7;
+
+    /**
+     * Icône du menu Filament pour les rappels de dons.
+     */
+    public static function getNavigationIcon(): string|BackedEnum|Htmlable|null
+    {
+        return 'heroicon-o-bell-alert';
+    }
 
     public static function form(Schema $schema): Schema
     {

@@ -13,6 +13,8 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Actions;
+use Illuminate\Contracts\Support\Htmlable;
+use BackedEnum;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -27,6 +29,14 @@ class DonationResource extends Resource
     protected static ?string $pluralModelLabel = 'Dons';
 
     protected static ?int $navigationSort = 2;
+
+    /**
+     * Icône du menu Filament pour les dons uniques.
+     */
+    public static function getNavigationIcon(): string|BackedEnum|Htmlable|null
+    {
+        return 'heroicon-o-banknotes';
+    }
 
     public static function form(Schema $schema): Schema
     {

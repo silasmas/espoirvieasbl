@@ -13,6 +13,8 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Actions;
+use Illuminate\Contracts\Support\Htmlable;
+use BackedEnum;
 
 class DonorReportResource extends Resource
 {
@@ -25,6 +27,14 @@ class DonorReportResource extends Resource
     protected static ?string $pluralModelLabel = 'Rapports envoyés';
 
     protected static ?int $navigationSort = 8;
+
+    /**
+     * Icône du menu Filament pour les rapports envoyés aux donateurs.
+     */
+    public static function getNavigationIcon(): string|BackedEnum|Htmlable|null
+    {
+        return 'heroicon-o-paper-airplane';
+    }
 
     public static function form(Schema $schema): Schema
     {

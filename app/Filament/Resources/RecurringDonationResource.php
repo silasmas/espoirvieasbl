@@ -13,6 +13,8 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Actions;
+use Illuminate\Contracts\Support\Htmlable;
+use BackedEnum;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -27,6 +29,14 @@ class RecurringDonationResource extends Resource
     protected static ?string $pluralModelLabel = 'Dons récurrents';
 
     protected static ?int $navigationSort = 6;
+
+    /**
+     * Icône du menu Filament pour les dons récurrents.
+     */
+    public static function getNavigationIcon(): string|BackedEnum|Htmlable|null
+    {
+        return 'heroicon-o-arrow-path';
+    }
 
     public static function form(Schema $schema): Schema
     {

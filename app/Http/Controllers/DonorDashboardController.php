@@ -16,7 +16,11 @@ class DonorDashboardController extends Controller
     {
         $user = Auth::user();
 
-        return view('donor.profile', compact('user'));
+        // On récupère le profil donateur métier lié à l'utilisateur connecté.
+        // Cette relation est basée sur l'email (cf. méthode donor() dans le modèle User).
+        $donor = $user?->donor;
+
+        return view('donor.profile', compact('user', 'donor'));
     }
 
     /**
@@ -28,8 +32,10 @@ class DonorDashboardController extends Controller
     public function donations()
     {
         $user = Auth::user();
+        $donor = $user?->donor;
 
-        return view('donor.donations', compact('user'));
+        // Plus tard, on pourra exploiter $donor->donations pour afficher l'historique réel.
+        return view('donor.donations', compact('user', 'donor'));
     }
 
     /**
@@ -40,8 +46,9 @@ class DonorDashboardController extends Controller
     public function activities()
     {
         $user = Auth::user();
+        $donor = $user?->donor;
 
-        return view('donor.activities', compact('user'));
+        return view('donor.activities', compact('user', 'donor'));
     }
 
     /**

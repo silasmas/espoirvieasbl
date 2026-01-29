@@ -14,6 +14,8 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Actions;
+use Illuminate\Contracts\Support\Htmlable;
+use BackedEnum;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -28,6 +30,14 @@ class ExpenseResource extends Resource
     protected static ?string $pluralModelLabel = 'Dépenses';
 
     protected static ?int $navigationSort = 4;
+
+    /**
+     * Icône du menu Filament pour les dépenses.
+     */
+    public static function getNavigationIcon(): string|BackedEnum|Htmlable|null
+    {
+        return 'heroicon-o-receipt-percent';
+    }
 
     public static function form(Schema $schema): Schema
     {

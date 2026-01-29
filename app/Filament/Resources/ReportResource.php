@@ -14,6 +14,8 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Actions;
+use Illuminate\Contracts\Support\Htmlable;
+use BackedEnum;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -28,6 +30,14 @@ class ReportResource extends Resource
     protected static ?string $pluralModelLabel = 'Rapports';
 
     protected static ?int $navigationSort = 5;
+
+    /**
+     * Icône du menu Filament pour les rapports financiers / d'activité.
+     */
+    public static function getNavigationIcon(): string|BackedEnum|Htmlable|null
+    {
+        return 'heroicon-o-document-text';
+    }
 
     public static function form(Schema $schema): Schema
     {

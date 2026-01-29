@@ -53,4 +53,18 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * Relation pratique vers le "vrai" profil donateur.
+     *
+     * On relie l'utilisateur connecté à l'enregistrement de la table donors
+     * en se basant sur l'email. Cela permet d'utiliser toutes les relations
+     * métiers (donations, recurringDonations, rapports, etc.) à partir du
+     * modèle Donor, tout en conservant l'authentification sur le modèle User.
+     */
+    public function donor()
+    {
+        // hasOne(Donor::class, 'colonne_dans_donors', 'colonne_dans_users')
+        return $this->hasOne(Donor::class, 'email', 'email');
+    }
 }

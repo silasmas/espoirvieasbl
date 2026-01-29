@@ -14,6 +14,8 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Actions;
+use Illuminate\Contracts\Support\Htmlable;
+use BackedEnum;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -28,6 +30,14 @@ class ActivityResource extends Resource
     protected static ?string $pluralModelLabel = 'Activités';
 
     protected static ?int $navigationSort = 3;
+
+    /**
+     * Icône du menu Filament pour les activités / projets.
+     */
+    public static function getNavigationIcon(): string|BackedEnum|Htmlable|null
+    {
+        return 'heroicon-o-clipboard-document-list';
+    }
 
     public static function form(Schema $schema): Schema
     {

@@ -18,7 +18,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class DonorResource extends Resource
-{
+{ 
     protected static ?string $model = Donor::class;
 
     protected static ?string $navigationLabel = 'Donateurs';
@@ -26,6 +26,17 @@ class DonorResource extends Resource
     protected static ?string $modelLabel = 'Donateur';
 
     protected static ?string $pluralModelLabel = 'Donateurs';
+
+    /**
+     * Icône du menu Filament pour les donateurs.
+     *
+     * Utilise un pictogramme de groupe d'utilisateurs pour représenter
+     * la liste des donateurs dans la barre latérale de Filament.
+     */
+    public static function getNavigationIcon(): string|\BackedEnum|\Illuminate\Contracts\Support\Htmlable|null
+    {
+        return 'heroicon-o-users';
+    }
 
     protected static ?int $navigationSort = 1;
 
