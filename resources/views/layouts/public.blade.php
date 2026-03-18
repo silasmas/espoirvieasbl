@@ -212,14 +212,14 @@
                                         <label for="spontaneous-donate-amount-2" class="ul-donate-form-label">20 $</label>
                                     </div>
                                     <div>
-                                        <input type="radio" name="donate-amount" id="spontaneous-donate-amount-3" value="30" data-usd="30" data-cdf="20000" hidden>
+                                        <input type="radio" name="donate-amount" id="spontaneous-donate-amount-3" value="30" data-usd="30" data-cdf="30000" hidden>
                                         <label for="spontaneous-donate-amount-3" class="ul-donate-form-label">30 $</label>
                                     </div>
                                     <div>
-                                        <input type="radio" name="donate-amount" id="spontaneous-donate-amount-4" value="40" data-usd="40" data-cdf="30000" hidden>
+                                        <input type="radio" name="donate-amount" id="spontaneous-donate-amount-4" value="40" data-usd="40" data-cdf="50000" hidden>
                                         <label for="spontaneous-donate-amount-4" class="ul-donate-form-label">40 $</label>
                                     </div>
-                                    <div>
+                                    <div class="spontaneous-amount-usd-only">
                                         <input type="radio" name="donate-amount" id="spontaneous-donate-amount-5" value="50" data-usd="50" data-cdf="50000" hidden>
                                         <label for="spontaneous-donate-amount-5" class="ul-donate-form-label">50 $</label>
                                     </div>

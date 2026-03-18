@@ -127,6 +127,18 @@ document.addEventListener("DOMContentLoaded", function () {
     function updateAmountLabels() {
         const currency = getCurrency();
         const symbol = getSymbol();
+        const amount5Wrapper = document.querySelector("#spontaneous-donation-wrapper .spontaneous-amount-usd-only");
+        const amount5Radio = document.getElementById("spontaneous-donate-amount-5");
+        if (amount5Wrapper && amount5Radio) {
+            if (currency === "CDF") {
+                amount5Wrapper.style.display = "none";
+                if (amount5Radio.checked) {
+                    document.getElementById("spontaneous-donate-amount-4").checked = true;
+                }
+            } else {
+                amount5Wrapper.style.display = "";
+            }
+        }
         const amountRadios = document.querySelectorAll("#spontaneous-donation-wrapper input[name='donate-amount']:not([id='spontaneous-custom-amount'])");
         amountRadios.forEach(function (radio) {
             const val = currency === "CDF" ? (radio.dataset.cdf || radio.value) : (radio.dataset.usd || radio.value);
