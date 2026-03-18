@@ -1024,8 +1024,8 @@
                                     var msg = attempt <= 2
                                         ? 'En attente que vous validiez sur votre téléphone. Veuillez patienter...'
                                         : attempt <= 6
-                                            ? 'Vérification en cours. Si vous avez validé, la confirmation arrive.'
-                                            : 'Vérification finale. Veuillez patienter...';
+                                            ? 'Vérification en cours auprès de l\'opérateur. Si vous avez validé, la confirmation arrive.'
+                                            : 'Vérification finale auprès de l\'opérateur. Veuillez patienter...';
                                     showNotification(notification, msg, 'info', 0);
                                 },
                                 onPaid: function () {

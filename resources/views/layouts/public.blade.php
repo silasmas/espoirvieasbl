@@ -226,7 +226,7 @@
                                     <div class="custom-amount-wrapper">
                                         <input type="radio" name="donate-amount" id="spontaneous-custom-amount" value="custom">
                                         <label for="spontaneous-donate-amount-custom" class="ul-donate-form-label">
-                                            <input type="number" name="custom-amount" id="spontaneous-donate-amount-custom" placeholder="Montant personnalisé" class="ul-donate-form-custom-input ul-input-highlight" min="1" step="0.01">
+                                            <input type="number" name="custom-amount" id="spontaneous-donate-amount-custom" placeholder="Montant personnalisé" class="ul-donate-form-custom-input ul-input-highlight" min="1" step="any" inputmode="decimal" autocomplete="off">
                                         </label>
                                     </div>
                                 </div>
@@ -629,7 +629,10 @@
                     });
                     let currencyRadios = document.querySelectorAll('.ul-modal input[name="donation_currency"]');
                     currencyRadios.forEach(function(r){
-                        r.addEventListener('change', updateMontant);
+                        r.addEventListener('change', function(){
+                            updateMontant();
+                            if (window.updateCustomAmountPlaceholder) window.updateCustomAmountPlaceholder();
+                        });
                     });
                     let customInput = document.getElementById('spontaneous-donate-amount-custom');
                     if(customInput){

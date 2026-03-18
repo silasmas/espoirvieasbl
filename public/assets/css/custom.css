@@ -212,6 +212,15 @@
     color: #333;
 }
 
+/* Montant personnalisé : permettre la saisie (override pointer-events: none du style global) */
+.ul-modal #spontaneous-donation-form .custom-amount-wrapper label,
+.ul-modal #spontaneous-donation-form .custom-amount-wrapper .ul-donate-form-custom-input {
+    pointer-events: auto;
+}
+.ul-modal #spontaneous-donation-form .custom-amount-wrapper .ul-donate-form-custom-input {
+    cursor: text;
+}
+
 /* Champ numéro Mobile Money : style identique aux autres champs du site */
 #spontaneous-phone-field {
     margin-bottom: 1rem;

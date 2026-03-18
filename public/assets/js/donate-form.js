@@ -48,6 +48,7 @@ document.addEventListener("DOMContentLoaded", function () {
         void modal.offsetWidth;
         setTimeout(function () {
             modal.classList.add("show");
+            window.updateCustomAmountPlaceholder && window.updateCustomAmountPlaceholder();
         }, 10);
     }
 
@@ -172,8 +173,17 @@ document.addEventListener("DOMContentLoaded", function () {
         r.addEventListener("change", function () {
             updateAmountLabels();
             updateSpontaneousMontant();
+            updateCustomAmountPlaceholder();
         });
     });
+
+    window.updateCustomAmountPlaceholder = function () {
+        const customInput = document.getElementById("spontaneous-donate-amount-custom");
+        if (!customInput) return;
+        const currency = getCurrency();
+        customInput.placeholder = currency === "CDF" ? "Ex: 15000" : "Ex: 25";
+        customInput.step = currency === "CDF" ? "1" : "0.01";
+    };
 
     const spontaneousCustomInput = document.getElementById("spontaneous-donate-amount-custom");
     if (spontaneousCustomInput) {
@@ -182,10 +192,15 @@ document.addEventListener("DOMContentLoaded", function () {
             if (customRadio) customRadio.checked = true;
             updateSpontaneousMontant();
         });
+        spontaneousCustomInput.addEventListener("focus", function () {
+            const customRadio = document.getElementById("spontaneous-custom-amount");
+            if (customRadio) customRadio.checked = true;
+        });
     }
 
     updateAmountLabels();
     updateSpontaneousMontant();
+    updateCustomAmountPlaceholder();
 
     // =========================================================================
     // Don spontané : méthode de paiement (Mobile Money vs Carte bancaire).
