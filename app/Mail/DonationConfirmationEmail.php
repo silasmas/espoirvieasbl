@@ -28,17 +28,6 @@ class DonationConfirmationEmail extends Mailable
     }
 
     /**
-     * Get the message envelope.
-     */
-    public function envelope(): Envelope
-    {
-        return new Envelope(
-            from: config('mail.from.address'),
-            subject: 'Confirmation de votre don - Espoir Vie ASBL',
-        );
-    }
-
-    /**
      * Get the message content definition.
      */
     public function content(): Content

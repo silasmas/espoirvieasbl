@@ -273,6 +273,34 @@
                                 </div>
                             </div>
 
+                            <!-- Informations personnelles (visible si don non anonyme) -->
+                            <div id="spontaneous-personal-info-section" class="ul-donation-details-personal-info">
+                                <h3 class="ul-donation-details-personal-info-title">Informations personnelles</h3>
+                                <p class="ul-donation-details-personal-info-sub-title">Votre adresse email ne sera pas publiée. Les champs marqués * sont obligatoires.</p>
+                                <div class="ul-donation-details-personal-info-form">
+                                    <div class="row row-cols-2 row-cols-xxs-1 ul-bs-row">
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <input type="text" name="first_name" id="spontaneous_first_name" placeholder="Prénom *">
+                                                <span class="error-message" id="spontaneous-error-first_name"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <input type="text" name="last_name" id="spontaneous_last_name" placeholder="Nom *">
+                                                <span class="error-message" id="spontaneous-error-last_name"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <input type="email" name="email" id="spontaneous_donation_email" placeholder="Adresse email *">
+                                                <span class="error-message" id="spontaneous-error-email"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <!-- Méthode de paiement -->
                             <div class="ul-donation-details-payment-methods">
                                 <h3 class="ul-donation-details-payment-methods-title">Sélectionner la méthode de paiement</h3>
@@ -328,35 +356,6 @@
                                     </div>
                             </div>
                         </div>
-
-                            <!-- Informations personnelles (cache si don anonyme sélectionné) -->
-                            <div id="spontaneous-personal-info-section" class="ul-donation-details-personal-info">
-                                <h3 class="ul-donation-details-personal-info-title">Informations personnelles</h3>
-                                <p class="ul-donation-details-personal-info-sub-title">Votre adresse email ne sera pas publiée. Les champs marqués * sont obligatoires.</p>
-                                <div class="ul-donation-details-personal-info-form">
-                                    <div class="row row-cols-2 row-cols-xxs-1 ul-bs-row">
-                                        <div class="col">
-                                            <div class="form-group">
-                                                <input type="text" name="first_name" id="spontaneous_first_name" placeholder="Prénom *">
-                                                <span class="error-message" id="spontaneous-error-first_name"></span>
-                                            </div>
-                                        </div>
-                                        <div class="col">
-                                            <div class="form-group">
-                                                <input type="text" name="last_name" id="spontaneous_last_name" placeholder="Nom *">
-                                                <span class="error-message" id="spontaneous-error-last_name"></span>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="form-group">
-                                                <input type="email" name="email" id="spontaneous_donation_email" placeholder="Adresse email *">
-                                                <span class="error-message" id="spontaneous-error-email"></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                        </div>
-                            </div>
 
                             <!-- Zone bouton TOUJOURS visible (Mobile Money ou Carte bancaire) -->
                             <div id="spontaneous-submit-area" class="spontaneous-submit-area">
@@ -653,9 +652,16 @@
                         }
                     }
                     if(methodMM && methodCard){
-                        methodMM.addEventListener('change', updateMMOptions);
-                        methodCard.addEventListener('change', updateMMOptions);
+                        methodMM.addEventListener('change', function(){
+                            updateMMOptions();
+                            toggleAnonSection();
+                        });
+                        methodCard.addEventListener('change', function(){
+                            updateMMOptions();
+                            toggleAnonSection();
+                        });
                         updateMMOptions();
+                        toggleAnonSection();
                     }
                 });
 
