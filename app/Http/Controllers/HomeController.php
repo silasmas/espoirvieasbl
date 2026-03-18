@@ -399,7 +399,7 @@ class HomeController extends Controller
                 if (!$result['success']) {
                     return response()->json([
                         'success' => false,
-                        'message' => $result['message'] ?? 'Erreur FlexPay. Veuillez réessayer.',
+                        'message' => $result['message'] ?? 'Une erreur est survenue. Veuillez réessayer.',
                         'flexpay_code' => $result['code'] ?? null,
                         'flexpay_response' => $flexpayResponse,
                     ], 422);
@@ -427,7 +427,7 @@ class HomeController extends Controller
                 if (!$cardResult['success']) {
                     return response()->json([
                         'success' => false,
-                        'message' => $cardResult['message'] ?? 'Erreur FlexPay carte. Veuillez réessayer.',
+                        'message' => $cardResult['message'] ?? 'Une erreur est survenue. Veuillez réessayer.',
                     ], 422);
                 }
                 $flexpayRedirectUrl = $cardResult['url'];
@@ -471,7 +471,7 @@ class HomeController extends Controller
             }
 
             if ($flexpayRedirectUrl) {
-                $message = 'Redirection vers FlexPay pour finaliser le paiement par carte.';
+                $message = 'Redirection vers la page de paiement par carte.';
             } elseif ($flexpayOrderNumber) {
                 $message = $flexpayMessage ?: 'Transaction envoyée. Veuillez valider le push message sur votre téléphone.';
             } elseif ($request->payment_method === 'mobile_money') {
@@ -517,7 +517,7 @@ class HomeController extends Controller
     public function donationStatus(string $orderNumber): JsonResponse
     {
         if (!config('flexpay.enabled')) {
-            return response()->json(['success' => false, 'paid' => false, 'message' => 'FlexPay non configuré.'], 400);
+            return response()->json(['success' => false, 'paid' => false, 'message' => 'Service de paiement non configuré.'], 400);
         }
         $flexPay = new FlexPayService();
         $result = $flexPay->checkTransaction($orderNumber);

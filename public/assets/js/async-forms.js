@@ -998,45 +998,48 @@
             })
                 .then(function (response) {
                     return response.json().catch(function () {
-                        return { success: false, message: 'Erreur serveur (réponse invalide). Code: ' + response.status };
+                        return { success: false, message: 'Une erreur est survenue. Veuillez réessayer plus tard.' };
                     });
                 })
                 .then(function (data) {
-                    if (data.flexpay_response) {
-                        console.log('[FlexPay] Retour reçu de FlexPay:', data.flexpay_response);
-                    }
                     paymentPending = !!(data.success && data.payment_pending && data.flexpay_order_number);
                     if (data.success) {
                         form.querySelectorAll('.error-message').forEach(function (el) { el.textContent = ''; });
                         form.querySelectorAll('input').forEach(function (el) { el.classList.remove('error'); });
                         form.reset();
 
-                        // FlexPay Carte : redirection immédiate vers la page de paiement
+                        // Carte bancaire : redirection vers la page de paiement
                         if (data.redirect_url) {
-                            showNotification(notification, 'Redirection vers FlexPay pour finaliser le paiement...', 'info', 0);
+                            showNotification(notification, 'Redirection vers la page de paiement...', 'info', 0);
                             setButtonsLoading(false);
                             window.location.href = data.redirect_url;
                             return;
                         }
 
-                        // FlexPay Mobile Money : popup reste ouvert, aucune fermeture auto
+                        // Mobile Money : popup reste ouvert, aucune fermeture auto
                         if (paymentPending) {
-                            showNotification(notification, 'Étape 1 : Requête envoyée à FlexPay. Vérifiez votre téléphone et validez le message de confirmation reçu.', 'info', 0);
+                            showNotification(notification, 'Requête envoyée. Vérifiez votre téléphone et validez le message de confirmation reçu.', 'info', 0);
                             pollFlexPayStatus(data.flexpay_order_number, {
                                 onPolling: function (attempt) {
                                     var msg = attempt <= 2
-                                        ? 'Étape 2 : En attente que vous validiez sur votre téléphone. Veuillez patienter...'
+                                        ? 'En attente que vous validiez sur votre téléphone. Veuillez patienter...'
                                         : attempt <= 6
-                                            ? 'Étape 3 : Vérification en cours auprès de FlexPay. Si vous avez validé, la confirmation arrive.'
-                                            : 'Étape 4 : Vérification finale. Veuillez patienter...';
+                                            ? 'Vérification en cours. Si vous avez validé, la confirmation arrive.'
+                                            : 'Vérification finale. Veuillez patienter...';
                                     showNotification(notification, msg, 'info', 0);
                                 },
                                 onPaid: function () {
-                                    showNotification(notification, 'Paiement confirmé ! L\'argent a bien été envoyé. Merci pour votre don.', 'success', 0);
+                                    showNotification(notification, 'Paiement confirmé ! Merci pour votre don.', 'success', 0);
                                     setButtonsLoading(false);
                                 },
-                                onTimeout: function () {
-                                    showNotification(notification, 'Le délai est dépassé. Si vous avez validé le paiement sur votre téléphone, il sera confirmé automatiquement. Vous pouvez fermer cette fenêtre.', 'info', 0);
+                                onFailed: function (res) {
+                                    var msg = (res && res.message) ? res.message : 'Le paiement n\'a pas abouti. Vous pouvez réessayer.';
+                                    showNotification(notification, msg, 'error', 0);
+                                    setButtonsLoading(false);
+                                },
+                                onTimeout: function (lastRes) {
+                                    var msg = (lastRes && lastRes.message) ? lastRes.message : 'Le délai est dépassé. Si vous avez validé le paiement sur votre téléphone, il sera confirmé automatiquement. Vous pouvez fermer cette fenêtre.';
+                                    showNotification(notification, msg, 'info', 0);
                                     setButtonsLoading(false);
                                 },
                                 pollIntervalMs: 4000,
@@ -1046,9 +1049,6 @@
                             showNotification(notification, data.message || 'Merci pour votre don !', 'success', 0);
                         }
                     } else {
-                        if (data.flexpay_response) {
-                            console.warn('[FlexPay] Erreur FlexPay:', data.flexpay_response);
-                        }
                         if (data.errors) {
                             showErrors(data.errors, {
                                 'first_name': '#spontaneous-error-first_name',
@@ -1058,14 +1058,13 @@
                             });
                             showNotification(notification, data.message || 'Veuillez corriger les erreurs.', 'error', 0);
                         } else {
-                            showNotification(notification, data.message || 'Une erreur est survenue.', 'error', 0);
+                            showNotification(notification, data.message || 'Une erreur est survenue. Veuillez réessayer plus tard.', 'error', 0);
                         }
                     }
                 })
                 .catch(function (err) {
                     console.error('Don spontané:', err);
-                    var errMsg = (err && err.message) ? err.message : 'Une erreur est survenue. Veuillez réessayer plus tard.';
-                    showNotification(notification, errMsg, 'error', 0);
+                    showNotification(notification, 'Une erreur est survenue. Veuillez réessayer plus tard.', 'error', 0);
                 })
                 .finally(function () {
                     if (!paymentPending) {
@@ -1076,17 +1075,19 @@
     }
 
     /**
-     * Polling FlexPay : vérifie le statut de la transaction (Check transaction) jusqu'à paiement ou timeout.
-     * @param {string} orderNumber - orderNumber renvoyé par FlexPay (Payment Service)
-     * @param {Object} options - onPaid(), onTimeout(), pollIntervalMs, maxAttempts
+     * Polling : vérifie le statut de la transaction jusqu'à paiement, échec ou timeout.
+     * @param {string} orderNumber - numéro de commande
+     * @param {Object} options - onPaid(), onFailed(res), onTimeout(lastRes), pollIntervalMs, maxAttempts
      */
     function pollFlexPayStatus(orderNumber, options) {
         var onPaid = options.onPaid || function () {};
+        var onFailed = options.onFailed || function () {};
         var onTimeout = options.onTimeout || function () {};
         var onPolling = options.onPolling || function () {};
         var pollIntervalMs = options.pollIntervalMs || 4000;
         var maxAttempts = options.maxAttempts || 30;
         var attempt = 0;
+        var lastRes = null;
 
         function check() {
             attempt++;
@@ -1097,21 +1098,28 @@
             })
                 .then(function (r) { return r.json(); })
                 .then(function (res) {
+                    lastRes = res;
                     if (res.paid === true) {
                         onPaid();
+                        return;
+                    }
+                    var txStatus = res.transaction && res.transaction.status;
+                    var isFailed = txStatus === '1' || txStatus === 1;
+                    if (isFailed && res.message) {
+                        onFailed(res);
                         return;
                     }
                     if (attempt < maxAttempts) {
                         setTimeout(check, pollIntervalMs);
                     } else {
-                        onTimeout();
+                        onTimeout(lastRes);
                     }
                 })
                 .catch(function () {
                     if (attempt < maxAttempts) {
                         setTimeout(check, pollIntervalMs);
                     } else {
-                        onTimeout();
+                        onTimeout(lastRes);
                     }
                 });
         }
