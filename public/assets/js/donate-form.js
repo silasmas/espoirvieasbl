@@ -43,6 +43,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function openSpontaneousModal() {
         if (!modal) return;
+        var toast = document.getElementById("spontaneous-donation-notification");
+        if (toast) toast.style.display = "none";
         modal.style.display = "flex";
         document.body.style.overflow = "hidden";
         void modal.offsetWidth;

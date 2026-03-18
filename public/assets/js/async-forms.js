@@ -908,13 +908,23 @@
         const modal = document.getElementById('spontaneous-donation-modal');
         const submitBtns = form.querySelectorAll('button[type="submit"]');
 
-        // Conteneur de notification (créé si absent)
-        let notification = wrapper ? wrapper.querySelector('.async-notification') : null;
-        if (!notification && wrapper) {
-            notification = document.createElement('div');
-            notification.className = 'async-notification';
-            notification.style.display = 'none';
-            wrapper.insertBefore(notification, wrapper.firstChild);
+        // Toast notification fixe (fermeture manuelle uniquement)
+        const toastEl = document.getElementById('spontaneous-donation-notification');
+        const toastMessage = toastEl ? toastEl.querySelector('.spontaneous-toast-message') : null;
+        const toastCloseBtn = toastEl ? toastEl.querySelector('.spontaneous-toast-close') : null;
+
+        function showSpontaneousToast(message, type) {
+            if (!toastEl || !toastMessage) return;
+            toastMessage.textContent = message;
+            toastEl.className = 'spontaneous-toast-notification ' + (type || 'info');
+            toastEl.style.display = 'flex';
+            toastEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+        function hideSpontaneousToast() {
+            if (toastEl) toastEl.style.display = 'none';
+        }
+        if (toastCloseBtn) {
+            toastCloseBtn.addEventListener('click', hideSpontaneousToast);
         }
 
         function getAmount() {
@@ -955,7 +965,7 @@
 
         form.addEventListener('submit', function (e) {
             e.preventDefault();
-            if (!notification) return;
+            if (!toastEl) return;
 
             const amount = getAmount();
             const currency = getCurrency();
@@ -965,7 +975,7 @@
             if (paymentMethod && paymentMethod.value === 'mobile_money') {
                 if (!phoneInput || !phoneInput.value.trim()) {
                     showErrors({ phone: ['Le numéro de téléphone est requis pour les paiements Mobile Money.'] }, { 'phone': '#spontaneous-error-phone' });
-                    showNotification(notification, 'Veuillez renseigner votre numéro de téléphone.', 'error', 0);
+                    showSpontaneousToast('Veuillez renseigner votre numéro de téléphone.', 'error');
                     return;
                 }
                 var provider = form.querySelector('input[name="mobile_money_provider"]:checked');
@@ -973,7 +983,19 @@
                 var phoneError = validateSpontaneousPhone(phoneInput.value, providerVal);
                 if (phoneError) {
                     showErrors({ phone: [phoneError] }, { 'phone': '#spontaneous-error-phone' });
-                    showNotification(notification, phoneError, 'error', 0);
+                    showSpontaneousToast(phoneError, 'error');
+                    return;
+                }
+            }
+
+            if (paymentMethod && paymentMethod.value === 'card') {
+                var minUsd = parseFloat(form.dataset.cardMinUsd || '5');
+                var minCdf = parseFloat(form.dataset.cardMinCdf || '5000');
+                var minAmount = currency === 'CDF' ? minCdf : minUsd;
+                var symbol = currency === 'CDF' ? 'FC' : '$';
+                if (amount < minAmount) {
+                    var msg = 'Le montant minimum pour un paiement par carte est de ' + minAmount.toLocaleString('fr-FR') + ' ' + symbol + '. Veuillez augmenter votre don.';
+                    showSpontaneousToast(msg, 'error');
                     return;
                 }
             }
@@ -1010,7 +1032,7 @@
 
                         // Carte bancaire : redirection vers la page de paiement
                         if (data.redirect_url) {
-                            showNotification(notification, 'Redirection vers la page de paiement...', 'info', 0);
+                            showSpontaneousToast('Redirection vers la page de paiement...', 'info');
                             setButtonsLoading(false);
                             window.location.href = data.redirect_url;
                             return;
@@ -1018,7 +1040,7 @@
 
                         // Mobile Money : popup reste ouvert, aucune fermeture auto
                         if (paymentPending) {
-                            showNotification(notification, 'Requête envoyée. Vérifiez votre téléphone et validez le message de confirmation reçu.', 'info', 0);
+                            showSpontaneousToast('Requête envoyée. Vérifiez votre téléphone et validez le message de confirmation reçu.', 'info');
                             pollFlexPayStatus(data.flexpay_order_number, {
                                 onPolling: function (attempt) {
                                     var msg = attempt <= 2
@@ -1026,27 +1048,27 @@
                                         : attempt <= 6
                                             ? 'Vérification en cours auprès de l\'opérateur. Si vous avez validé, la confirmation arrive.'
                                             : 'Vérification finale auprès de l\'opérateur. Veuillez patienter...';
-                                    showNotification(notification, msg, 'info', 0);
+                                    showSpontaneousToast(msg, 'info');
                                 },
                                 onPaid: function () {
-                                    showNotification(notification, 'Paiement confirmé ! Merci pour votre don.', 'success', 0);
+                                    showSpontaneousToast('Paiement confirmé ! Merci pour votre don.', 'success');
                                     setButtonsLoading(false);
                                 },
                                 onFailed: function (res) {
                                     var msg = (res && res.message) ? res.message : 'Le paiement n\'a pas abouti. Vous pouvez réessayer.';
-                                    showNotification(notification, msg, 'error', 0);
+                                    showSpontaneousToast(msg, 'error');
                                     setButtonsLoading(false);
                                 },
                                 onTimeout: function (lastRes) {
                                     var msg = (lastRes && lastRes.message) ? lastRes.message : 'Le délai est dépassé. Si vous avez validé le paiement sur votre téléphone, il sera confirmé automatiquement. Vous pouvez fermer cette fenêtre.';
-                                    showNotification(notification, msg, 'info', 0);
+                                    showSpontaneousToast(msg, 'info');
                                     setButtonsLoading(false);
                                 },
                                 pollIntervalMs: 4000,
                                 maxAttempts: 30
                             });
                         } else {
-                            showNotification(notification, data.message || 'Merci pour votre don !', 'success', 0);
+                            showSpontaneousToast(data.message || 'Merci pour votre don !', 'success');
                         }
                     } else {
                         if (data.errors) {
@@ -1056,15 +1078,15 @@
                                 'email': '#spontaneous-error-email',
                                 'phone': '#spontaneous-error-phone',
                             });
-                            showNotification(notification, data.message || 'Veuillez corriger les erreurs.', 'error', 0);
+                            showSpontaneousToast(data.message || 'Veuillez corriger les erreurs.', 'error');
                         } else {
-                            showNotification(notification, data.message || 'Une erreur est survenue. Veuillez réessayer plus tard.', 'error', 0);
+                            showSpontaneousToast(data.message || 'Une erreur est survenue. Veuillez réessayer plus tard.', 'error');
                         }
                     }
                 })
                 .catch(function (err) {
                     console.error('Don spontané:', err);
-                    showNotification(notification, 'Une erreur est survenue. Veuillez réessayer plus tard.', 'error', 0);
+                    showSpontaneousToast('Une erreur est survenue. Veuillez réessayer plus tard.', 'error');
                 })
                 .finally(function () {
                     if (!paymentPending) {

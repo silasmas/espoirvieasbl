@@ -282,6 +282,21 @@ class HomeController extends Controller
             $rules['email'] = 'required|email|max:255';
         }
 
+        // Si la méthode de paiement est carte : montant minimum requis
+
+        if ($request->payment_method === 'card') {
+            $currency = $request->donation_currency ?? 'USD';
+            $minAmount = $currency === 'CDF' ? config('flexpay.card_min_cdf', 5000) : config('flexpay.card_min_usd', 5);
+            if ((float) $request->amount < $minAmount) {
+                $symbol = $currency === 'CDF' ? 'FC' : '$';
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Le montant minimum pour un paiement par carte est de ' . number_format($minAmount, 0, ',', ' ') . ' ' . $symbol . '. Veuillez augmenter votre don.',
+                    'errors' => ['amount' => ['Le montant minimum pour la carte est de ' . number_format($minAmount, 0, ',', ' ') . ' ' . $symbol . '.']],
+                ], 422);
+            }
+        }
+
         // Si la méthode de paiement est mobile_money : opérateur (Mpesa, Airtel, Orange) et téléphone requis
         if ($request->payment_method === 'mobile_money') {
             $rules['mobile_money_provider'] = 'required|string|in:mpesa,airtel_money,orange_money';

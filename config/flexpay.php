@@ -20,6 +20,8 @@ return [
     'gateway_mobile' => rtrim(trim(env('FLEXPAY_GATEWAY_MOBILE', '')), '/'),
     'gateway_check' => rtrim(trim(env('FLEXPAY_GATEWAY_CHECK', '')), '/'),
     'gateway_card' => rtrim(trim(env('FLEXPAY_GATEWAY_CARD', '')), '/'),
+    'card_min_usd' => (float) (env('FLEXPAY_CARD_MIN_USD', 5)),
+    'card_min_cdf' => (float) (env('FLEXPAY_CARD_MIN_CDF', 5000)),
     'token' => env('FLEXPAY_TOKEN', env('FLEXPAY_API_TOKEN', '')),
     'merchant' => env('FLEXPAY_MERCHANT', env('FLEXPAY_MARCHAND', '')),
 ];

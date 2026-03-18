@@ -196,7 +196,12 @@
 
                         <!-- Formulaire de don spontané -->
                         <div id="spontaneous-donation-wrapper" class="ul-donation-tab-pane active spontaneous-modal-layout">
-                        <form id="spontaneous-donation-form" action="{{ route('donate.processSpontaneous') }}" method="POST" class="ul-donation-details-form" autocomplete="off">
+                        <!-- Zone de notification fixe (étapes, erreurs, succès) - fermeture manuelle -->
+                        <div id="spontaneous-donation-notification" class="spontaneous-toast-notification" style="display: none;" role="alert">
+                            <span class="spontaneous-toast-message"></span>
+                            <button type="button" class="spontaneous-toast-close" aria-label="Fermer">&times;</button>
+                        </div>
+                        <form id="spontaneous-donation-form" action="{{ route('donate.processSpontaneous') }}" method="POST" class="ul-donation-details-form" autocomplete="off" data-card-min-usd="{{ config('flexpay.card_min_usd', 5) }}" data-card-min-cdf="{{ config('flexpay.card_min_cdf', 5000) }}">
                             @csrf
                             <div class="spontaneous-form-scroll">
                             <!-- Montant à donner (devise USD par défaut) -->
