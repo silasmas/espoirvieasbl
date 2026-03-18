@@ -18,6 +18,7 @@ class Donation extends Model
         'activity_id',
         'amount',
         'currency',
+        'phone',
         'type',
         'status',
         'payment_method',

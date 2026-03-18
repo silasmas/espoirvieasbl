@@ -3,6 +3,7 @@
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DonorDashboardController;
+use App\Http\Controllers\FlexPayCallbackController;
 use Illuminate\Support\Facades\Route;
 
 // Routes publiques
@@ -23,6 +24,13 @@ Route::get('/newsletter/unsubscribe/{token}', [HomeController::class, 'unsubscri
 
 // Route de recherche globale (API)
 Route::get('/api/search', [HomeController::class, 'globalSearch'])->name('api.search');
+
+// FlexPay : callback reçu par FlexPay après traitement (sans CSRF)
+Route::post('/flexpay/callback', FlexPayCallbackController::class)->name('flexpay.callback');
+// Vérification du statut d'une transaction FlexPay (pour polling JS)
+Route::get('/api/donation-status/{orderNumber}', [HomeController::class, 'donationStatus'])->name('api.donationStatus');
+// Retour FlexPay carte : success / cancel / decline
+Route::get('/paid/{reference}/{amount}/{currency}/{status}', [HomeController::class, 'paymentReturn'])->name('payment.return');
 
 // Routes pour les articles/blog
 Route::get('/articles', [HomeController::class, 'articles'])->name('articles');

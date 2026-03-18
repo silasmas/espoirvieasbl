@@ -15,6 +15,7 @@ use App\Models\Testimonial;
 use App\Mail\NewsletterSubscriptionEmail;
 use App\Mail\ContactMessageReceivedEmail;
 use App\Services\MailService;
+use App\Services\FlexPayService;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Validator;
@@ -241,12 +242,35 @@ class HomeController extends Controller
 
     /**
      * Traite un don spontané (sans projet spécifique)
+     * Montant : depuis "amount" ou depuis "donate-amount" / "custom-amount".
+     * Devise : donation_currency (USD ou CDF).
+     * Mobile Money : mpesa, airtel_money, orange_money, afrimoney.
      */
     public function processSpontaneousDonation(Request $request): JsonResponse
     {
+        // Normaliser le montant : le formulaire envoie donate-amount (ou custom-amount si personnalisé)
+        $amount = $request->input('amount');
+        if ($amount === null || $amount === '') {
+            $donateAmount = $request->input('donate-amount');
+            if ($donateAmount === 'custom') {
+                $amount = $request->input('custom-amount');
+            } else {
+                $amount = $donateAmount;
+            }
+        }
+        $request->merge(['amount' => $amount]);
+
+        // Devise : USD ou CDF (par défaut USD)
+        $currency = $request->input('donation_currency', 'USD');
+        if (!in_array($currency, ['USD', 'CDF'], true)) {
+            $currency = 'USD';
+        }
+        $request->merge(['donation_currency' => $currency]);
+
         // Validation des règles de base
         $rules = [
             'amount' => 'required|numeric|min:1',
+            'donation_currency' => 'nullable|string|in:USD,CDF',
             'payment_method' => 'required|string|in:mobile_money,card',
             'donation_type' => 'required|string|in:anonymous,non-anonymous',
         ];
@@ -258,10 +282,39 @@ class HomeController extends Controller
             $rules['email'] = 'required|email|max:255';
         }
 
-        // Si la méthode de paiement est mobile_money, le fournisseur et le téléphone sont requis
+        // Si la méthode de paiement est mobile_money : opérateur (Mpesa, Airtel, Orange) et téléphone requis
         if ($request->payment_method === 'mobile_money') {
-            $rules['mobile_money_provider'] = 'required|string|in:orange_money,mtn_mobile_money,airtel_money,moov_money';
-            $rules['phone'] = 'required|string|max:30';
+            $rules['mobile_money_provider'] = 'required|string|in:mpesa,airtel_money,orange_money';
+            $rules['phone'] = [
+                'required',
+                'string',
+                'max:30',
+                function (string $attribute, mixed $value, \Closure $fail) use ($request): void {
+                    $digits = preg_replace('/\D/', '', $value);
+                    if (strlen($digits) === 0) {
+                        return;
+                    }
+                    if (!str_starts_with($digits, '243')) {
+                        $fail('Le numéro doit commencer par 243 (ex: 243 81 123 4567).');
+                        return;
+                    }
+                    $phone = $digits;
+                    if (strlen($phone) < 12) {
+                        $fail('Le numéro doit commencer par 243 suivi de 9 chiffres (ex: 243 81 123 4567).');
+                        return;
+                    }
+                    $prefix = substr($phone, 3, 2);
+                    $provider = $request->mobile_money_provider;
+                    $validPrefixes = [
+                        'mpesa' => ['81', '82', '83'],
+                        'airtel_money' => ['97', '98', '99'],
+                        'orange_money' => ['84', '85', '89'],
+                    ];
+                    if (!isset($validPrefixes[$provider]) || !in_array($prefix, $validPrefixes[$provider], true)) {
+                        $fail('Le numéro ne correspond pas à l\'opérateur sélectionné. Mpesa: 81/82/83, Airtel: 97/98/99, Orange: 84/85/89.');
+                    }
+                },
+            ];
         }
 
         $validator = Validator::make($request->all(), $rules, [
@@ -279,10 +332,11 @@ class HomeController extends Controller
         ]);
 
         if ($validator->fails()) {
+            $errors = $validator->errors();
             return response()->json([
                 'success' => false,
-                'message' => 'Veuillez corriger les erreurs dans le formulaire.',
-                'errors' => $validator->errors()
+                'message' => $errors->first(),
+                'errors' => $errors,
             ], 422);
         }
 
@@ -311,32 +365,102 @@ class HomeController extends Controller
                 }
             }
 
+            $paymentReference = 'SPON-' . time() . '-' . strtoupper(substr(md5(uniqid()), 0, 8));
+            $donationPhone = $request->payment_method === 'mobile_money' ? ($request->phone ? trim($request->phone) : null) : null;
+            $metadata = [
+                'donation_type' => $request->donation_type,
+                'mobile_money_provider' => $request->mobile_money_provider ?? null,
+                'phone' => $donationPhone,
+            ];
+
+            // Si Mobile Money et FlexPay activé : appeler l'API FlexPay Payment Service avant de confirmer
+            $flexpayOrderNumber = null;
+            $flexpayMessage = null;
+            $flexpayResponse = null;
+            $flexpayRedirectUrl = null;
+            if ($request->payment_method === 'mobile_money' && config('flexpay.enabled')) {
+                Log::info('FlexPay: envoi de la requête de paiement', [
+                    'reference' => $paymentReference,
+                    'phone' => $request->phone,
+                    'amount' => $request->amount,
+                    'currency' => $request->donation_currency ?? 'USD',
+                ]);
+                $callbackUrl = url()->route('flexpay.callback');
+                $flexPay = new FlexPayService();
+                $result = $flexPay->payment(
+                    $paymentReference,
+                    $request->phone,
+                    (float) $request->amount,
+                    $request->donation_currency ?? 'USD',
+                    $callbackUrl,
+                    '1' // type 1 = mobile money
+                );
+                $flexpayResponse = $result;
+                if (!$result['success']) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => $result['message'] ?? 'Erreur FlexPay. Veuillez réessayer.',
+                        'flexpay_code' => $result['code'] ?? null,
+                        'flexpay_response' => $flexpayResponse,
+                    ], 422);
+                }
+                $flexpayOrderNumber = $result['orderNumber'];
+                $flexpayMessage = $result['message'];
+                $metadata['flexpay_order_number'] = $flexpayOrderNumber;
+                Log::info('FlexPay: requête envoyée avec succès', ['orderNumber' => $flexpayOrderNumber]);
+            }
+
+            // Si Carte bancaire et FlexPay activé : initier le paiement carte avant de créer le don
+            if ($request->payment_method === 'card' && config('flexpay.enabled')) {
+                Log::info('FlexPay: initiation paiement carte', [
+                    'reference' => $paymentReference,
+                    'amount' => $request->amount,
+                    'currency' => $request->donation_currency ?? 'USD',
+                ]);
+                $flexPay = new FlexPayService();
+                $cardResult = $flexPay->initiateCardPayment(
+                    (float) $request->amount,
+                    $request->donation_currency ?? 'USD',
+                    $paymentReference,
+                    'Don spontané – Espoir Vie ASBL'
+                );
+                if (!$cardResult['success']) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => $cardResult['message'] ?? 'Erreur FlexPay carte. Veuillez réessayer.',
+                    ], 422);
+                }
+                $flexpayRedirectUrl = $cardResult['url'];
+                if ($cardResult['orderNumber']) {
+                    $metadata['flexpay_order_number'] = $cardResult['orderNumber'];
+                }
+                Log::info('FlexPay: paiement carte initié', ['url' => $flexpayRedirectUrl]);
+            }
+
             // Créer le don (sans activité spécifique)
             $donation = \App\Models\Donation::create([
                 'donor_id' => $donor ? $donor->id : null,
-                'activity_id' => null, // Don spontané, pas lié à une activité
+                'activity_id' => null,
+                'phone' => $donationPhone,
                 'amount' => $request->amount,
-                'currency' => 'EUR',
+                'currency' => $request->donation_currency ?? 'USD',
                 'type' => 'one_time',
-                'status' => 'pending', // Les dons spontanés sont toujours en attente
+                'status' => 'pending',
                 'payment_method' => $request->payment_method,
-                'payment_reference' => 'SPON-' . time() . '-' . strtoupper(substr(md5(uniqid()), 0, 8)),
+                'payment_reference' => $paymentReference,
                 'paid_at' => null,
                 'source' => 'website_spontaneous',
-                'metadata' => [
-                    'donation_type' => $request->donation_type,
-                    'mobile_money_provider' => $request->mobile_money_provider ?? null,
-                ],
+                'metadata' => $metadata,
             ]);
 
-            // Envoyer un email de confirmation si le don n'est pas anonyme
-            if ($donor) {
+            // Envoyer un email de confirmation si le don n'est pas anonyme (hors attente FlexPay)
+            if ($donor && !$flexpayOrderNumber) {
                 try {
                     $mailService = new MailService();
                     $mailService->sendDonationConfirmation([
                         'donor_name' => $donor->first_name . ' ' . $donor->last_name,
                         'amount' => $request->amount,
-                        'currency' => 'EUR',
+                        'currency' => $request->donation_currency ?? 'USD',
                         'reference' => $donation->payment_reference,
                         'activity_title' => 'Don spontané',
                         'payment_method' => $request->payment_method,
@@ -346,23 +470,96 @@ class HomeController extends Controller
                 }
             }
 
-            return response()->json([
-                'success' => true,
-                'message' => $request->donation_type === 'anonymous'
+            if ($flexpayRedirectUrl) {
+                $message = 'Redirection vers FlexPay pour finaliser le paiement par carte.';
+            } elseif ($flexpayOrderNumber) {
+                $message = $flexpayMessage ?: 'Transaction envoyée. Veuillez valider le push message sur votre téléphone.';
+            } elseif ($request->payment_method === 'mobile_money') {
+                $message = 'Don enregistré. Le paiement Mobile Money requiert une configuration FlexPay.';
+            } elseif ($request->payment_method === 'card') {
+                $message = 'Don enregistré. Le paiement par carte requiert une configuration FlexPay.';
+            } else {
+                $message = $request->donation_type === 'anonymous'
                     ? 'Votre don spontané anonyme a été enregistré avec succès ! Merci pour votre générosité.'
-                    : 'Votre don spontané a été enregistré avec succès ! Un email de confirmation vous a été envoyé.',
+                    : 'Votre don spontané a été enregistré avec succès ! Un email de confirmation vous a été envoyé.';
+            }
+
+            $json = [
+                'success' => true,
+                'message' => $message,
+                'payment_pending' => (bool) $flexpayOrderNumber,
+                'flexpay_order_number' => $flexpayOrderNumber,
+                'redirect_url' => $flexpayRedirectUrl,
                 'donation' => [
                     'reference' => $donation->payment_reference,
                     'amount' => $donation->amount,
-                ]
-            ]);
+                ],
+            ];
+            if ($flexpayResponse !== null) {
+                $json['flexpay_response'] = $flexpayResponse;
+            }
+            return response()->json($json);
         } catch (\Exception $e) {
-            Log::error('Erreur lors du traitement du don spontané : ' . $e->getMessage());
+            $errorMsg = $e->getMessage();
+            Log::error('Erreur lors du traitement du don spontané : ' . $errorMsg);
+            $message = config('app.debug') ? $errorMsg : 'Une erreur est survenue lors du traitement de votre don. Veuillez réessayer plus tard.';
             return response()->json([
                 'success' => false,
-                'message' => 'Une erreur est survenue lors du traitement de votre don. Veuillez réessayer plus tard.'
+                'message' => $message,
             ], 500);
         }
+    }
+
+    /**
+     * Vérifie le statut d'une transaction FlexPay (Check transaction).
+     * Utilisé par le JS pour le polling après envoi du push Mobile Money.
+     */
+    public function donationStatus(string $orderNumber): JsonResponse
+    {
+        if (!config('flexpay.enabled')) {
+            return response()->json(['success' => false, 'paid' => false, 'message' => 'FlexPay non configuré.'], 400);
+        }
+        $flexPay = new FlexPayService();
+        $result = $flexPay->checkTransaction($orderNumber);
+        return response()->json([
+            'success' => $result['success'],
+            'paid' => $result['paid'] ?? false,
+            'message' => $result['message'] ?? null,
+            'transaction' => $result['transaction'] ?? null,
+        ]);
+    }
+
+    /**
+     * Retour FlexPay carte : success, cancel ou decline.
+     * Met à jour le don et affiche une page de confirmation.
+     */
+    public function paymentReturn(string $reference, string $amount, string $currency, string $status)
+    {
+        $donation = \App\Models\Donation::where('payment_reference', $reference)->first();
+
+        if (!$donation) {
+            Log::warning('FlexPay carte: don introuvable pour référence ' . $reference);
+            return redirect()->route('home')->with('error', 'Don introuvable.');
+        }
+
+        if ($status === 'success') {
+            $donation->update([
+                'status' => 'completed',
+                'paid_at' => now(),
+            ]);
+            Log::info('FlexPay carte: paiement confirmé', ['reference' => $reference]);
+            return redirect()->route('home')->with('success', 'Merci ! Votre paiement par carte a bien été enregistré.');
+        }
+
+        if ($status === 'cancel') {
+            Log::info('FlexPay carte: paiement annulé par l\'utilisateur', ['reference' => $reference]);
+            return redirect()->route('home')->with('info', 'Le paiement a été annulé. Vous pouvez refaire un don à tout moment.');
+        }
+
+        // decline
+        $donation->update(['status' => 'failed']);
+        Log::info('FlexPay carte: paiement refusé', ['reference' => $reference]);
+        return redirect()->route('home')->with('error', 'Le paiement a été refusé. Veuillez réessayer ou utiliser une autre carte.');
     }
 
     /**

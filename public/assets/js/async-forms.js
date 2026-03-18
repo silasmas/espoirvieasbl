@@ -811,8 +811,10 @@
                 submitBtn.classList.add('loading');
             }
 
+            // Token CSRF : priorité au champ _token du formulaire (toujours à jour), sinon meta
+            const csrfToken = form.querySelector('input[name="_token"]')?.value || config.csrfToken;
             const formData = new FormData(form);
-            formData.append('_token', config.csrfToken);
+            formData.set('_token', csrfToken);
 
             fetch(form.action, {
                 method: 'POST',
@@ -820,9 +822,15 @@
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest',
                     'Accept': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
                 },
             })
-            .then(response => response.json())
+            .then(response => {
+                if (response.status === 419) {
+                    return { success: false, message: 'Votre session a expiré. Veuillez rafraîchir la page et réessayer.' };
+                }
+                return response.json();
+            })
                 .then(data => {
                     if (data.success) {
                         clearFormErrors();
@@ -856,6 +864,258 @@
 
         // Préremplir le code pays au chargement si un pays est déjà sélectionné
         updatePhonePrefix();
+    }
+
+    /**
+     * =================================================================================
+     * FORMULAIRE DE DON SPONTANÉ (MODAL HEADER)
+     * =================================================================================
+     * Soumission AJAX : calcule le montant (donate-amount / custom-amount), envoie
+     * amount, donation_currency, donation_type, payment_method, etc. Affiche la
+     * notification et ferme le modal en cas de succès.
+     */
+    /**
+     * Préfixes téléphone par opérateur (RDC) : Mpesa 81/82/83, Airtel 97/98/99, Orange 84/85/89
+     */
+    var SPONTANEOUS_PHONE_PREFIXES = {
+        mpesa: ['81', '82', '83'],
+        airtel_money: ['97', '98', '99'],
+        orange_money: ['84', '85', '89']
+    };
+
+    function validateSpontaneousPhone(phone, provider) {
+        if (!phone || !provider) return null;
+        var trimmed = phone.trim();
+        var digits = trimmed.replace(/\D/g, '');
+        if (digits.length === 0) return null;
+        if (!digits.startsWith('243')) {
+            return 'Le numéro doit commencer par 243 (ex: 243 81 123 4567).';
+        }
+        if (digits.length < 12) return 'Le numéro doit commencer par 243 suivi de 9 chiffres (ex: 243 81 123 4567).';
+        var prefix = digits.substring(3, 5);
+        var valid = SPONTANEOUS_PHONE_PREFIXES[provider];
+        if (!valid || valid.indexOf(prefix) === -1) {
+            return 'Le numéro ne correspond pas à l\'opérateur sélectionné. Mpesa: 81/82/83, Airtel: 97/98/99, Orange: 84/85/89.';
+        }
+        return null;
+    }
+
+    function initSpontaneousDonationForm() {
+        const form = document.getElementById('spontaneous-donation-form');
+        if (!form) return;
+
+        const wrapper = document.getElementById('spontaneous-donation-wrapper');
+        const modal = document.getElementById('spontaneous-donation-modal');
+        const submitBtns = form.querySelectorAll('button[type="submit"]');
+
+        // Conteneur de notification (créé si absent)
+        let notification = wrapper ? wrapper.querySelector('.async-notification') : null;
+        if (!notification && wrapper) {
+            notification = document.createElement('div');
+            notification.className = 'async-notification';
+            notification.style.display = 'none';
+            wrapper.insertBefore(notification, wrapper.firstChild);
+        }
+
+        function getAmount() {
+            const radio = form.querySelector('input[name="donate-amount"]:checked');
+            const currency = getCurrency();
+            const defaultVal = currency === 'CDF' ? 1000 : 10;
+            if (!radio) return defaultVal;
+            if (radio.value === 'custom') {
+                const custom = form.querySelector('#spontaneous-donate-amount-custom');
+                const v = custom ? parseFloat(String(custom.value).replace(',', '.').replace(/\s/g, '')) : NaN;
+                return isNaN(v) || v <= 0 ? defaultVal : v;
+            }
+            return parseFloat(radio.value) || defaultVal;
+        }
+
+        function getCurrency() {
+            const radio = form.querySelector('input[name="donation_currency"]:checked');
+            return radio ? radio.value : 'USD';
+        }
+
+        function setButtonsLoading(loading) {
+            var loadingHtml = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Traitement...';
+            submitBtns.forEach(function (btn) {
+                if (loading) {
+                    btn.disabled = true;
+                    btn.dataset.originalHtml = btn.innerHTML;
+                    btn.innerHTML = loadingHtml;
+                    btn.classList.add('loading');
+                } else {
+                    btn.disabled = false;
+                    if (btn.dataset.originalHtml) {
+                        btn.innerHTML = btn.dataset.originalHtml;
+                    }
+                    btn.classList.remove('loading');
+                }
+            });
+        }
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            if (!notification) return;
+
+            const amount = getAmount();
+            const currency = getCurrency();
+            const paymentMethod = form.querySelector('input[name="payment_method"]:checked');
+            const phoneInput = form.querySelector('#spontaneous_phone');
+
+            if (paymentMethod && paymentMethod.value === 'mobile_money') {
+                if (!phoneInput || !phoneInput.value.trim()) {
+                    showErrors({ phone: ['Le numéro de téléphone est requis pour les paiements Mobile Money.'] }, { 'phone': '#spontaneous-error-phone' });
+                    showNotification(notification, 'Veuillez renseigner votre numéro de téléphone.', 'error', 0);
+                    return;
+                }
+                var provider = form.querySelector('input[name="mobile_money_provider"]:checked');
+                var providerVal = provider ? provider.value : null;
+                var phoneError = validateSpontaneousPhone(phoneInput.value, providerVal);
+                if (phoneError) {
+                    showErrors({ phone: [phoneError] }, { 'phone': '#spontaneous-error-phone' });
+                    showNotification(notification, phoneError, 'error', 0);
+                    return;
+                }
+            }
+
+            const formData = new FormData(form);
+            formData.set('amount', amount.toFixed(2));
+            formData.set('donation_currency', currency);
+            if (paymentMethod && paymentMethod.value === 'mobile_money' && phoneInput && phoneInput.value.trim()) {
+                formData.set('phone', phoneInput.value.trim());
+            }
+
+            setButtonsLoading(true);
+            var paymentPending = false;
+
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json',
+                },
+            })
+                .then(function (response) {
+                    return response.json().catch(function () {
+                        return { success: false, message: 'Erreur serveur (réponse invalide). Code: ' + response.status };
+                    });
+                })
+                .then(function (data) {
+                    if (data.flexpay_response) {
+                        console.log('[FlexPay] Retour reçu de FlexPay:', data.flexpay_response);
+                    }
+                    paymentPending = !!(data.success && data.payment_pending && data.flexpay_order_number);
+                    if (data.success) {
+                        form.querySelectorAll('.error-message').forEach(function (el) { el.textContent = ''; });
+                        form.querySelectorAll('input').forEach(function (el) { el.classList.remove('error'); });
+                        form.reset();
+
+                        // FlexPay Carte : redirection immédiate vers la page de paiement
+                        if (data.redirect_url) {
+                            showNotification(notification, 'Redirection vers FlexPay pour finaliser le paiement...', 'info', 0);
+                            setButtonsLoading(false);
+                            window.location.href = data.redirect_url;
+                            return;
+                        }
+
+                        // FlexPay Mobile Money : popup reste ouvert, aucune fermeture auto
+                        if (paymentPending) {
+                            showNotification(notification, 'Étape 1 : Requête envoyée à FlexPay. Vérifiez votre téléphone et validez le message de confirmation reçu.', 'info', 0);
+                            pollFlexPayStatus(data.flexpay_order_number, {
+                                onPolling: function (attempt) {
+                                    var msg = attempt <= 2
+                                        ? 'Étape 2 : En attente que vous validiez sur votre téléphone. Veuillez patienter...'
+                                        : attempt <= 6
+                                            ? 'Étape 3 : Vérification en cours auprès de FlexPay. Si vous avez validé, la confirmation arrive.'
+                                            : 'Étape 4 : Vérification finale. Veuillez patienter...';
+                                    showNotification(notification, msg, 'info', 0);
+                                },
+                                onPaid: function () {
+                                    showNotification(notification, 'Paiement confirmé ! L\'argent a bien été envoyé. Merci pour votre don.', 'success', 0);
+                                    setButtonsLoading(false);
+                                },
+                                onTimeout: function () {
+                                    showNotification(notification, 'Le délai est dépassé. Si vous avez validé le paiement sur votre téléphone, il sera confirmé automatiquement. Vous pouvez fermer cette fenêtre.', 'info', 0);
+                                    setButtonsLoading(false);
+                                },
+                                pollIntervalMs: 4000,
+                                maxAttempts: 30
+                            });
+                        } else {
+                            showNotification(notification, data.message || 'Merci pour votre don !', 'success', 0);
+                        }
+                    } else {
+                        if (data.flexpay_response) {
+                            console.warn('[FlexPay] Erreur FlexPay:', data.flexpay_response);
+                        }
+                        if (data.errors) {
+                            showErrors(data.errors, {
+                                'first_name': '#spontaneous-error-first_name',
+                                'last_name': '#spontaneous-error-last_name',
+                                'email': '#spontaneous-error-email',
+                                'phone': '#spontaneous-error-phone',
+                            });
+                            showNotification(notification, data.message || 'Veuillez corriger les erreurs.', 'error', 0);
+                        } else {
+                            showNotification(notification, data.message || 'Une erreur est survenue.', 'error', 0);
+                        }
+                    }
+                })
+                .catch(function (err) {
+                    console.error('Don spontané:', err);
+                    var errMsg = (err && err.message) ? err.message : 'Une erreur est survenue. Veuillez réessayer plus tard.';
+                    showNotification(notification, errMsg, 'error', 0);
+                })
+                .finally(function () {
+                    if (!paymentPending) {
+                        setButtonsLoading(false);
+                    }
+                });
+        });
+    }
+
+    /**
+     * Polling FlexPay : vérifie le statut de la transaction (Check transaction) jusqu'à paiement ou timeout.
+     * @param {string} orderNumber - orderNumber renvoyé par FlexPay (Payment Service)
+     * @param {Object} options - onPaid(), onTimeout(), pollIntervalMs, maxAttempts
+     */
+    function pollFlexPayStatus(orderNumber, options) {
+        var onPaid = options.onPaid || function () {};
+        var onTimeout = options.onTimeout || function () {};
+        var onPolling = options.onPolling || function () {};
+        var pollIntervalMs = options.pollIntervalMs || 4000;
+        var maxAttempts = options.maxAttempts || 30;
+        var attempt = 0;
+
+        function check() {
+            attempt++;
+            onPolling(attempt, maxAttempts);
+            fetch(config.baseUrl + '/api/donation-status/' + encodeURIComponent(orderNumber), {
+                method: 'GET',
+                headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' }
+            })
+                .then(function (r) { return r.json(); })
+                .then(function (res) {
+                    if (res.paid === true) {
+                        onPaid();
+                        return;
+                    }
+                    if (attempt < maxAttempts) {
+                        setTimeout(check, pollIntervalMs);
+                    } else {
+                        onTimeout();
+                    }
+                })
+                .catch(function () {
+                    if (attempt < maxAttempts) {
+                        setTimeout(check, pollIntervalMs);
+                    } else {
+                        onTimeout();
+                    }
+                });
+        }
+        setTimeout(check, pollIntervalMs);
     }
 
     /**
@@ -1231,6 +1491,7 @@
         initNewsletterForm();
         initDonationForm();
         initDonorRegisterForm();
+        initSpontaneousDonationForm();
         initGlobalSearch();
 
         // Toggle du menu profil dans le header (si présent)
