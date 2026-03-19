@@ -578,6 +578,14 @@ class HomeController extends Controller
     }
 
     /**
+     * Affiche le formulaire d'inscription donateur
+     */
+    public function registerDonorForm()
+    {
+        return view('pages.donor-register');
+    }
+
+    /**
      * Inscrit un nouveau donateur (compte utilisateur simple)
      */
     public function registerDonor(Request $request)

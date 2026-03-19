@@ -7,6 +7,10 @@
  * =====================================================================================
  */
 
+:root {
+    --ul-primary-rgb: 1, 114, 184;
+}
+
 /* ====================================================================================
    PAGINATION
    ==================================================================================== */
@@ -86,6 +90,7 @@
     background: #fff;
     max-width: 600px;
     width: 95%;
+    min-height: 400px;
     max-height: 90vh;
     padding: 24px 30px 24px 24px;
     border-radius: 16px;
@@ -100,7 +105,8 @@
     overflow-x: hidden;
 }
 
-.ul-modal-content .ul-donation-tab-pane.spontaneous-modal-layout {
+.ul-modal-content .ul-donation-tab-pane.spontaneous-modal-layout,
+.ul-modal-content .ul-donation-tab-pane.donor-modal-layout {
     flex: 1;
     min-height: 0;
     display: flex;
@@ -111,7 +117,8 @@
     flex-shrink: 0;
 }
 
-.spontaneous-modal-layout form {
+.spontaneous-modal-layout form,
+.donor-modal-layout form {
     display: flex;
     flex-direction: column;
     flex: 1;
@@ -150,8 +157,9 @@
     background: #555;
 }
 
-/* Bouton de fermeture du modal */
-#spontaneous-donation-modal-close {
+/* Bouton de fermeture des modaux */
+#spontaneous-donation-modal-close,
+#donor-register-modal-close {
     position: sticky;
     top: 12px;
     right: 12px;
@@ -175,7 +183,8 @@
     margin-bottom: 8px;
 }
 
-#spontaneous-donation-modal-close:hover {
+#spontaneous-donation-modal-close:hover,
+#donor-register-modal-close:hover {
     background: #e0e0e0 !important;
     color: #333 !important;
     transform: rotate(90deg);
@@ -366,7 +375,125 @@
     margin-top: 18px;
 }
 
-/* Bouton de login dans le header */
+/* Masquer les panneaux inactifs (le JS force display via setProperty important) */
+.ul-donation-tab-pane:not(.active) {
+    display: none;
+}
+
+/* Panneaux actifs : affichage correct */
+#spontaneous-donation-wrapper.ul-donation-tab-pane.active {
+    display: flex !important;
+}
+
+/* Modal "Devenir membre" : formulaire donateur seul */
+.ul-modal-donor .ul-modal-content {
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.donor-register-modal-content {
+    margin-top: 12px;
+}
+
+#donor-register-wrapper .ul-donation-details-personal-info-form {
+    flex: 1;
+}
+
+/* Menu déroulant Compte (Se connecter / Devenir membre) - affichage au survol */
+.ul-auth-dropdown-wrapper {
+    position: relative;
+    margin-right: 10px;
+    overflow: visible;
+}
+
+/* Pont invisible entre le bouton et le menu pour éviter la perte du survol */
+.ul-auth-dropdown-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    height: 12px;
+}
+
+.ul-auth-dropdown-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    background: transparent;
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.ul-auth-dropdown-arrow {
+    font-size: 10px;
+    opacity: 0.8;
+    transition: transform 0.2s;
+}
+
+.ul-auth-dropdown-wrapper:hover .ul-auth-dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+.ul-auth-dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    min-width: 200px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+    padding: 8px 0;
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-4px);
+    transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
+}
+
+.ul-auth-dropdown-wrapper:hover .ul-auth-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.ul-auth-dropdown a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    color: #333;
+    text-decoration: none;
+    font-size: 14px;
+    transition: background 0.2s;
+}
+
+.ul-auth-dropdown a:hover {
+    background: #f5f5f5;
+}
+
+.ul-auth-dropdown a i {
+    font-size: 16px;
+    color: var(--ul-primary);
+}
+
+.to-be-sticky.sticky .ul-auth-dropdown-toggle,
+.ul-header.sticky .ul-auth-dropdown-toggle {
+    border-color: var(--ul-primary);
+    color: var(--ul-primary);
+}
+
+.ul-auth-dropdown-toggle:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: var(--ul-primary);
+    color: var(--ul-primary);
+}
+
+/* Bouton de login (legacy) */
 .ul-btn-login {
     margin-right: 10px;
     background: transparent;
@@ -381,7 +508,6 @@
     font-size: 16px;
 }
 
-/* Quand le header est sur fond clair (après scroll) */
 .to-be-sticky.sticky .ul-btn-login,
 .ul-header.sticky .ul-btn-login {
     background: transparent;
@@ -1149,32 +1275,256 @@ button.loading {
     .ul-search-form-wrapper {
         padding-top: 80px !important;
     }
-    
+
     .ul-search-form-wrapper .ul-search-closer {
         top: 20px;
         right: 20px;
     }
-    
+
     .search-results-dropdown {
         max-width: 95%;
         max-height: calc(100vh - 180px);
     }
-    
+
     .search-result-item {
         padding: 10px 15px;
         gap: 12px;
     }
-    
+
     .search-result-image {
         width: 45px;
         height: 45px;
     }
-    
+
     .search-result-title {
         font-size: 14px;
     }
-    
+
     .search-result-description {
         font-size: 12px;
     }
 }
+
+/* ====================================================================================
+   LIENS AUTH DANS LE MENU MOBILE (SIDEBAR)
+   ==================================================================================== */
+.ul-sidebar-auth-links {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+    margin-top: 0;
+}
+
+.ul-sidebar-auth-links a,
+.ul-sidebar-auth-links button,
+.ul-sidebar-auth-links form {
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+
+.ul-sidebar-auth-links a,
+.ul-sidebar-auth-links button {
+    padding: 12px 15px 10px;
+    line-height: 1.2;
+    font-weight: 600;
+    color: var(--black);
+    text-decoration: none;
+    background: none;
+    border: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    text-align: left;
+    width: 100%;
+    cursor: pointer;
+    font-size: inherit;
+}
+
+.ul-sidebar-auth-links form button {
+    border-radius: 0;
+}
+
+.ul-sidebar-auth-links a:hover,
+.ul-sidebar-auth-links button:hover {
+    color: var(--ul-primary);
+}
+
+.ul-sidebar-auth-links a i {
+    margin-right: 8px;
+}
+
+/* ====================================================================================
+   PAGES LOGIN ET DEVENIR MEMBRE - Formulaires améliorés
+   ==================================================================================== */
+.ul-auth-card {
+    background: #fff;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+@media (max-width: 575px) {
+    .ul-auth-card {
+        padding: 24px 20px;
+    }
+}
+
+.ul-auth-card-wide {
+    max-width: 720px;
+}
+
+.ul-auth-card .form-group {
+    margin-bottom: 20px;
+}
+
+.ul-auth-card .form-group:last-of-type {
+    margin-bottom: 0;
+}
+
+.ul-auth-card input[type="text"],
+.ul-auth-card input[type="email"],
+.ul-auth-card input[type="password"],
+.ul-auth-card input[type="tel"],
+.ul-auth-card input[type="number"],
+.ul-auth-card input[type="date"],
+.ul-auth-card input.flatpickr-input,
+.ul-auth-card textarea,
+.ul-auth-card select.form-select,
+.ul-auth-card .ss-main {
+    width: 100%;
+    padding: 14px 18px;
+    font-size: 15px;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    background: #fff;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+    outline: none;
+}
+
+.ul-auth-card input[type="text"]:focus,
+.ul-auth-card input[type="email"]:focus,
+.ul-auth-card input[type="password"]:focus,
+.ul-auth-card input[type="tel"]:focus,
+.ul-auth-card input[type="number"]:focus,
+.ul-auth-card input[type="date"]:focus,
+.ul-auth-card input.flatpickr-input:focus,
+.ul-auth-card textarea:focus,
+.ul-auth-card select.form-select:focus,
+.ul-auth-card .ss-main.ss-open-below,
+.ul-auth-card .ss-main.ss-open-above,
+.ul-auth-card .ss-main:focus {
+    border-color: var(--ul-primary);
+    box-shadow: 0 0 0 4px rgba(var(--ul-primary-rgb), 0.15);
+}
+
+.ul-auth-card input::placeholder,
+.ul-auth-card textarea::placeholder {
+    color: #94a3b8;
+}
+
+.ul-auth-card .ul-auth-btn {
+    width: 100%;
+    padding: 16px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 12px;
+    border: none;
+    background: var(--ul-primary);
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.ul-auth-card .ul-auth-btn:hover {
+    background: var(--ul-primary);
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px rgba(var(--ul-primary-rgb), 0.35);
+}
+
+.ul-auth-card .ul-auth-btn:active {
+    transform: translateY(0);
+}
+
+.ul-auth-card .ul-auth-remember {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: #64748b;
+    cursor: pointer;
+}
+
+.ul-auth-card .ul-auth-remember input {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--ul-primary);
+}
+
+.ul-auth-card .ul-auth-forgot {
+    font-size: 14px;
+    color: var(--ul-primary);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.ul-auth-card .ul-auth-forgot:hover {
+    color: var(--ul-primary);
+    text-decoration: underline;
+}
+
+.ul-auth-card .ul-auth-hint {
+    margin-top: 16px;
+    font-size: 13px;
+    color: #64748b;
+    line-height: 1.5;
+}
+
+/* SlimSelect dans les formulaires auth */
+.ul-auth-card .ss-main {
+    min-height: 50px;
+    padding: 12px 18px;
+}
+
+.ul-auth-card .ss-content {
+    border-radius: 12px;
+    border: 2px solid var(--ul-primary);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.ul-auth-card .ss-search input {
+    padding: 12px 16px;
+    border-radius: 8px;
+    border: 2px solid #e2e8f0;
+}
+
+.ul-auth-card .ss-search input:focus {
+    border-color: var(--ul-primary);
+}
+
+/* Flatpickr dans les formulaires auth */
+.ul-auth-card .flatpickr-input,
+.ul-auth-card input[data-readonly] {
+    cursor: pointer;
+}
+
+.ul-auth-card .flatpickr-input:focus,
+.ul-auth-card input.flatpickr-input:focus {
+    border-color: var(--ul-primary);
+}
+
+.flatpickr-day.selected {
+    background: var(--ul-primary) !important;
+    border-color: var(--ul-primary) !important;
+}
+
+.flatpickr-day:hover {
+    background: rgba(var(--ul-primary-rgb), 0.15) !important;
+    border-color: var(--ul-primary) !important;
+}
+

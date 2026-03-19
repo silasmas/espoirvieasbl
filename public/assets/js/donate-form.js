@@ -246,32 +246,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // =========================================================================
-    // Onglets Don spontané / Devenir donateur (dans le modal)
-    // =========================================================================
-    const donationTabs = document.querySelectorAll(".ul-donation-tab");
-    const donationPanes = document.querySelectorAll(".ul-donation-tab-pane");
-
-    donationTabs.forEach(tab => {
-        tab.addEventListener("click", function () {
-            const targetSelector = this.getAttribute("data-target");
-            if (!targetSelector) return;
-
-            donationTabs.forEach(t => t.classList.remove("active"));
-            this.classList.add("active");
-
-            donationPanes.forEach(pane => {
-                if ("#" + pane.id === targetSelector) {
-                    pane.style.display = "block";
-                    pane.classList.add("active");
-                } else {
-                    pane.style.display = "none";
-                    pane.classList.remove("active");
-                }
-            });
-        });
-    });
-
-    // =========================================================================
     // Formulaire "Devenir donateur" : type de don (espèce / nature) → champs montant ou description
     // =========================================================================
     const donorTypeSelect = document.getElementById("donor-donation-type");

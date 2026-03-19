@@ -116,6 +116,22 @@
                             <a href="{{ route('donate') }}">Faire un don</a>
                             <a href="{{ route('contact') }}">Nous contacter</a>
                         </nav>
+                        @guest
+                        <div class="ul-sidebar-auth-links d-md-none">
+                            <a href="{{ route('login') }}"><i class="flaticon-account"></i> Se connecter</a>
+                            <a href="{{ route('donor.register.form') }}"><i class="flaticon-account"></i> Devenir membre</a>
+                        </div>
+                        @else
+                        <div class="ul-sidebar-auth-links d-md-none">
+                            <a href="{{ route('monProfil') }}">Mon profil</a>
+                            <a href="{{ route('donor.donations') }}">Mes dons</a>
+                            <a href="{{ route('donor.activities') }}">Activités</a>
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit">Déconnexion</button>
+                            </form>
+                        </div>
+                        @endguest
                     </div>
                 </div>
 
@@ -124,10 +140,16 @@
                     <button class="ul-header-search-opener"><i class="flaticon-search"></i></button>
 
                     @guest
-                        <!-- Bouton "Se connecter" pour les donateurs / comptes utilisateurs -->
-                        <a href="{{ route('login') }}" class="ul-btn ul-btn-login d-none d-md-inline-flex">
-                            <i class="flaticon-account"></i> <span>Se connecter</span>
-                        </a>
+                        <!-- Menu déroulant : Se connecter / Devenir membre -->
+                        <div class="ul-auth-dropdown-wrapper d-none d-md-flex">
+                            <button type="button" class="ul-btn ul-btn-login ul-auth-dropdown-toggle" aria-label="Menu compte">
+                                <i class="flaticon-account"></i> <span>Compte</span> <i class="ul-auth-dropdown-arrow">▼</i>
+                            </button>
+                            <div class="ul-auth-dropdown">
+                                <a href="{{ route('login') }}"><i class="flaticon-account"></i> Se connecter</a>
+                                <a href="{{ route('donor.register.form') }}"><i class="flaticon-account"></i> Devenir membre</a>
+                            </div>
+                        </div>
                     @else
                         <!-- Menu profil lorsqu'un utilisateur est connecté -->
                         <div class="ul-profile-dropdown-wrapper d-none d-md-flex">
@@ -179,19 +201,13 @@
                         <button type="button" id="spontaneous-donation-modal-close">&times;</button>
                         <div class="modal-header-content">
                             <h2>Faire un don</h2>
-                            <p>Merci pour votre générosité ! Choisissez entre un don ponctuel ou la création d'un compte donateur.</p>
+                            <p>Merci pour votre générosité ! Effectuez un don ponctuel pour soutenir notre cause.</p>
                         </div>
 
-                        <!-- Note mode test (en haut pour ne pas masquer le formulaire) -->
+                        <!-- Note mode test -->
                         <div class="ul-donation-details-notice modal-donation-notice modal-notice-top">
                             <svg width="20" height="20" viewBox="0 0 28 28" fill="none"><path d="M14.0003 20.6667C14.3781 20.6667 14.695 20.5387 14.951 20.2827C15.207 20.0267 15.3345 19.7103 15.3337 19.3334C15.3328 18.9565 15.2048 18.6401 14.9497 18.3841C14.6945 18.1281 14.3781 18.0001 14.0003 18.0001C13.6225 18.0001 13.3061 18.1281 13.051 18.3841C12.7959 18.6401 12.6679 18.9565 12.667 19.3334C12.6661 19.7103 12.7941 20.0272 13.051 20.2841C13.3079 20.541 13.6243 20.6685 14.0003 20.6667ZM14.0003 15.3334C14.3781 15.3334 14.695 15.2054 14.951 14.9494C15.207 14.6934 15.3345 14.377 15.3337 14.0001V8.66675C15.3337 8.28897 15.2057 7.97253 14.9497 7.71741C14.6937 7.4623 14.3772 7.3343 14.0003 7.33341C13.6234 7.33253 13.307 7.46053 13.051 7.71741C12.795 7.9743 12.667 8.29075 12.667 8.66675V14.0001C12.667 14.3779 12.795 14.6947 13.051 14.9507C13.307 15.2067 13.6234 15.3343 14.0003 15.3334ZM14.0003 27.3334C12.1559 27.3334 10.4226 26.9832 8.80033 26.2827C7.17811 25.5823 5.76699 24.6325 4.56699 23.4334C3.36699 22.2343 2.41722 20.8232 1.71766 19.2001C1.01811 17.577 0.667883 15.8436 0.666994 14.0001C0.666105 12.1565 1.01633 10.4232 1.71766 8.80008C2.41899 7.17697 3.36877 5.76586 4.56699 4.56675C5.76522 3.36764 7.17633 2.41786 8.80033 1.71741C10.4243 1.01697 12.1577 0.666748 14.0003 0.666748C15.843 0.666748 17.5763 1.01697 19.2003 1.71741C20.8243 2.41786 22.2354 3.36764 23.4337 4.56675C24.6319 5.76586 25.5821 7.17697 26.2843 8.80008C26.9865 10.4232 27.3363 12.1565 27.3337 14.0001C27.331 15.8436 26.9808 17.577 26.283 19.2001C25.5852 20.8232 24.6354 22.2343 23.4337 23.4334C22.2319 24.6325 20.8208 25.5827 19.2003 26.2841C17.5799 26.9854 15.8465 27.3352 14.0003 27.3334Z" fill="var(--ul-primary)" /></svg>
                             <p><strong>Note</strong>&nbsp;: Mode test activé. En mode test, aucun don réel n'est traité.</p>
-                        </div>
-
-                        <!-- Onglets Don spontané / Devenir donateur -->
-                        <div class="ul-donation-tabs">
-                            <button type="button" class="ul-donation-tab active" data-target="#spontaneous-donation-wrapper">Don spontané</button>
-                            <button type="button" class="ul-donation-tab" data-target="#donor-register-wrapper">Devenir donateur</button>
                         </div>
 
                         <!-- Formulaire de don spontané -->
@@ -381,154 +397,13 @@
                             </div>
                         </form>
                         </div>
-
-                        <!-- Formulaire "Devenir donateur" -->
-                        <div id="donor-register-wrapper" class="ul-donation-tab-pane" style="display: none;">
-                            <form action="{{ route('donor.register') }}" method="POST" class="ul-donation-details-form" autocomplete="off">
-                                @csrf
-                                <div class="ul-donation-details-personal-info">
-                                    <h3 class="ul-donation-details-personal-info-title">Créer un compte donateur</h3>
-                                    <p class="ul-donation-details-personal-info-sub-title">
-                                        Créez un compte pour suivre vos dons, recevoir des rapports d'activités et des notifications personnalisées.
-                                    </p>
-                                    @if($errors->has('donor_register'))
-                                        <div class="async-notification error" style="display:block; margin-bottom:15px;">
-                                            {{ $errors->first('donor_register') }}
-                                        </div>
-                                    @endif
-                                    @if(session('donor_registered'))
-                                        <div class="async-notification success" style="display:block; margin-bottom:15px;">
-                                            {{ session('donor_registered_message') }}
-                                        </div>
-                                    @endif
-                                    <div class="ul-donation-details-personal-info-form">
-                                        <div class="row row-cols-2 row-cols-xxs-1 ul-bs-row">
-                                            <div class="col-12">
-                                                <div class="form-group">
-                                                    <input type="text" name="name" value="{{ old('name') }}" placeholder="Nom complet *" required>
-                                                    @error('name')
-                                                        <span class="error-message">{{ $message }}</span>
-                                                    @enderror
-                                                </div>
-                                            </div>
-                                            <div class="col-12">
-                                                <div class="form-group">
-                                                    <input type="email" name="email" value="{{ old('email') }}" placeholder="Adresse email *" required>
-                                                    @error('email')
-                                                        <span class="error-message">{{ $message }}</span>
-                                                    @enderror
-                                                </div>
-                                            </div>
-                                            <div class="col-12">
-                                                <div class="form-group">
-                                                    <select name="country" required class="form-select">
-                                                        <option value="">Pays *</option>
-                                                        @php
-                                                            $countries = [
-                                                                'Afghanistan', 'Afrique du Sud', 'Albanie', 'Algérie', 'Allemagne', 'Andorre', 'Angola', 'Arabie Saoudite',
-                                                                'Argentine', 'Arménie', 'Australie', 'Autriche', 'Azerbaïdjan', 'Belgique', 'Bénin', 'Bolivie', 'Bosnie-Herzégovine',
-                                                                'Botswana', 'Brésil', 'Bulgarie', 'Burkina Faso', 'Burundi', 'Cameroun', 'Canada', 'Cap-Vert', 'Chili', 'Chine',
-                                                                'Chypre', 'Colombie', 'Comores', 'Congo-Brazzaville', 'Congo-Kinshasa', 'Corée du Sud', 'Costa Rica', 'Côte d\'Ivoire',
-                                                                'Croatie', 'Danemark', 'Djibouti', 'Égypte', 'Émirats Arabes Unis', 'Équateur', 'Érythrée', 'Espagne', 'Estonie',
-                                                                'Eswatini', 'États-Unis', 'Éthiopie', 'Finlande', 'France', 'Gabon', 'Gambie', 'Géorgie', 'Ghana', 'Grèce',
-                                                                'Guatemala', 'Guinée', 'Guinée-Bissau', 'Guinée équatoriale', 'Haïti', 'Honduras', 'Hongrie', 'Inde', 'Indonésie',
-                                                                'Irak', 'Iran', 'Irlande', 'Islande', 'Israël', 'Italie', 'Jamaïque', 'Japon', 'Jordanie', 'Kazakhstan', 'Kenya',
-                                                                'Kirghizistan', 'Kosovo', 'Koweït', 'Laos', 'Lesotho', 'Lettonie', 'Liban', 'Liberia', 'Libye', 'Liechtenstein',
-                                                                'Lituanie', 'Luxembourg', 'Madagascar', 'Malaisie', 'Malawi', 'Mali', 'Maroc', 'Maurice', 'Mauritanie', 'Mexique',
-                                                                'Moldavie', 'Monaco', 'Mongolie', 'Mozambique', 'Namibie', 'Népal', 'Nicaragua', 'Niger', 'Nigeria', 'Norvège',
-                                                                'Nouvelle-Zélande', 'Ouganda', 'Ouzbékistan', 'Pakistan', 'Palestine', 'Panama', 'Paraguay', 'Pays-Bas', 'Pérou',
-                                                                'Philippines', 'Pologne', 'Portugal', 'Qatar', 'République Centrafricaine', 'République Dominicaine',
-                                                                'République Tchèque', 'Roumanie', 'Royaume-Uni', 'Russie', 'Rwanda', 'Saint-Marin', 'Salvador', 'Sénégal',
-                                                                'Serbie', 'Sierra Leone', 'Singapour', 'Slovaquie', 'Slovénie', 'Somalie', 'Soudan', 'Soudan du Sud', 'Sri Lanka',
-                                                                'Suède', 'Suisse', 'Syrie', 'Tanzanie', 'Tchad', 'Thaïlande', 'Togo', 'Tunisie', 'Turquie', 'Ukraine', 'Uruguay',
-                                                                'Venezuela', 'Viêt Nam', 'Yémen', 'Zambie', 'Zimbabwe',
-                                                            ];
-                                                        @endphp
-                                                        @foreach($countries as $country)
-                                                            <option value="{{ $country }}" {{ old('country') === $country ? 'selected' : '' }}>
-                                                                {{ $country }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                    @error('country')
-                                                        <span class="error-message">{{ $message }}</span>
-                                                    @enderror
-                                                </div>
-                                            </div>
-                                            <div class="col-12">
-                                                <div class="form-group">
-                                                    <input type="tel" name="phone" value="{{ old('phone') }}" placeholder="Numéro de téléphone *" required>
-                                                    @error('phone')
-                                                        <span class="error-message">{{ $message }}</span>
-                                                    @enderror
-                                                </div>
-                                            </div>
-                                            <div class="col-12">
-                                                <div class="form-group">
-                                                    <label style="font-size: 13px; color:#666; margin-bottom:4px;">Date de début du don *</label>
-                                                    <input type="date" name="donation_period" value="{{ old('donation_period') }}" required class="form-control">
-                                                    @error('donation_period')
-                                                        <span class="error-message">{{ $message }}</span>
-                                                    @enderror
-                                                </div>
-                                            </div>
-                                            <div class="col-12">
-                                                <div class="form-group">
-                                                    <select name="donation_type" id="donor-donation-type" required class="form-select">
-                                                        <option value="">Type de don *</option>
-                                                        <option value="espece" {{ old('donation_type') === 'espece' ? 'selected' : '' }}>En espèces (argent)</option>
-                                                        <option value="nature" {{ old('donation_type') === 'nature' ? 'selected' : '' }}>En nature (biens matériels / autres)</option>
-                                                    </select>
-                                                    @error('donation_type')
-                                                        <span class="error-message">{{ $message }}</span>
-                                                    @enderror
-                                                </div>
-                                            </div>
-                                            <div class="col-12" id="donor-amount-group">
-                                                <div class="form-group">
-                                                    <div style="display:flex; gap:8px; align-items:center;">
-                                                        <select name="donation_currency" class="form-select" style="max-width:110px;">
-                                                            <option value="USD" {{ old('donation_currency') === 'USD' ? 'selected' : '' }}>USD</option>
-                                                            <option value="CDF" {{ old('donation_currency') === 'CDF' ? 'selected' : '' }}>CDF</option>
-                                                        </select>
-                                                        <input type="number" name="donation_amount" value="{{ old('donation_amount') }}" min="1" step="0.01" placeholder="Montant à donner *" class="form-control">
-                                                    </div>
-                                                    @error('donation_amount')
-                                                        <span class="error-message">{{ $message }}</span>
-                                                    @enderror
-                                                    @error('donation_currency')
-                                                        <span class="error-message">{{ $message }}</span>
-                                                    @enderror
-                                                </div>
-                                            </div>
-                                            <div class="col-12" id="donor-nature-group" style="display:none;">
-                                                <div class="form-group">
-                                                    <textarea name="donation_nature_description" rows="3" placeholder="Précisez votre don en nature (biens, matériel, services...)" class="form-control">{{ old('donation_nature_description') }}</textarea>
-                                                    @error('donation_nature_description')
-                                                        <span class="error-message">{{ $message }}</span>
-                                                    @enderror
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="ul-donation-details-form-bottom" style="margin-top: 10px;">
-                                        <button type="submit" class="ul-btn">
-                                            <i class="flaticon-fast-forward-double-right-arrows-symbol"></i>
-                                            <span>Créer mon compte donateur</span>
-                                        </button>
-                                        <p style="margin-top: 10px; font-size: 13px; color: #666;">
-                                            Vous recevrez un email avec un mot de passe provisoire et un lien de connexion.
-                                        </p>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
                     </div>
                 </div>
 
                 <script>
-                // Affichage du modal de don spontané avec animations
-                document.addEventListener('DOMContentLoaded', function () {
+                // Affichage du modal de don spontané
+                (function() {
+                function initModals() {
                     var donateBtn = document.getElementById('spontaneous-donation-btn');
                     var modal = document.getElementById('spontaneous-donation-modal');
                     var closeModalBtn = document.getElementById('spontaneous-donation-modal-close');
@@ -668,58 +543,14 @@
                         updateMMOptions();
                         toggleAnonSection();
                     }
-                });
 
-                // Gestion des onglets Don spontané / Devenir donateur
-                const donationTabs = document.querySelectorAll('.ul-donation-tab');
-                const donationPanes = document.querySelectorAll('.ul-donation-tab-pane');
-
-                donationTabs.forEach(tab => {
-                    tab.addEventListener('click', function () {
-                        const targetSelector = this.getAttribute('data-target');
-                        if (!targetSelector) return;
-
-                        // Activer l'onglet
-                        donationTabs.forEach(t => t.classList.remove('active'));
-                        this.classList.add('active');
-
-                        // Afficher le bon panneau
-                        donationPanes.forEach(pane => {
-                            if ('#' + pane.id === targetSelector) {
-                                pane.style.display = 'block';
-                                pane.classList.add('active');
-                            } else {
-                                pane.style.display = 'none';
-                                pane.classList.remove('active');
-                            }
-                        });
-                    });
-                });
-
-                // Formulaire "Devenir donateur" : bascule champs selon type de don
-                const donorTypeSelect = document.getElementById('donor-donation-type');
-                const donorAmountGroup = document.getElementById('donor-amount-group');
-                const donorNatureGroup = document.getElementById('donor-nature-group');
-
-                function updateDonorTypeFields() {
-                    if (!donorTypeSelect || !donorAmountGroup || !donorNatureGroup) return;
-                    const value = donorTypeSelect.value;
-                    if (value === 'espece') {
-                        donorAmountGroup.style.display = 'block';
-                        donorNatureGroup.style.display = 'none';
-                    } else if (value === 'nature') {
-                        donorAmountGroup.style.display = 'none';
-                        donorNatureGroup.style.display = 'block';
-                    } else {
-                        donorAmountGroup.style.display = 'none';
-                        donorNatureGroup.style.display = 'none';
-                    }
                 }
-
-                if (donorTypeSelect) {
-                    donorTypeSelect.addEventListener('change', updateDonorTypeFields);
-                    updateDonorTypeFields();
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', initModals);
+                } else {
+                    initModals();
                 }
+                })();
                 </script>
                     </div>
                 </div>
