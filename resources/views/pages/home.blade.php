@@ -3,6 +3,7 @@
 @section('title', 'Accueil - Espoir Vie ASBL')
 
 @section('content')
+    @if(site_visible('home.banner'))
     <!-- BANNER SECTION START -->
     <section class="ul-banner">
         <div class="ul-banner-container">
@@ -11,21 +12,23 @@
                 <div class="col">
                     <div class="ul-banner-txt">
                         <div class="wow animate__fadeInUp">
-                            <span class="ul-banner-sub-title ul-section-sub-title">Changeons le monde ensemble</span>
-                            <h1 class="ul-banner-title">Pour les personnes et les causes qui vous tiennent à cœur</h1>
-                            <p class="ul-banner-descr">Rejoignez-nous dans notre mission pour créer un impact positif et durable dans la vie de nombreuses personnes. Ensemble, nous pouvons faire la différence.</p>
+                            <span class="ul-banner-sub-title ul-section-sub-title">{{ site_text('home.banner', 'subtitle', 'Enfant joyeux, sourire retrouvé.') }}</span>
+                            <h1 class="ul-banner-title">{{ site_text('home.banner', 'title', 'Redonner espoir aux enfants orphelins et vulnérables') }}</h1>
+                            <p class="ul-banner-descr">{{ site_text('home.banner', 'body') }}</p>
                             <div class="ul-banner-btns">
-                                <a href="{{ route('donate') }}" class="ul-btn"><i class="flaticon-fast-forward-double-right-arrows-symbol"></i> Faire un don</a>
+                                <a href="{{ site_link('home.banner', 'donate') }}" class="ul-btn"><i class="flaticon-fast-forward-double-right-arrows-symbol"></i> {{ site_text('home.banner', 'button_label', 'Faire un don') }}</a>
 
+                                @if(site_extra('home.banner', 'stat_number') !== '')
                                 <div class="ul-banner-stat">
                                     <div class="imgs">
                                         <img src="{{ asset('assets/img/1.jpg.jpeg') }}" alt="Personne">
                                         <img src="{{ asset('assets/img/2.jpg.jpeg') }}" alt="Personne">
                                         <img src="{{ asset('assets/img/3.jpg.jpeg') }}" alt="Personne">
-                                        <span class="number">2.M</span>
+                                        <span class="number">{{ site_extra('home.banner', 'stat_number') }}</span>
                                     </div>
-                                    <span class="txt">Donateurs actifs</span>
+                                    <span class="txt">{{ site_extra('home.banner', 'stat_label', 'Enfants accompagnés') }}</span>
                                 </div>
+                                @endif
                             </div>
                         </div>
 
@@ -37,10 +40,7 @@
                 <div class="col align-self-start">
                     <div class="ul-banner-img">
                         <div class="img-wrapper">
-                            <img src="{{ asset('assets/img/960x1000-.jpg.jpeg') }}" alt="Image de la bannière">
-                            <!-- <div class="ul-banner-video-btn">
-                                <a href=""></a>
-                            </div> -->
+                            <img src="{{ site_image('home.banner', 'assets/img/960x1000-.jpg.jpeg') }}" alt="{{ site_text('home.banner', 'title', 'Espoir Vie') }}">
                         </div>
                         <div class="ul-banner-img-vectors">
                             <img src="{{ asset('assets/img/banner-img-vector-1.png') }}" alt="vecteur" class="vector-1 wow animate__fadeInRight">
@@ -52,8 +52,10 @@
         </div>
     </section>
     <!-- BANNER SECTION END -->
+    @endif
 
 
+    @if(site_visible('home.about'))
     <!-- ABOUT SECTION START -->
     <section class="ul-about ul-section-spacing wow animate__fadeInUp">
         <div class="ul-container">
@@ -61,11 +63,7 @@
                 <div class="col">
                     <div class="ul-about-imgs">
                         <div class="img-wrapper">
-                            @if(isset($about) && $about->image)
-                                <img src="{{ asset('storage/' . $about->image) }}" alt="Image à propos">
-                            @else
-                                <img src="{{ asset('assets/img/690x612.jpg.jpeg') }}" alt="Image à propos par défaut">
-                            @endif
+                            <img src="{{ site_image('home.about', 'assets/img/690x612.jpg.jpeg') }}" alt="{{ site_text('home.about', 'title', 'À propos') }}">
                         </div>
                         <div class="ul-about-imgs-vectors">
                             <img src="{{ asset('assets/img/about-img-vector-1.svg') }}" alt="Illustration" class="vector-1">
@@ -74,95 +72,81 @@
                     </div>
                 </div>
 
-                <!-- txt -->
                 <div class="col">
                     <div class="ul-about-txt">
-                        <span class="ul-section-sub-title ul-section-sub-title--2">
-                            {{ isset($about) && $about->subtitle ? $about->subtitle : 'À propos de nous' }}
-                        </span>
-                        <h2 class="ul-section-title">
-                            {{ isset($about) && $about->title ? $about->title : "S'entraider peut rendre le monde meilleur" }}
-                        </h2>
-                        <p class="ul-section-descr">
-                            {{ isset($about) && $about->description ? $about->description : "Espoir Vie ASBL est une organisation dédiée à améliorer les conditions de vie des personnes dans le besoin. Nous croyons que chaque individu mérite une chance de vivre dans la dignité avec espoir en l'avenir. Rejoignez-nous pour créer un impact durable." }}
-                        </p>
+                        <span class="ul-section-sub-title ul-section-sub-title--2">{{ site_text('home.about', 'subtitle', 'À propos de nous') }}</span>
+                        <h2 class="ul-section-title">{{ site_text('home.about', 'title') }}</h2>
+                        <p class="ul-section-descr">{{ site_text('home.about', 'body') }}</p>
 
                         <div class="ul-about-block">
                             <div class="block-left">
                                 <div class="block-heading">
                                     <div class="icon"><i class="flaticon-love"></i></div>
-                                    <h3 class="block-title">
-                                        {{ isset($about) && $about->block_title ? $about->block_title : "Rejoignez notre équipe" }}
-                                    </h3>
+                                    <h3 class="block-title">{{ site_extra('home.about', 'block_title', 'Notre engagement') }}</h3>
                                 </div>
                                 <ul class="block-list">
-                                    @if(isset($about) && $about->block_list)
-                                        @foreach($about->block_list as $item)
-                                            <li>{{ $item }}</li>
-                                        @endforeach
-                                    @else
-                                        <li>De nombreuses façons d'aider et de faire la différence</li>
-                                    @endif
+                                    @foreach(site_items('home.about') as $item)
+                                        @if(($item['text'] ?? '') !== '')
+                                            <li>{{ $item['text'] }}</li>
+                                        @endif
+                                    @endforeach
                                 </ul>
                             </div>
                             <div class="block-right">
-                                @if(isset($about) && $about->block_image)
-                                    <img src="{{ asset('storage/' . $about->block_image) }}" alt="Illustration à propos">
-                                @else
-                                    <img src="{{ asset('assets/img/330x73-equipe.jpg.jpeg') }}" alt="Illustration à propos par défaut">
-                                @endif
+                                <img src="{{ asset('assets/img/330x73-equipe.jpg.jpeg') }}" alt="Illustration à propos">
                             </div>
                         </div>
 
                         <div class="ul-about-bottom">
-                            <a href="{{ route('about') }}" class="ul-btn"><i class="flaticon-fast-forward-double-right-arrows-symbol"></i> En savoir plus</a>
+                            <a href="{{ site_link('home.about', 'about') }}" class="ul-btn"><i class="flaticon-fast-forward-double-right-arrows-symbol"></i> {{ site_text('home.about', 'button_label', 'En savoir plus') }}</a>
 
+                            @if(site_phone() !== '')
                             <div class="ul-about-call">
                                 <div class="icon"><i class="flaticon-telephone-call"></i></div>
                                 <div class="txt">
-                                    <span class="call-title">
-                                        {{ isset($about) && $about->call_title ? $about->call_title : 'Appelez-nous à tout moment' }}
-                                    </span>
-                                    <a href="tel:{{ isset($about) && $about->call_phone ? $about->call_phone : '+612345678990' }}">
-                                        {{ isset($about) && $about->call_phone ? $about->call_phone : '+61 2345 678 990' }}
-                                    </a>
+                                    <span class="call-title">Appelez-nous</span>
+                                    <a href="tel:{{ preg_replace('/\s+/', '', site_phone()) }}">{{ site_phone() }}</a>
                                 </div>
                             </div>
+                            @endif
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- vector -->
         <div class="ul-about-vectors">
             <img src="{{ asset('assets/img/about-vector-1.png') }}" alt="vecteur" class="vector-1">
         </div>
     </section>
     <!-- ABOUT SECTION END -->
+    @endif
 
 
+    @if(site_visible('home.donations'))
     <!-- DONTATIONS SECTION START -->
     <section class="ul-donations ul-section-spacing overflow-hidden">
         <!-- heading -->
         <div class="ul-container">
             <div class="ul-section-heading ul-donations-heading justify-content-between text-center">
                 <div class="left">
-                    <span class="ul-section-sub-title"><span class="txt">Aidez-nous et faites un don</span></span>
-                    <h2 class="ul-section-title">Inspirer et aider pour un meilleur style de vie</h2>
+                    <span class="ul-section-sub-title"><span class="txt">{{ site_text('home.donations', 'subtitle', 'Aidez-nous et faites un don') }}</span></span>
+                    <h2 class="ul-section-title">{{ site_text('home.donations', 'title', 'Soutenir les enfants orphelins et les familles vulnérables') }}</h2>
                 </div>
 
+                @if(site_extra('home.donations', 'stat_number') !== '')
                 <div class="flex-shrink-0">
                     <div class="ul-banner-stat">
                         <div class="imgs">
                             <img src="{{ asset('assets/img/user-1.png') }}" alt="Personne">
                             <img src="{{ asset('assets/img/user-3.png') }}" alt="Personne">
                             <img src="{{ asset('assets/img/user-2.png') }}" alt="Personne">
-                            <span class="number">2.M</span>
+                            <span class="number">{{ site_extra('home.donations', 'stat_number') }}</span>
                         </div>
-                        <span class="txt text-white">Donateurs actifs</span>
+                        <span class="txt text-white">{{ site_extra('home.donations', 'stat_label', 'Enfants accompagnés') }}</span>
                     </div>
                 </div>
+                @endif
                 <div class="ul-slider-nav ul-donations-slider-nav">
                     <button class="prev"><i class="flaticon-back"></i></button>
                     <button class="next"><i class="flaticon-next"></i></button>
@@ -231,137 +215,58 @@
         </div>
     </section>
     <!-- DONTATIONS SECTION END -->
+    @endif
 
 
-    <!-- DONATE SECTION START -->
+    @if(site_visible('home.donate_cta'))
     <div class="ul-section-spacing">
         <div class="ul-container">
             <div class="ul-donate-form-section">
                 <div class="row justify-content-between align-items-center">
-                    <!-- donate form -->
                     <div class="col-lg-6 position-relative">
                         <div class="ul-donate-form-wrapper">
-                            <h3 class="ul-donate-form-title">Faire un don personnalisé</h3>
-                            <form action="#" class="ul-donate-form">
-                                <div>
-                                    <input type="radio" name="donate-amount" id="donate-amount-1" checked hidden>
-                                    <label for="donate-amount-1" class="ul-donate-form-label">10 €</label>
-                                </div>
-
-                                <div>
-                                    <input type="radio" name="donate-amount" id="donate-amount-2" hidden>
-                                    <label for="donate-amount-2" class="ul-donate-form-label">20 €</label>
-                                </div>
-
-                                <div>
-                                    <input type="radio" name="donate-amount" id="donate-amount-3" hidden>
-                                    <label for="donate-amount-3" class="ul-donate-form-label">30 €</label>
-                                </div>
-
-                                <div>
-                                    <input type="radio" name="donate-amount" id="donate-amount-4" hidden>
-                                    <label for="donate-amount-4" class="ul-donate-form-label">40 €</label>
-                                </div>
-
-                                <div>
-                                    <input type="radio" name="donate-amount" id="donate-amount-5" hidden>
-                                    <label for="donate-amount-5" class="ul-donate-form-label">50 €</label>
-                                </div>
-
-                                <div class="custom-amount-wrapper">
-                                    <input type="radio" name="donate-amount" id="custom-amount">
-                                    <label for="donate-amount-custom" class="ul-donate-form-label">
-                                        <input type="number" name="custom-amount" id="donate-amount-custom" placeholder="Montant personnalisé" class="ul-donate-form-custom-input">
-                                    </label>
-                                </div>
-
-                                <div>
-                                    <button type="submit" class="ul-btn"><i class="flaticon-fast-forward-double-right-arrows-symbol"></i> Faire un don maintenant</button>
-                                </div>
-                            </form>
+                            <h3 class="ul-donate-form-title">{{ site_text('home.donate_cta', 'title', 'Soutenez les enfants orphelins et vulnérables') }}</h3>
+                            <p class="ul-section-descr">{{ site_text('home.donate_cta', 'body') }}</p>
+                            <a href="javascript:void(0);" class="ul-btn spontaneous-donation-btn"><i class="flaticon-fast-forward-double-right-arrows-symbol"></i> {{ site_text('home.donate_cta', 'button_label', 'Faire un don') }}</a>
                         </div>
                         <img src="{{ asset('assets/img/donate-form-vector.svg') }}" alt="vecteur" class="ul-donate-form-vector">
                     </div>
 
-                    <!-- donate form  -->
                     <div class="col-xl-5 col-lg-6">
                         <div class="ul-donate-form-section-txt">
-                            <span class="ul-section-sub-title text-white">Faire un don maintenant</span>
-                            <h2 class="ul-section-title text-white">Soutenez les enfants en faisant un don précieux</h2>
-
+                            <span class="ul-section-sub-title text-white">{{ site_text('home.donate_cta', 'subtitle', 'Faire un don maintenant') }}</span>
+                            <h2 class="ul-section-title text-white">{{ site_text('home.donate_cta', 'title') }}</h2>
+                            @if(site_extra('home.donate_cta', 'raised') !== '' && site_extra('home.donate_cta', 'goal') !== '')
                             <div class="ul-donation-progress">
-                                <div class="donation-progress-container ul-progress-container">
-                                    <div class="donation-progressbar ul-progressbar" data-ul-progress-value="64">
-                                        <div class="donation-progress-label ul-progress-label"></div>
-                                    </div>
-                                </div>
                                 <div class="ul-donation-progress-labels">
-                                    <span class="ul-donation-progress-label">Collecté : 25 000 €</span>
-                                    <span class="ul-donation-progress-label">Objectif : 30 000 €</span>
+                                    <span class="ul-donation-progress-label">Collecté : {{ site_extra('home.donate_cta', 'raised') }}</span>
+                                    <span class="ul-donation-progress-label">Objectif : {{ site_extra('home.donate_cta', 'goal') }}</span>
                                 </div>
                             </div>
+                            @endif
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- DONATE SECTION END -->
+    @endif
 
 
-    <!-- STATS SECTION START -->
-    <div class="ul-stats ul-section-spacing">
-        <div class="ul-container">
-            <div class="ul-stats-wrapper wow animate__fadeInUp">
-                <div class="row row-cols-md-4 row-cols-sm-3 row-cols-2 row-cols-xxs-1 ul-bs-row justify-content-center">
-                    <div class="col">
-                        <div class="ul-stats-item">
-                            <i class="flaticon-costumer"></i>
-                            <span class="number">260+</span>
-                            <span class="txt">Enfants aidés</span>
-                        </div>
-                    </div>
-
-                    <div class="col">
-                        <div class="ul-stats-item">
-                            <i class="flaticon-team"></i>
-                            <span class="number">110+</span>
-                            <span class="txt">Nos bénévoles</span>
-                        </div>
-                    </div>
-
-                    <div class="col">
-                        <div class="ul-stats-item">
-                            <i class="flaticon-package"></i>
-                            <span class="number">190+</span>
-                            <span class="txt">Projets et activités</span>
-                        </div>
-                    </div>
-
-                    <div class="col">
-                        <div class="ul-stats-item">
-                            <i class="flaticon-relationship"></i>
-                            <span class="number">560+</span>
-                            <span class="txt">Donateurs dans le monde</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- STATS SECTION END -->
+    @include('parties.site-stats')
 
 
+    @if(site_visible('home.events'))
     <!-- EVENTS SECTION START -->
     <section class="ul-events ul-section-spacing pt-0">
         <div class="ul-container">
             <!-- heading -->
             <div class="ul-section-heading align-items-center wow animate__fadeInUp">
                 <div class="left">
-                    <span class="ul-section-sub-title">Événements à venir</span>
-                    <h2 class="ul-section-title text-white">Calendrier des événements Espoir Vie</h2>
+                    <span class="ul-section-sub-title">{{ site_text('home.events', 'subtitle', 'Événements à venir') }}</span>
+                    <h2 class="ul-section-title text-white">{{ site_text('home.events', 'title', 'Les rendez-vous d\'Espoir Vie') }}</h2>
                 </div>
-                <a href="{{ route('events') }}" class="ul-btn"><i class="flaticon-fast-forward-double-right-arrows-symbol"></i> En savoir plus</a>
+                <a href="{{ site_link('home.events', 'events') }}" class="ul-btn"><i class="flaticon-fast-forward-double-right-arrows-symbol"></i> {{ site_text('home.events', 'button_label', 'Voir les événements') }}</a>
             </div>
 
             <!-- events -->
@@ -418,8 +323,10 @@
         </div>
     </section>
     <!-- EVENTS SECTION END -->
+    @endif
 
 
+    @if(site_visible('home.why_join'))
     <!-- WHY JOIN SECTION START -->
     <section class="ul-why-join ul-section-spacing">
         <div class="ul-why-join-wrapper ul-section-spacing">
@@ -427,56 +334,30 @@
                 <div class="row row-cols-md-2 row-cols-1 gy-4 align-items-center">
                     <div class="col">
                         <div class="ul-why-join-img">
-                            <img src="{{ asset('assets/img/660X632.jpg.jpeg') }}" alt="Image pourquoi nous rejoindre">
+                            <img src="{{ site_image('home.why_join', 'assets/img/660X632.jpg.jpeg') }}" alt="{{ site_text('home.why_join', 'title', 'Pourquoi soutenir Espoir Vie') }}">
                         </div>
                     </div>
 
-                    <!-- txt -->
                     <div class="col">
                         <div class="ul-why-join-txt">
-                            <span class="ul-section-sub-title">Rejoignez-nous</span>
-                            <h2 class="ul-section-title">Pourquoi avons-nous besoin de vous comme bénévole</h2>
-                            <p class="ul-section-descr">Votre engagement fait la différence. Ensemble, nous développons des stratégies de responsabilité sociale puissantes et créons un impact durable dans nos communautés.</p>
+                            <span class="ul-section-sub-title">{{ site_text('home.why_join', 'subtitle', 'Rejoignez-nous') }}</span>
+                            <h2 class="ul-section-title">{{ site_text('home.why_join', 'title', 'Pourquoi soutenir Espoir Vie') }}</h2>
+                            <p class="ul-section-descr">{{ site_text('home.why_join', 'body') }}</p>
 
                             <div class="ul-accordion">
-                                <div class="ul-single-accordion-item open">
-                                    <div class="ul-single-accordion-item__header">
-                                        <div class="left">
-                                            <h3 class="ul-single-accordion-item__title">Reconnaissance et accomplissement</h3>
+                                @foreach(site_items('home.why_join') as $index => $item)
+                                    <div class="ul-single-accordion-item {{ $index === 0 ? 'open' : '' }}">
+                                        <div class="ul-single-accordion-item__header">
+                                            <div class="left">
+                                                <h3 class="ul-single-accordion-item__title">{{ $item['title'] ?? '' }}</h3>
+                                            </div>
+                                            <span class="icon"><i class="flaticon-next"></i></span>
                                         </div>
-                                        <span class="icon"><i class="flaticon-next"></i></span>
-                                    </div>
-
-                                    <div class="ul-single-accordion-item__body">
-                                        <p>Rejoignez une équipe dédiée qui reconnaît et valorise votre contribution. Participez à des projets significatifs qui ont un impact réel sur la vie des personnes dans le besoin.</p>
-                                    </div>
-                                </div>
-
-                                <div class="ul-single-accordion-item">
-                                    <div class="ul-single-accordion-item__header">
-                                        <div class="left">
-                                            <h3 class="ul-single-accordion-item__title">Pourquoi nous rejoindre comme bénévole ?</h3>
+                                        <div class="ul-single-accordion-item__body">
+                                            <p>{{ $item['text'] ?? '' }}</p>
                                         </div>
-                                        <span class="icon"><i class="flaticon-next"></i></span>
                                     </div>
-
-                                    <div class="ul-single-accordion-item__body">
-                                        <p>Devenez bénévole pour développer vos compétences, rencontrer des personnes partageant les mêmes valeurs, et contribuer à des causes qui vous tiennent à cœur. Votre temps et votre énergie font toute la différence.</p>
-                                    </div>
-                                </div>
-
-                                <div class="ul-single-accordion-item">
-                                    <div class="ul-single-accordion-item__header">
-                                        <div class="left">
-                                            <h3 class="ul-single-accordion-item__title">Faire partie d'une communauté</h3>
-                                        </div>
-                                        <span class="icon"><i class="flaticon-next"></i></span>
-                                    </div>
-
-                                    <div class="ul-single-accordion-item__body">
-                                        <p>Rejoignez une communauté de personnes engagées qui partagent votre passion pour aider les autres. Ensemble, nous créons un réseau de solidarité et d'entraide.</p>
-                                    </div>
-                                </div>
+                                @endforeach
                             </div>
                         </div>
                     </div>
@@ -485,19 +366,20 @@
         </div>
     </section>
     <!-- WHY JOIN SECTION END -->
+    @endif
 
 
+    @if(site_visible('home.team'))
     <!-- TEAM SECTION START -->
     <section class="ul-team ul-section-spacing pt-0">
         <div class="ul-container">
-            <!-- Heading -->
             <div class="ul-section-heading justify-content-between">
                 <div class="left">
-                    <span class="ul-section-sub-title">Notre équipe</span>
-                    <h2 class="ul-section-title">Des professionnels dévoués à votre service</h2>
+                    <span class="ul-section-sub-title">{{ site_text('home.team', 'subtitle', 'Notre équipe') }}</span>
+                    <h2 class="ul-section-title">{{ site_text('home.team', 'title', 'Des personnes engagées auprès des enfants vulnérables') }}</h2>
                 </div>
                 <div>
-                    <a href="{{ route('team') }}" class="ul-btn"><i class="flaticon-fast-forward-double-right-arrows-symbol"></i> Voir toute l'équipe</a>
+                    <a href="{{ site_link('home.team', 'team') }}" class="ul-btn"><i class="flaticon-fast-forward-double-right-arrows-symbol"></i> {{ site_text('home.team', 'button_label', 'Voir toute l\'équipe') }}</a>
                 </div>
             </div>
 
@@ -541,40 +423,25 @@
                         </div>
                     @endforeach
                 @else
-                    <!-- Affichage par défaut si aucun membre -->
-                    @for($i = 1; $i <= 4; $i++)
-                        <div class="col">
-                            <div class="ul-team-member">
-                                <div class="ul-team-member-img">
-                                    <img src="{{ asset('assets/img/member-' . $i . '.jpg') }}" alt="Membre de l'équipe">
-                                    <div class="ul-team-member-socials">
-                                        <a href="#"><i class="flaticon-facebook"></i></a>
-                                        <a href="#"><i class="flaticon-twitter"></i></a>
-                                        <a href="#"><i class="flaticon-linkedin-big-logo"></i></a>
-                                        <a href="#"><i class="flaticon-instagram"></i></a>
-                                    </div>
-                                </div>
-                                <div class="ul-team-member-info">
-                                    <h3 class="ul-team-member-name"><a href="#">Membre de l'équipe</a></h3>
-                                    <p class="ul-team-member-designation">Bénévole</p>
-                                </div>
-                            </div>
-                        </div>
-                    @endfor
+                    <div class="col">
+                        <p class="ul-section-descr">Les membres visibles se renseignent dans l'espace d'administration.</p>
+                    </div>
                 @endif
             </div>
         </div>
     </section>
     <!-- TEAM SECTION END -->
+    @endif
 
 
+    @if(site_visible('home.testimonials'))
     <!-- TESTIMONIAL SECTION START -->
     <section class="ul-testimonial ul-section-spacing">
         <div class="ul-testimonial-container">
             <div class="ul-section-heading text-center">
                 <div>
-                    <span class="ul-section-sub-title">Témoignages</span>
-                    <h2 class="ul-section-title">Ce qu'ils disent d'Espoir Vie</h2>
+                    <span class="ul-section-sub-title">{{ site_text('home.testimonials', 'subtitle', 'Témoignages') }}</span>
+                    <h2 class="ul-section-title">{{ site_text('home.testimonials', 'title', 'La parole de celles et ceux qui nous accompagnent') }}</h2>
                 </div>
             </div>
 
@@ -620,38 +487,11 @@
                             </div>
                         @endforeach
                     @else
-                        <!-- Témoignages par défaut si aucun en DB -->
-                        @php
-                            $defaultTestimonials = [
-                                ['name' => 'Marie Dupont', 'role' => 'Bénévole', 'content' => 'Espoir Vie ASBL a fait une différence incroyable dans ma vie et celle de ma famille. Leur dévouement et leur compassion sont vraiment remarquables.'],
-                                ['name' => 'Pierre Dubois', 'role' => 'Donateur', 'content' => 'Merci à Espoir Vie ASBL pour leur engagement exceptionnel. Votre travail fait vraiment une différence dans notre communauté.'],
-                                ['name' => 'Claire Bernard', 'role' => 'Partenaire', 'content' => 'Espoir Vie ASBL transforme des vies chaque jour. Leur transparence et leur dévouement sont exemplaires.'],
-                            ];
-                        @endphp
-                        @foreach($defaultTestimonials as $index => $testimonial)
-                            <div class="swiper-slide">
-                                <div class="ul-review">
-                                    <div class="ul-review-rating">
-                                        <i class="flaticon-star"></i>
-                                        <i class="flaticon-star"></i>
-                                        <i class="flaticon-star"></i>
-                                        <i class="flaticon-star"></i>
-                                        <i class="flaticon-star-1"></i>
-                                    </div>
-                                    <p class="ul-review-descr">{{ $testimonial['content'] }}</p>
-                                    <div class="ul-review-bottom">
-                                        <div class="ul-review-reviewer">
-                                            <div class="reviewer-image"><img src="{{ asset('assets/img/member-' . ($index + 1) . '.jpg') }}" alt="{{ $testimonial['name'] }}"></div>
-                                            <div>
-                                                <h3 class="reviewer-name">{{ $testimonial['name'] }}</h3>
-                                                <span class="reviewer-role">{{ $testimonial['role'] }}</span>
-                                            </div>
-                                        </div>
-                                        <div class="ul-review-icon"><i class="flaticon-left"></i></div>
-                                    </div>
-                                </div>
+                        <div class="swiper-slide">
+                            <div class="ul-review">
+                                <p class="ul-review-descr">Les témoignages publiés par l'association apparaîtront ici.</p>
                             </div>
-                        @endforeach
+                        </div>
                     @endif
                 </div>
 
@@ -660,24 +500,25 @@
         </div>
     </section>
     <!-- TESTIMONIAL SECTION END -->
+    @endif
 
 
+    @if(site_visible('home.blog'))
     <!-- BLOG SECTION START -->
     <section class="ul-blogs ul-section-spacing">
         <div class="ul-blogs-container wow animate__fadeInUp">
             <div class="row gy-3">
-                <!-- section heading -->
                 <div class="col-sm-5">
                     <div class="ul-section-heading">
                         <div class="left">
-                            <span class="ul-section-sub-title">Derniers articles</span>
-                            <h2 class="ul-section-title">Lisez nos dernières actualités</h2>
-                            <p class="ul-section-descr">Découvrez nos dernières actions, nos projets en cours et les témoignages de ceux que nous aidons. Restez informé de nos activités et de notre impact.</p>
+                            <span class="ul-section-sub-title">{{ site_text('home.blog', 'subtitle', 'Derniers articles') }}</span>
+                            <h2 class="ul-section-title">{{ site_text('home.blog', 'title', 'Les actions et les nouvelles d\'Espoir Vie') }}</h2>
+                            <p class="ul-section-descr">{{ site_text('home.blog', 'body') }}</p>
                             <div class="ul-blogs-slider-nav ul-slider-nav">
                                 <button class="prev"><i class="flaticon-back"></i></button>
                                 <button class="next"><i class="flaticon-next"></i></button>
                             </div>
-                            <a href="{{ route('articles') }}" class="ul-btn" style="margin-top: 20px;"><i class="flaticon-fast-forward-double-right-arrows-symbol"></i> Voir tous les articles</a>
+                            <a href="{{ site_link('home.blog', 'articles') }}" class="ul-btn" style="margin-top: 20px;"><i class="flaticon-fast-forward-double-right-arrows-symbol"></i> {{ site_text('home.blog', 'button_label', 'Voir tous les articles') }}</a>
                         </div>
                     </div>
                 </div>
@@ -725,40 +566,9 @@
                                     </div>
                                 @endforeach
                             @else
-                                <!-- Articles par défaut si aucun en DB -->
-                                @php
-                                    $defaultArticles = [
-                                        ['title' => 'Donner l\'éducation, c\'est le plus beau cadeau que l\'on puisse offrir', 'category' => 'Éducation'],
-                                        ['title' => 'Ne traitons pas les océans comme des poubelles universelles', 'category' => 'Environnement'],
-                                        ['title' => 'Protéger nos plages pour les générations futures', 'category' => 'Environnement'],
-                                    ];
-                                @endphp
-                                @foreach($defaultArticles as $index => $article)
-                                    <div class="swiper-slide">
-                                        <div class="ul-blog">
-                                            <div class="ul-blog-img"><img src="{{ asset('assets/img/blog-' . ($index + 1) . '.jpg') }}" alt="{{ $article['title'] }}">
-                                                <div class="date">
-                                                    <span class="number">15</span>
-                                                    <span class="txt">Déc</span>
-                                                </div>
-                                            </div>
-                                            <div class="ul-blog-txt">
-                                                <div class="ul-blog-infos">
-                                                    <div class="ul-blog-info">
-                                                        <span class="icon"><i class="flaticon-account"></i></span>
-                                                        <span class="text font-normal text-[14px] text-etGray">Par l'équipe</span>
-                                                    </div>
-                                                    <div class="ul-blog-info">
-                                                        <span class="icon"><i class="flaticon-price-tag"></i></span>
-                                                        <span class="text font-normal text-[14px] text-etGray">{{ $article['category'] }}</span>
-                                                    </div>
-                                                </div>
-                                                <a href="#" class="ul-blog-title">{{ $article['title'] }}</a>
-                                                <a href="#" class="ul-blog-btn">Lire la suite <span class="icon"><i class="flaticon-next"></i></span></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endforeach
+                                <div class="swiper-slide">
+                                    <p class="ul-section-descr">Les articles publiés apparaîtront ici.</p>
+                                </div>
                             @endif
                         </div>
                     </div>
@@ -767,77 +577,22 @@
         </div>
     </section>
     <!-- BLOG SECTION END -->
+    @endif
 
-
-    <!-- GALLERY SECTION START -->
+    @if(site_visible('home.gallery'))
     <div class="ul-gallery overflow-hidden ul-section-spacing mx-auto pt-0">
         <div class="ul-gallery-slider swiper">
             <div class="swiper-wrapper">
-                <!-- single gallery item -->
-                <div class="ul-gallery-item swiper-slide">
-                    <img src="{{ asset('assets/img/gallery-item-1.png') }}" alt="Image de la galerie">
-                    <div class="ul-gallery-item-btn-wrapper">
-                        <a href="{{ asset('assets/img/gallery-item-1.png') }}" data-fslightbox="gallery"><i class="flaticon-instagram"></i></a>
+                @foreach(site_gallery_urls() as $galleryUrl)
+                    <div class="ul-gallery-item swiper-slide">
+                        <img src="{{ $galleryUrl }}" alt="Photo Espoir Vie">
+                        <div class="ul-gallery-item-btn-wrapper">
+                            <a href="{{ $galleryUrl }}" data-fslightbox="gallery"><i class="flaticon-instagram"></i></a>
+                        </div>
                     </div>
-                </div>
-
-                <!-- single gallery item -->
-                <div class="ul-gallery-item swiper-slide">
-                    <img src="{{ asset('assets/img/gallery-item-2.png') }}" alt="Image de la galerie">
-                    <div class="ul-gallery-item-btn-wrapper">
-                        <a href="{{ asset('assets/img/gallery-item-2.png') }}" data-fslightbox="gallery"><i class="flaticon-instagram"></i></a>
-                    </div>
-                </div>
-
-                <!-- single gallery item -->
-                <div class="ul-gallery-item swiper-slide">
-                    <img src="{{ asset('assets/img/gallery-item-3.png') }}" alt="Image de la galerie">
-                    <div class="ul-gallery-item-btn-wrapper">
-                        <a href="{{ asset('assets/img/gallery-item-3.png') }}" data-fslightbox="gallery"><i class="flaticon-instagram"></i></a>
-                    </div>
-                </div>
-
-                <!-- single gallery item -->
-                <div class="ul-gallery-item swiper-slide">
-                    <img src="{{ asset('assets/img/gallery-item-4.png') }}" alt="Image de la galerie">
-                    <div class="ul-gallery-item-btn-wrapper">
-                        <a href="{{ asset('assets/img/gallery-item-4.png') }}" data-fslightbox="gallery"><i class="flaticon-instagram"></i></a>
-                    </div>
-                </div>
-
-                <!-- single gallery item -->
-                <div class="ul-gallery-item swiper-slide">
-                    <img src="{{ asset('assets/img/gallery-item-5.png') }}" alt="Image de la galerie">
-                    <div class="ul-gallery-item-btn-wrapper">
-                        <a href="{{ asset('assets/img/gallery-item-5.png') }}" data-fslightbox="gallery"><i class="flaticon-instagram"></i></a>
-                    </div>
-                </div>
-
-                <!-- single gallery item -->
-                <div class="ul-gallery-item swiper-slide">
-                    <img src="{{ asset('assets/img/gallery-item-6.png') }}" alt="Image de la galerie">
-                    <div class="ul-gallery-item-btn-wrapper">
-                        <a href="{{ asset('assets/img/gallery-item-6.png') }}" data-fslightbox="gallery"><i class="flaticon-instagram"></i></a>
-                    </div>
-                </div>
-
-                <!-- single gallery item -->
-                <div class="ul-gallery-item swiper-slide">
-                    <img src="{{ asset('assets/img/gallery-item-1.png') }}" alt="Image de la galerie">
-                    <div class="ul-gallery-item-btn-wrapper">
-                        <a href="{{ asset('assets/img/gallery-item-1.png') }}" data-fslightbox="gallery"><i class="flaticon-instagram"></i></a>
-                    </div>
-                </div>
-
-                <!-- single gallery item -->
-                <div class="ul-gallery-item swiper-slide">
-                    <img src="{{ asset('assets/img/gallery-item-2.png') }}" alt="Image de la galerie">
-                    <div class="ul-gallery-item-btn-wrapper">
-                        <a href="{{ asset('assets/img/gallery-item-2.png') }}" data-fslightbox="gallery"><i class="flaticon-instagram"></i></a>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </div>
-    <!-- GALLERY SECTION END -->
+    @endif
 @endsection

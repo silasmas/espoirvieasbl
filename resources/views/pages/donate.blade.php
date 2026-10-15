@@ -17,6 +17,8 @@
     />
 
 
+    @include('parties.page-intro', ['key' => 'donate.intro'])
+
 <!-- DONTATIONS SECTION START -->
 <section class="ul-section-spacing overflow-hidden">
     <!-- DONTATIONS Grid -->

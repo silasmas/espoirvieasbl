@@ -100,7 +100,17 @@ class HomeController extends Controller
      */
     public function about()
     {
-        return view('pages.about');
+        $teamMembers = Admin::teamVisible()
+            ->teamOrdered()
+            ->limit(4)
+            ->get();
+
+        $testimonials = Testimonial::active()
+            ->ordered()
+            ->limit(6)
+            ->get();
+
+        return view('pages.about', compact('teamMembers', 'testimonials'));
     }
 
     /**

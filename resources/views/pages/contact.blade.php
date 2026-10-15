@@ -18,32 +18,32 @@
     <div class="ul-section-spacing ul-container">
         <div class="row row-cols-md-3 row-cols-2 row-cols-xxs-1 ul-bs-row">
             <!-- single info -->
+            @if(site_phone() !== '')
             <div class="col">
                 <div class="ul-contact-info">
                     <div class="icon"><i class="flaticon-phone-call"></i></div>
                     <div class="txt">
                         <span class="title">Numéro de téléphone</span>
-                        <a href="tel:+442045770077">+44 204 577 0077</a>
+                        <a href="tel:{{ preg_replace('/\s+/', '', site_phone()) }}">{{ site_phone() }}</a>
                     </div>
                 </div>
             </div>
-            <!-- single info -->
+            @endif
             <div class="col">
                 <div class="ul-contact-info">
                     <div class="icon"><i class="flaticon-comment"></i></div>
                     <div class="txt">
                         <span class="title">Adresse email</span>
-                        <a href="mailto:info@espoirvieasbl.org">info@espoirvieasbl.org</a>
+                        <a href="mailto:{{ site_email() }}">{{ site_email() }}</a>
                     </div>
                 </div>
             </div>
-            <!-- single info -->
             <div class="col">
                 <div class="ul-contact-info">
                     <div class="icon"><i class="flaticon-location"></i></div>
                     <div class="txt">
-                        <span class="title">Adresse du bureau</span>
-                        <span class="descr">Bruxelles, Belgique</span>
+                        <span class="title">Adresse</span>
+                        <span class="descr">{{ site_address() }}</span>
                     </div>
                 </div>
             </div>
@@ -54,20 +54,17 @@
 
 
 <!-- MAPS SECTION START -->
+@if(site_visible('contact.map'))
 <div class="ul-contact-map">
-    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4273.369923927683!2d89.24843545559786!3d25.755317550773302!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39e32e0754341e5f%3A0xa50209e1e2d5aed5!2sRangpur%20Zoo!5e0!3m2!1sen!2sbd!4v1736854209235!5m2!1sen!2sbd" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    <iframe src="{{ site_map_embed() }}" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
 </div>
+@endif
 <!-- MAPS SECTION END -->
 
 
 <!-- CONTACT SECTION START -->
 <section class="ul-inner-contact ul-section-spacing">
-    <div class="ul-section-heading justify-content-center text-center">
-        <div>
-            <span class="ul-section-sub-title">Nous contacter</span>
-            <h2 class="ul-section-title">N'hésitez pas à nous écrire à tout moment</h2>
-        </div>
-    </div>
+    @include('parties.page-intro', ['key' => 'contact.intro'])
 
     <div class="ul-inner-contact-container">
         <!-- Zone de notification -->

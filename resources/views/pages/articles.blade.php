@@ -19,13 +19,7 @@
     <section class="ul-blogs ul-section-spacing">
         <div class="ul-container">
             <!-- Heading -->
-            <div class="ul-section-heading justify-content-center text-center" style="margin-bottom: 40px;">
-                <div class="left">
-                    <span class="ul-section-sub-title">Notre blog</span>
-                    <h2 class="ul-section-title">Découvrez nos dernières actualités</h2>
-                    <p class="ul-section-descr">Restez informé de nos actions, de nos projets en cours et des témoignages de ceux que nous aidons.</p>
-                </div>
-            </div>
+            @include('parties.page-intro', ['key' => 'articles.intro'])
 
             @if($articles->count() > 0)
                 <div class="row row-cols-md-3 row-cols-sm-2 row-cols-1 g-4">

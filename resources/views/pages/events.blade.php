@@ -17,6 +17,7 @@
     <!-- EVENTS SECTION START -->
     <section class="ul-section-spacing">
         <div class="ul-container">
+            @include('parties.page-intro', ['key' => 'events.intro'])
             <!-- Affichage des filtres actifs -->
             @if(request('search') || request('category') || request('tag'))
             <div class="ul-events-filters-active" style="margin-bottom: 30px; padding: 15px; background: #f0f9ff; border-radius: 8px; border-left: 4px solid #0172b8;">

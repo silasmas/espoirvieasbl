@@ -15,15 +15,7 @@
     <section class="ul-team ul-section-spacing">
         <div class="ul-container">
             <!-- Heading -->
-            <div class="ul-section-heading justify-content-center text-center" style="margin-bottom: 50px;">
-                <div class="left">
-                    <span class="ul-section-sub-title">Notre équipe</span>
-                    <h2 class="ul-section-title">Des professionnels dévoués à votre service</h2>
-                    <p class="ul-section-descr" style="max-width: 700px; margin: 0 auto;">
-                        Notre équipe est composée de personnes passionnées et dévouées qui travaillent chaque jour pour améliorer la vie de ceux qui en ont le plus besoin.
-                    </p>
-                </div>
-            </div>
+            @include('parties.page-intro', ['key' => 'team.intro'])
 
             @if($teamMembers->count() > 0)
                 <div class="row row-cols-md-4 row-cols-sm-3 row-cols-2 row-cols-xxs-1 ul-team-row justify-content-center g-4">

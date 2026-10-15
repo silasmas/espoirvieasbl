@@ -55,7 +55,7 @@
         <div class="ul-sidebar-header">
             <div class="ul-sidebar-header-logo">
                 <a href="{{ route('home') }}">
-                    <img src="{{ asset('assets/img/lg.jpg') }}" alt="Espoir Vie ASBL" class="logo">
+                    <img src="{{ site_image('global.identity', 'assets/img/lg.jpg') }}" alt="{{ site_text('global.identity', 'title', 'Espoir Vie ASBL') }}" class="logo">
                 </a>
             </div>
             <!-- sidebar closer -->
@@ -70,10 +70,7 @@
             <span class="ul-sidebar-footer-title">Suivez-nous</span>
 
             <div class="ul-sidebar-footer-social">
-                <a href="#"><i class="flaticon-facebook"></i></a>
-                <a href="#"><i class="flaticon-twitter"></i></a>
-                <a href="#"><i class="flaticon-instagram"></i></a>
-                <a href="#"><i class="flaticon-youtube"></i></a>
+                @include('parties.social-links')
             </div>
         </div>
     </div>
@@ -100,7 +97,7 @@
             <div class="ul-header-bottom-wrapper ul-header-container">
                 <div class="logo-container">
                     <a href="{{ route('home') }}" class="d-inline-block">
-                        <img src="{{ asset('assets/img/lg.png') }}" height="50px" width="50px" alt="Espoir Vie ASBL"
+                        <img src="{{ site_image('global.identity', 'assets/img/lg.png') }}" height="50px" width="50px" alt="{{ site_text('global.identity', 'title', 'Espoir Vie ASBL') }}"
                             class="logo"></a>
                 </div>
 
@@ -108,13 +105,7 @@
                 <div class="ul-header-nav-wrapper">
                     <div class="to-go-to-sidebar-in-mobile">
                         <nav class="ul-header-nav">
-                            <a href="{{ route('home') }}">Accueil</a>
-                            <a href="{{ route('about') }}">À propos</a>
-                            <a href="{{ route('team') }}">Notre équipe</a>
-                            <a href="{{ route('events') }}">Événements</a>
-                            <a href="{{ route('articles') }}">Articles</a>
-                            <a href="{{ route('donate') }}">Faire un don</a>
-                            <a href="{{ route('contact') }}">Nous contacter</a>
+                            @include('parties.nav-links')
                         </nav>
                         @guest
                         <div class="ul-sidebar-auth-links d-md-none">
@@ -200,8 +191,8 @@
                     <div class="ul-modal-content">
                         <button type="button" id="spontaneous-donation-modal-close">&times;</button>
                         <div class="modal-header-content">
-                            <h2>Faire un don</h2>
-                            <p>Merci pour votre générosité ! Effectuez un don ponctuel pour soutenir notre cause.</p>
+                            <h2>{{ site_text('donate.modal', 'title', 'Faire un don') }}</h2>
+                            <p>{{ site_text('donate.modal', 'body', 'Un don ponctuel soutient les actions d\'Espoir Vie auprès des enfants orphelins et des familles vulnérables.') }}</p>
                         </div>
 
                         <!-- Note mode test -->
@@ -579,7 +570,7 @@
                         <!-- txt -->
                         <div class="ul-footer-top-contact-info-txt">
                             <span class="ul-footer-top-contact-info-label">Adresse</span>
-                            <h5 class="ul-footer-top-contact-info-address">4648 Rocky Road Philadelphia PA, 1920</h5>
+                            <h5 class="ul-footer-top-contact-info-address">{{ site_address() }}</h5>
                         </div>
                     </div>
 
@@ -595,25 +586,24 @@
                         <div class="ul-footer-top-contact-info-txt">
                             <span class="ul-footer-top-contact-info-label">Envoyer un email</span>
                             <h5 class="ul-footer-top-contact-info-address"><a
-                                    href="mailto:info@exmple.com">info@exmple.com</a></h5>
+                                    href="mailto:{{ site_email() }}">{{ site_email() }}</a></h5>
                         </div>
                     </div>
 
                     <!-- single info -->
+                    @if(site_phone() !== '')
                     <div class="ul-footer-top-contact-info">
-                        <!-- icon -->
                         <div class="ul-footer-top-contact-info-icon">
                             <div class="ul-footer-top-contact-info-icon-inner">
                                 <i class="flaticon-telephone-call-1"></i>
                             </div>
                         </div>
-                        <!-- txt -->
                         <div class="ul-footer-top-contact-info-txt">
-                            <span class="ul-footer-top-contact-info-label">Appel d'urgence</span>
-                            <h5 class="ul-footer-top-contact-info-address"><a href="tel:88012365499">+88 0123 654
-                                    99</a></h5>
+                            <span class="ul-footer-top-contact-info-label">Téléphone</span>
+                            <h5 class="ul-footer-top-contact-info-address"><a href="tel:{{ preg_replace('/\s+/', '', site_phone()) }}">{{ site_phone() }}</a></h5>
                         </div>
                     </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -623,14 +613,14 @@
                 <div class="ul-footer-middle-wrapper wow animate__fadeInUp">
                     <div class="ul-footer-about">
                         <a href="{{ route('home') }}">
-                            <img src="{{ asset('assets/img/lg.png') }}"
-                            height="80px" width="80px" alt="Espoir Vie ASBL" class="logo"></a>
-                        <p class="ul-footer-about-txt">Espoir Vie ASBL est une organisation à but non lucratif dédiée à améliorer la vie des personnes dans le besoin. Ensemble, créons un avenir meilleur pour tous.</p>
+                            <img src="{{ site_image('global.identity', 'assets/img/lg.png') }}"
+                            height="80px" width="80px" alt="{{ site_text('global.identity', 'title', 'Espoir Vie ASBL') }}" class="logo"></a>
+                        <p class="ul-footer-about-txt">{{ site_text('global.identity', 'body', 'Espoir Vie est une association humanitaire et socio-éducative créée en 2000 à Kinshasa.') }}</p>
+                        @if(site_text('global.identity', 'subtitle') !== '')
+                            <p class="ul-footer-about-txt"><em>{{ site_text('global.identity', 'subtitle') }}</em></p>
+                        @endif
                         <div class="ul-footer-socials">
-                            <a href="#"><i class="flaticon-facebook"></i></a>
-                            <a href="#"><i class="flaticon-twitter"></i></a>
-                            <a href="#"><i class="flaticon-linkedin-big-logo"></i></a>
-                            <a href="#"><i class="flaticon-youtube"></i></a>
+                            @include('parties.social-links')
                         </div>
                     </div>
 
@@ -638,12 +628,7 @@
                         <h3 class="ul-footer-widget-title">Liens rapides</h3>
 
                         <div class="ul-footer-widget-links">
-                            <a href="{{ route('about') }}">À propos</a>
-                            <a href="{{ route('team') }}">Notre équipe</a>
-                            <a href="{{ route('events') }}">Événements</a>
-                            <a href="{{ route('articles') }}">Articles</a>
-                            <a href="{{ route('donate') }}">Faire un don</a>
-                            <a href="{{ route('contact') }}">Nous contacter</a>
+                            @include('parties.nav-links')
                         </div>
                     </div>
 
@@ -705,8 +690,10 @@
                     <div class="ul-footer-widget ul-nwsltr-widget">
                         <h3 class="ul-footer-widget-title">Nous contacter</h3>
                         <div class="ul-footer-widget-links ul-footer-contact-links">
-                            <a href="mailto:info@example.com"><i class="flaticon-mail"></i> info@example.com</a>
-                            <a href="tel:123-456-7890"><i class="flaticon-telephone-call"></i> 123-456-7890</a>
+                            <a href="mailto:{{ site_email() }}"><i class="flaticon-mail"></i> {{ site_email() }}</a>
+                            @if(site_phone() !== '')
+                                <a href="tel:{{ preg_replace('/\s+/', '', site_phone()) }}"><i class="flaticon-telephone-call"></i> {{ site_phone() }}</a>
+                            @endif
                         </div>
                         <form action="{{ route('newsletter.subscribe') }}" method="POST" class="ul-nwsltr-form">
                             @csrf
@@ -735,7 +722,7 @@
             <div class="ul-footer-container">
                 <div class="ul-footer-bottom-wrapper">
                     <p class="copyright-txt">&copy;
-                        <span id="footer-copyright-year"></span> Espoir Vie ASBL. Tous droits réservés.
+                        <span id="footer-copyright-year"></span> {{ site_text('global.identity', 'title', 'Espoir Vie ASBL') }}. Tous droits réservés.
                     </p>
                     <div class="ul-footer-bottom-nav">
                         <a href="{{ route('terms') }}">Conditions d'utilisation</a>
